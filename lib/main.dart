@@ -1,5 +1,6 @@
 // páginas
 import 'busca_arquivo/explorador_arq.dart';
+import 'tela_principal/interface_inicial.dart';
 // funções
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -18,10 +19,10 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 205, 205, 206),
-          title: Text('Tela Principal')),
+    return MaterialApp(
+      home: Scaffold(
+        body: ExploradorArquivos(),
+      ),
     );
   }
 }
