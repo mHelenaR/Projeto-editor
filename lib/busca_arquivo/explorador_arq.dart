@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:file_picker/file_picker.dart';
@@ -20,7 +21,7 @@ class ExploradorArquivos extends StatefulWidget {
 class _ExploradorArquivosState extends State<ExploradorArquivos> {
   var _recebeCaminho = '';
   var _conteudo = '';
-  var novd;
+  var _teste, strarray, estacao, _estac, _array, teste;
 
 // abre o explorador e armazena o caminho do arquivo em uma variavel
   Future<void> abreArquivo() async {
@@ -29,12 +30,14 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      caminhoArquivo = result.files.single.path;
+      caminhoArquivo =
+          result.files.single.path; // variavel que recebe o caminho do arquivo
     } else {
       // validar um erro
     }
     setState(() {
-      _recebeCaminho = caminhoArquivo!;
+      _recebeCaminho =
+          caminhoArquivo!; // espera a variavel ser inicializada para receber valor
     });
   }
 
@@ -46,16 +49,12 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
 
 // variavel conteudo recebendo o texto decodificado
     setState(() {
-      if (_conteudo != null) {
-        _conteudo = _dadosArquivo;
-      } else {
-        _conteudo = "#teste|teste CPO csc^csc TIT ";
-      }
+      _conteudo = _dadosArquivo;
     });
   }
 
-  tabela() {
-    final _teste = _conteudo;
+  Future<void> _tabela() async {
+    _teste = await _conteudo;
     final start = '#';
     final end = 'CPO ';
     final startIndex = _teste.indexOf(start);
@@ -73,26 +72,14 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
 
     List<String> estacao = _novo.split('^');
 
-    Widget build(context) {
-      return DataTable(horizontalMargin: 10, columns: [
-        for (var i = 0; i < strarray.length; i++) ...{
-          DataColumn(
-              label: Text(
-            '${strarray[i]}',
-            style: TextStyle(fontSize: 20),
-          )),
-        }
-      ], rows: [
-        for (var i = 0; i < 1; i++) ...{
-          DataRow(cells: [
-            for (var i = 0; i < estacao.length; i++) ...{
-              DataCell(Text('${estacao[i]}'.toString())),
-            }
-          ]),
-        }
-      ]);
-    }
+    setState(() {
+      _array = strarray;
+      _estac = estacao;
+    });
   }
+
+  final _verticalScrollController = ScrollController();
+  final _horizontalScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +97,56 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
           ),
         ])),
         Container(
-          child: tabela(),
-        )
+          child: ElevatedButton(
+            child: Text('tabela'),
+            onPressed: _tabela,
+          ),
+        ),
+        Container(
+            height: 100,
+            child: AdaptiveScrollbar(
+              controller: _verticalScrollController,
+              child: AdaptiveScrollbar(
+                  controller: _horizontalScrollController,
+                  position: ScrollbarPosition.bottom,
+                  child: SingleChildScrollView(
+                      controller: _verticalScrollController,
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                          controller: _horizontalScrollController,
+                          scrollDirection: Axis.horizontal,
+                          child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 8.0, bottom: 16.0),
+                              child:
+                                  DataTable(showCheckboxColumn: true, columns: [
+                                if (_array != null) ...{
+                                  for (final nov in _array) ...{
+                                    DataColumn(
+                                        label: Text(
+                                      '${nov}',
+                                    )),
+                                  }
+                                } else ...{
+                                  DataColumn(
+                                      label: Text(
+                                    '${_array}',
+                                  )),
+                                }
+                              ], rows: [
+                                if (_estac != null) ...{
+                                  DataRow(cells: [
+                                    for (final teste in _estac) ...{
+                                      DataCell(Text('${teste}')),
+                                    }
+                                  ]),
+                                } else ...{
+                                  DataRow(cells: [
+                                    DataCell(Text('${_estac}')),
+                                  ]),
+                                }
+                              ]))))),
+            ))
       ]),
     ));
   }
