@@ -21,7 +21,8 @@ class ExploradorArquivos extends StatefulWidget {
 class _ExploradorArquivosState extends State<ExploradorArquivos> {
   var _recebeCaminho = '';
   var _conteudo = '';
-  var _teste, strarray, estacao, _estac, _array, teste;
+  var strarray, estacao, _estac, _array, teste, _nj;
+  var nom;
 
 // abre o explorador e armazena o caminho do arquivo em uma variavel
   Future<void> abreArquivo() async {
@@ -54,100 +55,103 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
   }
 
   Future<void> _tabela() async {
-    _teste = await _conteudo;
-    final start = '#';
-    final end = 'CPO ';
-    final startIndex = _teste.indexOf(start);
-    final endIndex = _teste.indexOf(end);
-    final _result =
-        _teste.substring(startIndex + start.length, endIndex).trim();
+    _nj = await _conteudo;
+    final _teste = _nj.split('\r\n');
 
-    final inicio = 'CPO ';
-    final fim = ' TIT ';
-    final inicioInd = _teste.indexOf(inicio);
-    final fimInd = _teste.indexOf(fim);
-    final _novo = _teste.substring(inicioInd + inicio.length, fimInd);
+    for (int i = 0; i < _teste.length; i++) {
+      var cont = i + 1;
+      //var nome = _teste[cont].substring(0, 3);
+      if (_teste[i++].substring(0, 3) == 'TIT') {
+        List<String> strarray = _teste[cont].split('|');
+        setState(() {
+          _array = strarray;
+        });
+      } else if (_teste[i++].substring(0, 3) == 'CPO') {
+        List<String> estacao = _teste[cont].split('^');
 
-    List<String> strarray = _result.split('|');
-
-    List<String> estacao = _novo.split('^');
-
-    setState(() {
-      _array = strarray;
-      _estac = estacao;
-    });
+        setState(() {
+          _estac = estacao;
+        });
+      }
+    }
   }
 
+// scrollbar bidimencional
   final _verticalScrollController = ScrollController();
   final _horizontalScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: MediaQuery.of(context).size.width,
+        width: MediaQuery.of(context).size.width,
+        color: Colors.amber[50],
         child: SingleChildScrollView(
-      child: Column(children: [
-        Container(
-            child: Column(children: [
-          TextButton(onPressed: abreArquivo, child: Text('Abrir')),
-          ElevatedButton(
-            child: Text('Abrir'),
+          child: Column(children: [
+            Container(
+                child: Column(children: [
+              TextButton(onPressed: abreArquivo, child: Text('Abrir')),
+              ElevatedButton(
+                child: Text('Abrir'),
 
-            onPressed:
-                _lerDados, // aqui ele recebe o arquivo e a conversao dele
-          ),
-        ])),
-        Container(
-          child: ElevatedButton(
-            child: Text('tabela'),
-            onPressed: _tabela,
-          ),
-        ),
-        Container(
-            height: 100,
-            child: AdaptiveScrollbar(
-              controller: _verticalScrollController,
-              child: AdaptiveScrollbar(
-                  controller: _horizontalScrollController,
-                  position: ScrollbarPosition.bottom,
-                  child: SingleChildScrollView(
-                      controller: _verticalScrollController,
-                      scrollDirection: Axis.vertical,
+                onPressed:
+                    _lerDados, // aqui ele recebe o arquivo e a conversao dele
+              ),
+            ])),
+            Container(
+              child: ElevatedButton(
+                child: Text('tabela'),
+                onPressed: _tabela,
+              ),
+            ),
+            Container(
+                height: 300,
+                child: AdaptiveScrollbar(
+                  controller: _verticalScrollController,
+                  child: AdaptiveScrollbar(
+                      controller: _horizontalScrollController,
+                      position: ScrollbarPosition.bottom,
                       child: SingleChildScrollView(
-                          controller: _horizontalScrollController,
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 16.0),
-                              child:
-                                  DataTable(showCheckboxColumn: true, columns: [
-                                if (_array != null) ...{
-                                  for (final nov in _array) ...{
-                                    DataColumn(
-                                        label: Text(
-                                      '${nov}',
-                                    )),
-                                  }
-                                } else ...{
-                                  DataColumn(
-                                      label: Text(
-                                    '${_array}',
-                                  )),
-                                }
-                              ], rows: [
-                                if (_estac != null) ...{
-                                  DataRow(cells: [
-                                    for (final teste in _estac) ...{
-                                      DataCell(Text('${teste}')),
-                                    }
-                                  ]),
-                                } else ...{
-                                  DataRow(cells: [
-                                    DataCell(Text('${_estac}')),
-                                  ]),
-                                }
-                              ]))))),
-            ))
-      ]),
-    ));
+                          controller: _verticalScrollController,
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                              controller: _horizontalScrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8.0, bottom: 16.0),
+                                  child: DataTable(
+                                      showCheckboxColumn: true,
+                                      columns: [
+                                        if (_array != null) ...{
+                                          for (final nov in _array) ...{
+                                            DataColumn(
+                                                label: Text(
+                                              '${nov}',
+                                            )),
+                                          }
+                                        } else ...{
+                                          DataColumn(
+                                              label: Text(
+                                            '${_array}',
+                                          )),
+                                        }
+                                      ],
+                                      rows: [
+                                        if (_estac != null) ...{
+                                          DataRow(cells: [
+                                            for (final teste in _estac) ...{
+                                              DataCell(Text('${teste}')),
+                                            }
+                                          ]),
+                                        } else ...{
+                                          DataRow(cells: [
+                                            DataCell(Text('${_estac}')),
+                                          ]),
+                                        }
+                                      ]))))),
+                ))
+          ]),
+        ));
   }
 }
