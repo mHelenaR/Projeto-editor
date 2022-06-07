@@ -84,49 +84,48 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            alignment: Alignment.center,
-            height: 300,
-            width: 900,
-            color: Colors.amber[50],
-            child: SingleChildScrollView(
-              child: Column(children: [
-                Container(
-                    child: Column(children: [
-                  TextButton(onPressed: abreArquivo, child: Text('Abrir')),
-                  ElevatedButton(
-                    child: Text('Abrir'),
+        body: Center(
+      child: Container(
+          color: Colors.amber[50],
+          child: SingleChildScrollView(
+            child: Column(children: [
+              Container(
+                  child: Column(children: [
+                TextButton(onPressed: abreArquivo, child: Text('Abrir')),
+                ElevatedButton(
+                  child: Text('Abrir'),
 
-                    onPressed:
-                        _lerDados, // aqui ele recebe o arquivo e a conversao dele
-                  ),
-                ])),
-                Container(
-                  child: ElevatedButton(
-                    child: Text('tabela'),
-                    onPressed: _tabela,
-                  ),
+                  onPressed:
+                      _lerDados, // aqui ele recebe o arquivo e a conversao dele
                 ),
-                Container(
-                    height: 300,
-                    child: AdaptiveScrollbar(
-                        controller: _verticalScrollController,
-                        child: AdaptiveScrollbar(
-                            controller: _horizontalScrollController,
-                            position: ScrollbarPosition.bottom,
-                            child: SingleChildScrollView(
-                                controller: _verticalScrollController,
-                                scrollDirection: Axis.vertical,
-                                child: SingleChildScrollView(
-                                    controller: _horizontalScrollController,
-                                    scrollDirection: Axis.horizontal,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 8.0, bottom: 16.0),
-                                      child: tabelaDados(),
-                                    ))))))
-              ]),
-            )));
+              ])),
+              Container(
+                child: ElevatedButton(
+                  child: Text('tabela'),
+                  onPressed: _tabela,
+                ),
+              ),
+              Container(
+                  height: 100,
+                  child: AdaptiveScrollbar(
+                      controller: _verticalScrollController,
+                      child: AdaptiveScrollbar(
+                          controller: _horizontalScrollController,
+                          position: ScrollbarPosition.bottom,
+                          child: SingleChildScrollView(
+                              controller: _verticalScrollController,
+                              scrollDirection: Axis.vertical,
+                              child: SingleChildScrollView(
+                                  controller: _horizontalScrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 8.0, bottom: 16.0),
+                                    child: tabelaDados(),
+                                  ))))))
+            ]),
+          )),
+    ));
   }
 
   Widget tabelaDados() {
