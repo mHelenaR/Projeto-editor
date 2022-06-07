@@ -10,6 +10,7 @@ import 'package:file_picker/file_picker.dart';
 // importação arquivos
 import 'package:editorconfiguracao/main.dart';
 import 'package:editorconfiguracao/separa_arquivo/separador.dart';
+import 'package:editorconfiguracao/tela_principal/interface_inicial.dart';
 
 class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);
@@ -82,76 +83,79 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.width,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.amber[50],
-        child: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-                child: Column(children: [
-              TextButton(onPressed: abreArquivo, child: Text('Abrir')),
-              ElevatedButton(
-                child: Text('Abrir'),
+    return Scaffold(
+        body: Container(
+            alignment: Alignment.center,
+            height: 300,
+            width: 900,
+            color: Colors.amber[50],
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Container(
+                    child: Column(children: [
+                  TextButton(onPressed: abreArquivo, child: Text('Abrir')),
+                  ElevatedButton(
+                    child: Text('Abrir'),
 
-                onPressed:
-                    _lerDados, // aqui ele recebe o arquivo e a conversao dele
-              ),
-            ])),
-            Container(
-              child: ElevatedButton(
-                child: Text('tabela'),
-                onPressed: _tabela,
-              ),
-            ),
-            Container(
-                height: 300,
-                child: AdaptiveScrollbar(
-                  controller: _verticalScrollController,
-                  child: AdaptiveScrollbar(
-                      controller: _horizontalScrollController,
-                      position: ScrollbarPosition.bottom,
-                      child: SingleChildScrollView(
-                          controller: _verticalScrollController,
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                              controller: _horizontalScrollController,
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8.0, bottom: 16.0),
-                                  child: DataTable(
-                                      showCheckboxColumn: true,
-                                      columns: [
-                                        if (_array != null) ...{
-                                          for (final nov in _array) ...{
-                                            DataColumn(
-                                                label: Text(
-                                              '${nov}',
-                                            )),
-                                          }
-                                        } else ...{
-                                          DataColumn(
-                                              label: Text(
-                                            '${_array}',
-                                          )),
-                                        }
-                                      ],
-                                      rows: [
-                                        if (_estac != null) ...{
-                                          DataRow(cells: [
-                                            for (final teste in _estac) ...{
-                                              DataCell(Text('${teste}')),
-                                            }
-                                          ]),
-                                        } else ...{
-                                          DataRow(cells: [
-                                            DataCell(Text('${_estac}')),
-                                          ]),
-                                        }
-                                      ]))))),
-                ))
-          ]),
-        ));
+                    onPressed:
+                        _lerDados, // aqui ele recebe o arquivo e a conversao dele
+                  ),
+                ])),
+                Container(
+                  child: ElevatedButton(
+                    child: Text('tabela'),
+                    onPressed: _tabela,
+                  ),
+                ),
+                Container(
+                    height: 300,
+                    child: AdaptiveScrollbar(
+                        controller: _verticalScrollController,
+                        child: AdaptiveScrollbar(
+                            controller: _horizontalScrollController,
+                            position: ScrollbarPosition.bottom,
+                            child: SingleChildScrollView(
+                                controller: _verticalScrollController,
+                                scrollDirection: Axis.vertical,
+                                child: SingleChildScrollView(
+                                    controller: _horizontalScrollController,
+                                    scrollDirection: Axis.horizontal,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 8.0, bottom: 16.0),
+                                      child: tabelaDados(),
+                                    ))))))
+              ]),
+            )));
+  }
+
+  Widget tabelaDados() {
+    return DataTable(showCheckboxColumn: true, columns: [
+      if (_array != null) ...{
+        for (final nov in _array) ...{
+          DataColumn(
+              label: Text(
+            '${nov}',
+          )),
+        }
+      } else ...{
+        DataColumn(
+            label: Text(
+          '${_array}',
+        )),
+      }
+    ], rows: [
+      if (_estac != null) ...{
+        DataRow(cells: [
+          for (final teste in _estac) ...{
+            DataCell(Text('${teste}')),
+          }
+        ]),
+      } else ...{
+        DataRow(cells: [
+          DataCell(Text('${_estac}')),
+        ]),
+      }
+    ]);
   }
 }

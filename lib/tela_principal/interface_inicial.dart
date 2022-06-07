@@ -1,4 +1,6 @@
 // bibliotecas-classes
+import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/tela_principal/corpo_programa.dart';
 import 'package:flutter/material.dart';
 
 // Importar outros arquivos
@@ -9,10 +11,9 @@ class telaInicial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tela Inicial'),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: corpoProjeto(),
     );
   }
 }
