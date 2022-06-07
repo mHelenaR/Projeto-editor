@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -28,6 +26,28 @@ class barraContainer extends StatefulWidget {
 }
 
 class _barraContainerState extends State<barraContainer> {
+  final List<String> menuItens = [
+    "Página principal",
+    "Tabelas",
+    "Conexão",
+    "Configuração"
+  ];
+  final List<String> menuIcons = [
+    "icon_home",
+    "icon_table",
+    "icon_database",
+    "icon_settings"
+  ];
+  bool sidebarOpen = false;
+  double xOffset = 60;
+  double yOffset = 0;
+
+  void setSidebarState() {
+    setState(() {
+      xOffset = sidebarOpen ? 265 : 60;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,21 +55,46 @@ class _barraContainerState extends State<barraContainer> {
         Container(
             width: double.infinity,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
-                  child: Text('teste'),
+                  child: Text('titulo'),
                 ),
                 Container(
-                  child: Text('ede'),
-                ),
+                    child: Expanded(
+                        child: new ListView.builder(
+                            itemCount: menuItens.length,
+                            itemBuilder: (context, index) => Container(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(20),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.all(20),
+                                        child: Text(menuItens[index]),
+                                      )
+                                    ],
+                                  ),
+                                )))),
                 Container(
-                  child: Text('dedede'),
+                  child: Text('saida'),
                 ),
               ],
             )),
-        Container(
-          child: Text('data'),
-        )
+        GestureDetector(
+            onTap: () {
+              sidebarOpen = !sidebarOpen;
+              setSidebarState();
+            },
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 200),
+              transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
+              width: double.infinity,
+              height: double.infinity,
+              child: Text('teste'),
+            ))
       ]),
     );
   }
