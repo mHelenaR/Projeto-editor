@@ -7,13 +7,9 @@ class navegacao extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          color: Colors.blue[50],
-          child: barraContainer(),
-        ),
-      ),
+    return Container(
+      color: Colors.blue[50],
+      child: barraContainer(),
     );
   }
 }
@@ -38,7 +34,7 @@ class _barraContainerState extends State<barraContainer> {
     "icon_database",
     "icon_settings"
   ];
-  bool sidebarOpen = false;
+  bool sidebarOpen = true;
   double xOffset = 60;
   double yOffset = 0;
 

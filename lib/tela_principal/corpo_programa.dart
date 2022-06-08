@@ -14,12 +14,14 @@ class corpoProjeto extends StatefulWidget {
 class _corpoProjetoState extends State<corpoProjeto> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: navegacao(),
-      body: Center(
-        child: Container(
-            height: double.infinity, width: 800, child: ExploradorArquivos()),
-      ),
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+            drawer: navegacao(),
+            body: Container(
+                child: Container(
+              width: 900,
+              child: ExploradorArquivos(),
+            ))));
   }
 }

@@ -6,5 +6,5 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const telaInicial());
+  runApp(telaInicial());
 }
