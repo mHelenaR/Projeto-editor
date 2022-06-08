@@ -17,11 +17,11 @@ class _corpoProjetoState extends State<corpoProjeto> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            drawer: navegacao(),
             body: Container(
-                child: Container(
-              width: 900,
-              child: ExploradorArquivos(),
-            ))));
+          color: Colors.white,
+          child: Container(
+            child: ExploradorArquivos(),
+          ),
+        )));
   }
 }

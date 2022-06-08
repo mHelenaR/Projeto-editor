@@ -8,8 +8,7 @@ class navegacao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue[50],
-      child: barraContainer(),
+      child: Drawer(child: barraContainer()),
     );
   }
 }
@@ -29,10 +28,10 @@ class _barraContainerState extends State<barraContainer> {
     "Configuração"
   ];
   final List<String> menuIcons = [
-    "icon_home",
-    "icon_table",
-    "icon_database",
-    "icon_settings"
+    "homepage_1",
+    "icon_prancheta",
+    "icon_nuvem",
+    "icon_configuracao"
   ];
   bool sidebarOpen = true;
   double xOffset = 60;
@@ -40,13 +39,14 @@ class _barraContainerState extends State<barraContainer> {
 
   void setSidebarState() {
     setState(() {
-      xOffset = sidebarOpen ? 265 : 60;
+      xOffset = sidebarOpen ? 220 : 60;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.purple[50],
       child: Stack(children: [
         Container(
             width: double.infinity,
@@ -59,13 +59,15 @@ class _barraContainerState extends State<barraContainer> {
                 ),
                 Container(
                     child: Expanded(
-                        child: new ListView.builder(
+                        child: ListView.builder(
                             itemCount: menuItens.length,
                             itemBuilder: (context, index) => Container(
                                   child: Row(
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.all(20),
+                                        child: Image.asset(
+                                            "assets/images/${menuIcons[index]}.png"),
                                       ),
                                       Container(
                                         padding: const EdgeInsets.all(20),
@@ -87,26 +89,12 @@ class _barraContainerState extends State<barraContainer> {
             child: AnimatedContainer(
               duration: Duration(milliseconds: 200),
               transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width,
               height: double.infinity,
+              color: Colors.white,
               child: Text('teste'),
             ))
       ]),
     );
   }
 }
-
-
-
-// expande por fora
-/*
-  @override
-  Widget build(BuildContext context) {
-    final isCollapsed = true;
-
-    return Container(
-        width: isCollapsed ? MediaQuery.of(context).size.width * 0.1 : null,
-        child: Drawer(child: Container(color: Colors.amberAccent[50])));
-  }
-
- */
