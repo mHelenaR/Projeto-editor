@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
+import 'package:editorconfiguracao/tela_principal/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:file_picker/file_picker.dart';
@@ -83,49 +84,47 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
+    return Center(
       child: Container(
-          color: Colors.amber[50],
           child: SingleChildScrollView(
-            child: Column(children: [
-              Container(
-                  child: Column(children: [
-                TextButton(onPressed: abreArquivo, child: Text('Abrir')),
-                ElevatedButton(
-                  child: Text('Abrir'),
+        child: Column(children: [
+          Container(
+              child: Column(children: [
+            TextButton(onPressed: abreArquivo, child: Text('Abrir')),
+            ElevatedButton(
+              child: Text('Abrir'),
 
-                  onPressed:
-                      _lerDados, // aqui ele recebe o arquivo e a conversao dele
-                ),
-              ])),
-              Container(
-                child: ElevatedButton(
-                  child: Text('tabela'),
-                  onPressed: _tabela,
-                ),
-              ),
-              Container(
-                  height: 100,
+              onPressed:
+                  _lerDados, // aqui ele recebe o arquivo e a conversao dele
+            ),
+          ])),
+          Container(
+            child: ElevatedButton(
+              child: Text('tabela'),
+              onPressed: _tabela,
+            ),
+          ),
+          Container(
+              height: 100,
+              child: AdaptiveScrollbar(
+                  controller: _verticalScrollController,
                   child: AdaptiveScrollbar(
-                      controller: _verticalScrollController,
-                      child: AdaptiveScrollbar(
-                          controller: _horizontalScrollController,
-                          position: ScrollbarPosition.bottom,
+                      controller: _horizontalScrollController,
+                      position: ScrollbarPosition.bottom,
+                      child: SingleChildScrollView(
+                          controller: _verticalScrollController,
+                          scrollDirection: Axis.vertical,
                           child: SingleChildScrollView(
-                              controller: _verticalScrollController,
-                              scrollDirection: Axis.vertical,
-                              child: SingleChildScrollView(
-                                  controller: _horizontalScrollController,
-                                  scrollDirection: Axis.horizontal,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 8.0, bottom: 16.0),
-                                    child: tabelaDados(),
-                                  ))))))
-            ]),
-          )),
-    ));
+                              controller: _horizontalScrollController,
+                              scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 8.0, bottom: 16.0),
+                                child: tabelaDados(),
+                              ))))))
+        ]),
+      )),
+    );
   }
 
   Widget tabelaDados() {

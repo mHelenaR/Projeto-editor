@@ -1,8 +1,11 @@
-import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
-import 'package:editorconfiguracao/tela_principal/barra_navegacao.dart';
+// Bibliotecas
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
+// Importar arquivos
+import 'package:editorconfiguracao/tela_principal/barra_navegacao.dart';
+import 'package:editorconfiguracao/tela_principal/app_bar.dart';
 
 class corpoProjeto extends StatefulWidget {
   const corpoProjeto({Key? key}) : super(key: key);
@@ -18,10 +21,7 @@ class _corpoProjetoState extends State<corpoProjeto> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             body: Container(
-          width: double.infinity,
-          child: Container(
-            child: navegacao(),
-          ),
+          child: navegacao(),
         )));
   }
 }
