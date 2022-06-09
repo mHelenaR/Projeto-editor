@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
 
 class navegacao extends StatelessWidget {
   const navegacao({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _barraContainerState extends State<barraContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.purple[50],
+      color: Colors.purple,
       child: Stack(children: [
         Container(
             width: double.infinity,
@@ -67,7 +68,9 @@ class _barraContainerState extends State<barraContainer> {
                                       Container(
                                         padding: const EdgeInsets.all(20),
                                         child: Image.asset(
-                                            "assets/images/${menuIcons[index]}.png"),
+                                          "assets/images/${menuIcons[index]}.png",
+                                          color: Colors.white,
+                                        ),
                                       ),
                                       Container(
                                         padding: const EdgeInsets.all(20),
@@ -89,10 +92,10 @@ class _barraContainerState extends State<barraContainer> {
             child: AnimatedContainer(
               duration: Duration(milliseconds: 200),
               transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
-              width: MediaQuery.of(context).size.width,
+              width: double.infinity,
               height: double.infinity,
               color: Colors.white,
-              child: Text('teste'),
+              child: ExploradorArquivos(),
             ))
       ]),
     );

@@ -18,9 +18,9 @@ class _corpoProjetoState extends State<corpoProjeto> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             body: Container(
-          color: Colors.white,
+          width: double.infinity,
           child: Container(
-            child: ExploradorArquivos(),
+            child: navegacao(),
           ),
         )));
   }
