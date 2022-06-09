@@ -20,8 +20,7 @@ class _corpoProjetoState extends State<corpoProjeto> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            body: Container(
-          child: navegacao(),
-        )));
+          body: barraContainer(),
+        ));
   }
 }

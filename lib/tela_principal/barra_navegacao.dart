@@ -9,17 +9,6 @@ import 'package:flutter/src/widgets/framework.dart';
 // importar arquivo
 import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
 
-class navegacao extends StatelessWidget {
-  const navegacao({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: barraContainer(),
-    );
-  }
-}
-
 class barraContainer extends StatefulWidget {
   const barraContainer({Key? key}) : super(key: key);
 
@@ -58,66 +47,59 @@ class _barraContainerState extends State<barraContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0XFF673AB7),
-      child: Stack(children: [
-        Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SizedBox(
-                  height: 80,
-                ),
-                Container(
-                  child: Text('titulo'),
-                ),
-                Container(
-                    child: Expanded(
-                        child: ListView.builder(
-                            itemCount: menuItens.length,
-                            itemBuilder: (context, index) => GestureDetector(
-                                onTap: () {
-                                  sidebarOpen = !sidebarOpen;
-                                  selectMenu = index;
-                                  setSidebarState();
-                                },
-                                child: ListMenu(
-                                  itemIcon: menuIcons[index],
-                                  itemText: menuItens[index],
-                                  selecao: selectMenu,
-                                  posicao: index,
-                                ))))),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Text('saida'),
-                ),
-              ],
-            )),
-        AnimatedContainer(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 5),
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(17.0),
-                bottomLeft: Radius.circular(17.0),
+        color: Color(0XFF673AB7),
+        child: Stack(children: [
+          Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: 80,
+                  ),
+                  Container(
+                    child: Text('titulo'),
+                  ),
+                  Container(
+                      child: Expanded(
+                          child: ListView.builder(
+                              itemCount: menuItens.length,
+                              itemBuilder: (context, index) => GestureDetector(
+                                  onTap: () {
+                                    sidebarOpen = !sidebarOpen;
+                                    selectMenu = index;
+                                    setSidebarState();
+                                  },
+                                  child: ListMenu(
+                                    itemIcon: menuIcons[index],
+                                    itemText: menuItens[index],
+                                    selecao: selectMenu,
+                                    posicao: index,
+                                  ))))),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: Text('saida'),
+                  ),
+                ],
               )),
-          duration: Duration(milliseconds: 200),
-          transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [
-              appBarra(),
-              SizedBox(
-                height: 100,
-              ),
-              ExploradorArquivos(),
-            ],
-          ),
-        )
-      ]),
-    );
+          Stack(children: [
+            AnimatedContainer(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 5),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(17.0),
+                    )),
+                duration: Duration(milliseconds: 200),
+                transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
+                width: double.infinity,
+                height: double.infinity,
+                child: Stack(
+                  children: [appBarra(), ExploradorArquivos()],
+                ))
+          ]),
+        ]));
   }
 }
 
