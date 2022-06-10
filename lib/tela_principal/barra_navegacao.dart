@@ -86,7 +86,7 @@ class _barraContainerState extends State<barraContainer> {
           Stack(children: [
             AnimatedContainer(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 5),
+                    border: Border.all(color: Colors.white, width: 1),
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(17.0),
