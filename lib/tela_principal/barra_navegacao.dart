@@ -1,6 +1,7 @@
 // bibliotecas
 import 'dart:ffi';
 
+import 'package:editorconfiguracao/abre%20arquivo/abreExplorador.dart';
 import 'package:editorconfiguracao/tela_principal/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -96,7 +97,11 @@ class _barraContainerState extends State<barraContainer> {
                 width: double.infinity,
                 height: double.infinity,
                 child: Stack(
-                  children: [appBarra(), ExploradorArquivos()],
+                  children: [
+                    appBarra(),
+                    pesquisaArquivo(),
+                    ExploradorArquivos()
+                  ],
                 ))
           ]),
         ]));

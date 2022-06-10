@@ -11,7 +11,6 @@ import 'package:file_picker/file_picker.dart';
 // importação arquivos
 import 'package:editorconfiguracao/main.dart';
 import 'package:editorconfiguracao/separa_arquivo/separador.dart';
-import 'package:editorconfiguracao/tela_principal/interface_inicial.dart';
 
 class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);

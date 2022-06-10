@@ -23,7 +23,7 @@ class _appBarraState extends State<appBarra> {
       elevation: 5,
       child: Container(
           alignment: Alignment.topLeft,
-          height: 65,
+          height: 70,
           width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
             color: Colors.white,
@@ -39,7 +39,7 @@ class _appBarraState extends State<appBarra> {
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      'Teste',
+                      'Editor de Configuração',
                       style: formatarTexto,
                     ),
                   ),
