@@ -4,7 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 // Importar arquivos
-import 'package:editorconfiguracao/tela_principal/barra_navegacao.dart';
+import 'package:editorconfiguracao/tela_principal/navBar_corpo.dart';
 import 'package:editorconfiguracao/tela_principal/app_bar.dart';
 
 class corpoProjeto extends StatefulWidget {

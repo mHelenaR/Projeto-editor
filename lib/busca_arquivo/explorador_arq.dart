@@ -83,46 +83,72 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-              child: Column(children: [
-            TextButton(onPressed: abreArquivo, child: Text('Abrir')),
-            ElevatedButton(
-              child: Text('Abrir'),
+    return Positioned(
+      top: 160,
+      left: 30,
+      right: 0,
+      bottom: 70,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Stack(children: [
+            SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 238, 238, 238),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(17.0),
+                        topRight: Radius.circular(17.0),
+                        bottomLeft: Radius.circular(17.0),
+                        bottomRight: Radius.circular(17.0),
+                      )),
+                  height: MediaQuery.of(context).size.height,
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      Container(
+                          color: Colors.blue,
+                          child: Column(children: [
+                            TextButton(
+                                onPressed: abreArquivo, child: Text('Abrir')),
+                            ElevatedButton(
+                              child: Text('Abrir'),
 
-              onPressed:
-                  _lerDados, // aqui ele recebe o arquivo e a conversao dele
-            ),
-          ])),
-          Container(
-            child: ElevatedButton(
-              child: Text('tabela'),
-              onPressed: _tabela,
-            ),
-          ),
-          Container(
-              height: 100,
-              child: AdaptiveScrollbar(
-                  controller: _verticalScrollController,
-                  child: AdaptiveScrollbar(
-                      controller: _horizontalScrollController,
-                      position: ScrollbarPosition.bottom,
-                      child: SingleChildScrollView(
-                          controller: _verticalScrollController,
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                              controller: _horizontalScrollController,
-                              scrollDirection: Axis.horizontal,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8.0, bottom: 16.0),
-                                child: tabelaDados(),
-                              ))))))
-        ]),
-      )),
+                              onPressed:
+                                  _lerDados, // aqui ele recebe o arquivo e a conversao dele
+                            ),
+                          ])),
+                      ElevatedButton(
+                        child: Text('tabela'),
+                        onPressed: _tabela,
+                      ),
+                      Container(
+                          // color: Colors.black,
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: AdaptiveScrollbar(
+                              controller: _verticalScrollController,
+                              child: AdaptiveScrollbar(
+                                  controller: _horizontalScrollController,
+                                  position: ScrollbarPosition.bottom,
+                                  child: SingleChildScrollView(
+                                      controller: _verticalScrollController,
+                                      scrollDirection: Axis.vertical,
+                                      child: SingleChildScrollView(
+                                        controller: _horizontalScrollController,
+                                        scrollDirection: Axis.horizontal,
+                                        child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: tabelaDados()),
+                                      )))))
+                    ]),
+                  ),
+                )),
+          ]),
+        ],
+      ),
     );
   }
 
