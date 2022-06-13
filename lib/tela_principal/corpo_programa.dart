@@ -1,4 +1,5 @@
 // Bibliotecas
+import 'package:editorconfiguracao/telas/configuracao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -20,7 +21,7 @@ class _corpoProjetoState extends State<corpoProjeto> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: barraContainer(),
+          body: telaConfiguracao(),
         ));
   }
 }

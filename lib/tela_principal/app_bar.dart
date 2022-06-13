@@ -24,7 +24,7 @@ class _appBarraState extends State<appBarra> {
       child: Container(
           alignment: Alignment.topLeft,
           height: 70,
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width * 0.9,
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
@@ -87,14 +87,13 @@ class BarraPesquisa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-        obscureText: true,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          labelText: 'Pesquisar',
-        ));
+      prefixIcon: Icon(Icons.search),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
+      labelText: 'Pesquisar',
+    ));
   }
 }
 
@@ -102,7 +101,24 @@ class botaoPesquisa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: new Text("teste"),
+                  content: new Text("cdsfvsev"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: new Text("Fechar"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              });
+        },
         child: Text("Pesquisar"),
         style: ElevatedButton.styleFrom(
           primary: Color(0XFF673AB7),

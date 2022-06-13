@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:editorconfiguracao/abre%20arquivo/abreExplorador.dart';
 import 'package:editorconfiguracao/tela_principal/app_bar.dart';
+import 'package:editorconfiguracao/telas/configuracao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -45,70 +46,114 @@ class _barraContainerState extends State<barraContainer> {
 
   final _estiloTexto = const TextStyle(color: Colors.white);
 
+  String pageTitle = "Pagina Inicial";
+
+  void setPageTitle() {
+    switch (selectMenu) {
+      case 0:
+        pageTitle = "Pagina Inicial";
+        break;
+      case 1:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => telaConfiguracao()));
+        break;
+      case 2:
+        pageTitle = "Comparar";
+        break;
+      case 3:
+        pageTitle = "Configuração";
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color(0XFF673AB7),
-        child: Stack(children: [
+      color: Color(0XFF673AB7),
+      child: Stack(
+        children: [
           Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  SizedBox(
-                    height: 80,
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(
+                  height: 80,
+                ),
+                Container(
+                  child: Text('titulo'),
+                ),
+                Container(
+                  child: Expanded(
+                    child: ListView.builder(
+                      itemCount: menuItens.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          sidebarOpen = true;
+                          selectMenu = index;
+                          setSidebarState();
+                          setPageTitle();
+                        },
+                        child: ListMenu(
+                          itemIcon: menuIcons[index],
+                          itemText: menuItens[index],
+                          selecao: selectMenu,
+                          posicao: index,
+                        ),
+                      ),
+                    ),
                   ),
-                  Container(
-                    child: Text('titulo'),
-                  ),
-                  Container(
-                      child: Expanded(
-                          child: ListView.builder(
-                              itemCount: menuItens.length,
-                              itemBuilder: (context, index) => GestureDetector(
-                                  onTap: () {
-                                    sidebarOpen = !sidebarOpen;
-                                    selectMenu = index;
-                                    setSidebarState();
-                                  },
-                                  child: ListMenu(
-                                    itemIcon: menuIcons[index],
-                                    itemText: menuItens[index],
-                                    selecao: selectMenu,
-                                    posicao: index,
-                                  ))))),
-                  Container(
+                ),
+                Container(
+                  child: GestureDetector(
+                    onTap: () {
+                      if (sidebarOpen == false) {
+                        sidebarOpen = true;
+                        setSidebarState();
+                      } else if (sidebarOpen == true) {
+                        sidebarOpen = false;
+                        setSidebarState();
+                      }
+                    },
                     child: ListMenu(
-                      itemIcon: "assets/images/icon_setaPreta.png",
-                      itemText: "",
+                      itemIcon: "icon_setaPreta",
+                      itemText: "Fechar Menu",
                       selecao: selectMenu,
                       posicao: menuItens.length + 1,
                     ),
                   ),
-                ],
-              )),
-          Stack(children: [
-            AnimatedContainer(
+                )
+              ],
+            ),
+          ),
+          Stack(
+            children: [
+              AnimatedContainer(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 1),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(17.0),
-                    )),
+                  border: Border.all(color: Colors.white, width: 1),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(17.0),
+                  ),
+                ),
                 duration: Duration(milliseconds: 200),
                 transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
                 width: double.infinity,
                 height: double.infinity,
                 child: Stack(
                   children: [
-                    appBarra(),
+                    /*appBarra(),
                     pesquisaArquivo(),
-                    ExploradorArquivos()
+                    ExploradorArquivos(),*/
                   ],
-                ))
-          ]),
-        ]));
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -141,7 +186,7 @@ class ListMenu extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             child: Text(
               itemText,
               style: _estiloTexto,
