@@ -105,7 +105,6 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
                         bottomLeft: Radius.circular(17.0),
                         bottomRight: Radius.circular(17.0),
                       )),
-                  height: MediaQuery.of(context).size.height,
                   child: SingleChildScrollView(
                     child: Column(children: [
                       Container(
@@ -125,7 +124,7 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
                         onPressed: _tabela,
                       ),
                       Container(
-                          // color: Colors.black,
+                          color: Colors.amber,
                           height: MediaQuery.of(context).size.height * 0.8,
                           child: AdaptiveScrollbar(
                               controller: _verticalScrollController,

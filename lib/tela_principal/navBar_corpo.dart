@@ -79,8 +79,12 @@ class _barraContainerState extends State<barraContainer> {
                                     posicao: index,
                                   ))))),
                   Container(
-                    padding: const EdgeInsets.all(20),
-                    child: Text('saida'),
+                    child: ListMenu(
+                      itemIcon: "assets/images/icon_setaPreta.png",
+                      itemText: "",
+                      selecao: selectMenu,
+                      posicao: menuItens.length + 1,
+                    ),
                   ),
                 ],
               )),
