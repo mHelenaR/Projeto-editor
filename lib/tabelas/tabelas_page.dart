@@ -29,17 +29,22 @@ class _TablePagesState extends State<TablePages> {
               extendedTheme: StyleExpandeSideBar,
               footerDivider: divider,
               items: [
+                SidebarXItem(
+                  iconWidget: Image.asset("assets/images/icon_setaEsquerda.png",
+                      color: Colors.white),
+                  label: "Voltar",
+                ),
                 for (final teste in menuTabelas) ...{
                   SidebarXItem(
-                      iconWidget: Image.asset(
-                          "assets/images/icon_prancheta.png",
-                          color: Colors.white),
-                      label: teste,
-                      onTap: () {
-                        Container(
-                          child: Text("Teste"),
-                        );
-                      }),
+                    iconWidget: Image.asset("assets/images/icon_prancheta.png",
+                        color: Colors.white),
+                    label: teste,
+                    onTap: () {
+                      Container(
+                        child: Text("Teste"),
+                      );
+                    },
+                  ),
                 },
               ],
             ),
