@@ -10,7 +10,7 @@ import 'package:file_picker/file_picker.dart';
 
 // importação arquivos
 import 'package:editorconfiguracao/main.dart';
-import 'package:editorconfiguracao/separa_arquivo/separador.dart';
+import 'package:editorconfiguracao/tabelas/tabelas_page.dart';
 
 class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);
@@ -124,7 +124,6 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
                         onPressed: _tabela,
                       ),
                       Container(
-                          color: Colors.amber,
                           height: MediaQuery.of(context).size.height * 0.8,
                           child: AdaptiveScrollbar(
                               controller: _verticalScrollController,

@@ -4,5 +4,5 @@ import 'package:editorconfiguracao/tela_principal/corpo_programa.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(corpoProjeto());
+  runApp(const corpoProjeto());
 }

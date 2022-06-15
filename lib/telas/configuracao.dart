@@ -1,6 +1,11 @@
+import 'package:editorconfiguracao/Cores_Projeto/StyleSideBar.dart';
+import 'package:editorconfiguracao/Cores_Projeto/cores.dart';
 import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/tabelas/tabelas_page.dart';
 import 'package:editorconfiguracao/tela_principal/Home_Page.dart';
 import 'package:editorconfiguracao/tela_principal/app_bar.dart';
+
+import 'package:editorconfiguracao/tela_principal/corpo_programa.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -21,38 +26,13 @@ class _telaConfiguracaoState extends State<telaConfiguracao> {
           children: [
             SidebarX(
               controller: _controller,
-              theme: SidebarXTheme(
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: canvaCores,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                textStyle: const TextStyle(color: Colors.white),
-                selectedTextStyle: const TextStyle(color: Colors.white),
-                itemTextPadding: const EdgeInsets.only(left: 30),
-                selectedItemTextPadding: const EdgeInsets.only(left: 30),
-                iconTheme: const IconThemeData(
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-
+              theme: StyleSideBar,
               // expande a barra
-
-              extendedTheme: const SidebarXTheme(
-                width: 200,
-                decoration: BoxDecoration(
-                  color: canvaCores,
-                ),
-                margin: EdgeInsets.only(right: 10),
-              ),
-
+              extendedTheme: StyleExpandeSideBar,
               // linha de divisa
 
               footerDivider: divider,
-
               //texto lista do cabeçalho
-
               headerBuilder: (context, extended) {
                 return SizedBox(
                   height: 100,
@@ -77,6 +57,10 @@ class _telaConfiguracaoState extends State<telaConfiguracao> {
                   iconWidget: Image.asset("assets/images/icon_prancheta.png",
                       color: Colors.white),
                   label: "Tabelas",
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => TablePages()));
+                  },
                 ),
                 SidebarXItem(
                   iconWidget: Image.asset("assets/images/icon_nuvem.png",
@@ -86,7 +70,7 @@ class _telaConfiguracaoState extends State<telaConfiguracao> {
                 SidebarXItem(
                   iconWidget: Image.asset("assets/images/icon_configuracao.png",
                       color: Colors.white),
-                  label: "Tabelas",
+                  label: "Configuração",
                 ),
               ],
             ),
@@ -118,25 +102,15 @@ class _ScreensExample extends StatelessWidget {
       builder: (context, child) {
         switch (controller.selectedIndex) {
           case 0:
-            return Stack(alignment: Alignment.topLeft, children: [
-              paginaInicial(),
-            ]);
+            return Home_Page();
 
-          case 1:
-            return Text(
-              'Em Construção / tabelas',
-              style: theme.textTheme.headline5,
-            );
           case 2:
             return Text(
-              'Em Construção / banco',
+              'Teste',
               style: theme.textTheme.headline5,
             );
           case 3:
-            return Text(
-              'Em Construção / configuração',
-              style: theme.textTheme.headline5,
-            );
+            return ExploradorArquivos();
 
           case 4:
             return Text(
@@ -145,7 +119,7 @@ class _ScreensExample extends StatelessWidget {
             );
           default:
             return Text(
-              'ERROR 404',
+              '',
               style: theme.textTheme.headline5,
             );
         }
@@ -154,14 +128,10 @@ class _ScreensExample extends StatelessWidget {
   }
 }
 
-const primaryColor = Color(0xFF685BFF);
-const canvaCores = Color(0XFF673AB7);
-const scaffoldBackgroundColor = Color(0xFF464667);
-const accentCanvasColor = Color(0xFF3E3E61);
-const white = Colors.white;
-final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
-const formatarTexto = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    color: Color.fromARGB(255, 255, 255, 255));
-final divider = Divider(color: Colors.white.withOpacity(0.3), height: 1);
+class Home_Page extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.topCenter, child: const PaginaInicial());
+  }
+}
