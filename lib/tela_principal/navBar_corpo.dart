@@ -69,7 +69,7 @@ class _barraContainerState extends State<barraContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0XFF673AB7),
+      color: const Color(0XFF673AB7),
       child: Stack(
         children: [
           Container(
@@ -78,11 +78,11 @@ class _barraContainerState extends State<barraContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 80,
                 ),
                 Container(
-                  child: Text('titulo'),
+                  child: const Text('titulo'),
                 ),
                 Container(
                   child: Expanded(
@@ -133,19 +133,19 @@ class _barraContainerState extends State<barraContainer> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 1),
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(17.0),
                   ),
                 ),
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 transform: Matrix4.translationValues(xOffset, yOffset, 1.0),
                 width: double.infinity,
                 height: double.infinity,
                 child: Stack(
-                  children: [
-                    /*appBarra(),
+                  children: const [
+                    appBarra(),
                     pesquisaArquivo(),
-                    ExploradorArquivos(),*/
+                    ExploradorArquivos(),
                   ],
                 ),
               ),
@@ -175,7 +175,9 @@ class ListMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: selecao == posicao ? Color(0xFF532F99) : Color(0XFF673AB7),
+      color: selecao == posicao
+          ? const Color(0xFF532F99)
+          : const Color(0XFF673AB7),
       child: Row(
         children: [
           Container(

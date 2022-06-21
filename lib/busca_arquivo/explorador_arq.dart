@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:editorconfiguracao/tela_principal/app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:file_picker/file_picker.dart';
@@ -76,6 +77,12 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
       }
     }
   }
+
+  List get n {
+    return estacao;
+  }
+
+  //final List<String> testando =  _estac;
 
 // scrollbar bidimencional
   final _verticalScrollController = ScrollController();
