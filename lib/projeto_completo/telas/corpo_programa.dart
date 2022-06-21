@@ -1,13 +1,13 @@
 // Bibliotecas
 
-import 'package:editorconfiguracao/componentes_telas/sidebarX.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/sidebarX.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 // Importar arquivos
-import 'package:editorconfiguracao/componentes_telas/navBar_corpo.dart';
-import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/navBar_corpo.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 
 class corpoProjeto extends StatefulWidget {
   const corpoProjeto({Key? key}) : super(key: key);
