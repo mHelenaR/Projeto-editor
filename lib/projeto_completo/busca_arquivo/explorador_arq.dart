@@ -48,9 +48,9 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
 
 // lê e decodifica o texto do arquivo;
   Future<void> _lerDados() async {
-    final _meuArquivo = File(_recebeCaminho);
+    final File _meuArquivo = File(_recebeCaminho);
     final _dadosArquivo = await File(_recebeCaminho)
-        .readAsStringSync(encoding: Latin1Codec(allowInvalid: true));
+        .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
 // variavel conteudo recebendo o texto decodificado
     setState(
@@ -130,21 +130,23 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
                           child: Column(
                             children: [
                               TextButton(
-                                  onPressed: abreArquivo, child: Text('Abrir')),
+                                onPressed: abreArquivo,
+                                child: const Text('Abrir'),
+                              ),
                               ElevatedButton(
-                                child: Text('Abrir'),
-
-                                onPressed:
-                                    _lerDados, // aqui ele recebe o arquivo e a conversao dele
+                                onPressed: _lerDados,
+                                child: const Text(
+                                  'Abrir',
+                                ), // aqui ele recebe o arquivo e a conversao dele
                               ),
                             ],
                           ),
                         ),
                         ElevatedButton(
-                          child: Text('tabela'),
                           onPressed: _tabela,
+                          child: const Text('tabela'),
                         ),
-                        Container(
+                        SizedBox(
                           height: MediaQuery.of(context).size.height * 0.8,
                           child: AdaptiveScrollbar(
                             controller: _verticalScrollController,
@@ -158,9 +160,9 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
                                   controller: _horizontalScrollController,
                                   scrollDirection: Axis.horizontal,
                                   child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: tabelaDados()),
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: tabelaDados(),
+                                  ),
                                 ),
                               ),
                             ),
@@ -186,14 +188,14 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
           for (final nov in _array) ...{
             DataColumn(
               label: Text(
-                '${nov}',
+                '$nov',
               ),
             ),
           }
         } else ...{
           DataColumn(
             label: Text(
-              '${_array}',
+              '$_array',
             ),
           ),
         }
@@ -203,14 +205,14 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
           DataRow(
             cells: [
               for (final teste in _estac) ...{
-                DataCell(Text('${teste}')),
+                DataCell(Text('$teste')),
               }
             ],
           ),
         } else ...{
           DataRow(
             cells: [
-              DataCell(Text('${_estac}')),
+              DataCell(Text('$_estac')),
             ],
           ),
         },

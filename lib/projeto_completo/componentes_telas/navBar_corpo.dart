@@ -141,7 +141,7 @@ class _barraContainerState extends State<barraContainer> {
                 height: double.infinity,
                 child: Stack(
                   children: const [
-                    appBarra(),
+                    AppBarra(),
                     pesquisaArquivo(),
                     ExploradorArquivos(),
                   ],

@@ -2,7 +2,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.d
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
-import 'package:editorconfiguracao/projeto_completo/telas/Home_Page.dart';
+import 'package:editorconfiguracao/projeto_completo/telas/home_page.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 
 import 'package:editorconfiguracao/projeto_completo/telas/corpo_programa.dart';
@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class SideBarExpansivel extends StatefulWidget {
+  const SideBarExpansivel({Key? key}) : super(key: key);
+
   @override
   _SideBarExpansivelState createState() => _SideBarExpansivelState();
 }
@@ -102,7 +104,7 @@ class _ScreensExample extends StatelessWidget {
       builder: (context, child) {
         switch (controller.selectedIndex) {
           case 0:
-            return Home_Page();
+            return const HomePage();
 
           case 2:
             return Text(
@@ -131,7 +133,9 @@ class _ScreensExample extends StatelessWidget {
   }
 }
 
-class Home_Page extends StatelessWidget {
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(

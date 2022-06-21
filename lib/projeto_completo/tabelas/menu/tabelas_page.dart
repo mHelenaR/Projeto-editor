@@ -1,5 +1,6 @@
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/tabela_completa.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:get/get.dart';
@@ -51,10 +52,12 @@ class _TableMenuState extends State<TableMenu> {
               ],
             ),
             Expanded(
-              child: Center(
-                child: _CorpoTabelas(
-                  controleTela: _controller,
-                ),
+              child: Column(
+                children: [
+                  _CorpoTabelas(
+                    controleTela: _controller,
+                  ),
+                ],
               ),
             ),
           ],
@@ -76,7 +79,7 @@ class _CorpoTabelas extends StatelessWidget {
       builder: (context, child) {
         //for (int i = 0; i < v; i++) {
         if (controleTela.selectedIndex != 0) {
-          return const Text("data");
+          return const TelaTabelas();
         }
         //}
         return Container();

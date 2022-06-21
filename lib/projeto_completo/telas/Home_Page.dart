@@ -8,13 +8,13 @@ class PaginaInicial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           height: 60,
           child: AppBar(
             backgroundColor: white,
             actions: [
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Expanded(

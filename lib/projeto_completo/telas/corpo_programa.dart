@@ -9,17 +9,17 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/navBar_corpo.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 
-class corpoProjeto extends StatefulWidget {
-  const corpoProjeto({Key? key}) : super(key: key);
+class CorpoProjeto extends StatefulWidget {
+  const CorpoProjeto({Key? key}) : super(key: key);
 
   @override
-  State<corpoProjeto> createState() => _corpoProjetoState();
+  State<CorpoProjeto> createState() => _CorpoProjetoState();
 }
 
-class _corpoProjetoState extends State<corpoProjeto> {
+class _CorpoProjetoState extends State<CorpoProjeto> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SideBarExpansivel(),

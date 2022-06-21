@@ -1,23 +1,53 @@
-import 'dart:io';
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-class appBarra extends StatefulWidget {
-  const appBarra({Key? key}) : super(key: key);
+class AppBarra extends StatefulWidget {
+  const AppBarra({Key? key}) : super(key: key);
 
   @override
-  State<appBarra> createState() => _appBarraState();
+  State<AppBarra> createState() => _AppBarraState();
 }
 
-class _appBarraState extends State<appBarra> {
-  final formatarTexto = const TextStyle(
-      fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
-
+class _AppBarraState extends State<AppBarra> {
   @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 70,
+      child: AppBar(
+        backgroundColor: white,
+        actions: [
+          const SizedBox(
+            width: 20,
+          ),
+          Flexible(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                "Editor de Configuração",
+                style: fontePreta,
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              alignment: Alignment.center,
+              child: const SizedBox(
+                height: 40,
+                child: BarraPesquisa(),
+              ),
+            ),
+          ),
+          Flexible(
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: BotaoPesquisa(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  /* @override
   Widget build(BuildContext context) {
     return Material(
       elevation: 5,
@@ -38,9 +68,9 @@ class _appBarraState extends State<appBarra> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   alignment: Alignment.topLeft,
                   padding: const EdgeInsets.all(20),
-                  child: Text(
+                  child: const Text(
                     'Editor de Configuração',
-                    style: formatarTexto,
+                    style: fontePreta,
                   ),
                 ),
                 Container(
@@ -50,16 +80,20 @@ class _appBarraState extends State<appBarra> {
                       height: 36,
                       width: 500,
                       child: Stack(
-                        children: [
+                        children: const [
                           SizedBox(
                             width: 400,
                             child: BarraPesquisa(),
                           ),
-                          Positioned(top: 4.5, right: 0, child: botaoPesquisa())
+                          Positioned(
+                            top: 4.5,
+                            right: 0,
+                            child: BotaoPesquisa(),
+                          )
                         ],
                       )),
                 ),
-                Positioned(
+                /* Positioned(
                   top: 5,
                   right: 1,
                   child: ClipOval(
@@ -75,58 +109,65 @@ class _appBarraState extends State<appBarra> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ],
         ),
       ),
     );
-  }
+  }*/
 }
 
 class BarraPesquisa extends StatelessWidget {
+  const BarraPesquisa({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return TextField(
-        decoration: InputDecoration(
-      prefixIcon: const Icon(Icons.search),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(50),
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.search),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        labelText: 'Pesquisar',
       ),
-      labelText: 'Pesquisar',
-    ));
+    );
   }
 }
 
-class botaoPesquisa extends StatelessWidget {
+class BotaoPesquisa extends StatelessWidget {
+  const BotaoPesquisa({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: new Text("teste"),
-                  content: new Text("cdsfvsev"),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: new Text("Fechar"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              });
-        },
-        child: Text("Pesquisar"),
-        style: ElevatedButton.styleFrom(
-          primary: const Color(0XFF673AB7),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ));
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("teste"),
+              content: const Text("cdsfvsev"),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("Fechar"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        primary: const Color(0XFF673AB7),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+      child: const Text("Pesquisar"),
+    );
   }
 }

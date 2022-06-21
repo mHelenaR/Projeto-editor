@@ -16,3 +16,6 @@ const coresTexto = TextStyle(color: Colors.white);
 const formtLeft30 = EdgeInsets.only(left: 30);
 
 final divider = Divider(color: Colors.white.withOpacity(0.3), height: 1);
+
+const fontePreta =
+    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
