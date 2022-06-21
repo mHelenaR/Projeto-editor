@@ -1,4 +1,4 @@
-import 'package:editorconfiguracao/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 

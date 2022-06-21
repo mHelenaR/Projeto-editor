@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 //Paginas
-import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
 
 class pesquisaArquivo extends StatelessWidget {
   const pesquisaArquivo({Key? key}) : super(key: key);

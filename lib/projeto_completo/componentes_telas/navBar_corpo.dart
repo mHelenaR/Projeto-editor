@@ -1,15 +1,15 @@
 // bibliotecas
 import 'dart:ffi';
 
-import 'package:editorconfiguracao/abre%20arquivo/abreExplorador.dart';
-import 'package:editorconfiguracao/componentes_telas/sidebarX.dart';
-import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/sidebarX.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 // importar arquivo
-import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
 
 class barraContainer extends StatefulWidget {
   const barraContainer({Key? key}) : super(key: key);

@@ -1,9 +1,9 @@
-import 'package:editorconfiguracao/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:get/get.dart';
-import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
 
 class TableMenu extends StatefulWidget {
   TableMenu({Key? key}) : super(key: key);

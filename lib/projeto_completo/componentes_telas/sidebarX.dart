@@ -1,11 +1,11 @@
-import 'package:editorconfiguracao/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/style_project/cores.dart';
-import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
-import 'package:editorconfiguracao/tabelas/menu/tabelas_page.dart';
-import 'package:editorconfiguracao/telas/Home_Page.dart';
-import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
+import 'package:editorconfiguracao/projeto_completo/telas/Home_Page.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 
-import 'package:editorconfiguracao/telas/corpo_programa.dart';
+import 'package:editorconfiguracao/projeto_completo/telas/corpo_programa.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 

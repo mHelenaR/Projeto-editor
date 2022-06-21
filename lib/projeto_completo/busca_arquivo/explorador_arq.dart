@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
-import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
@@ -11,7 +11,7 @@ import 'package:file_picker/file_picker.dart';
 
 // importação arquivos
 import 'package:editorconfiguracao/main.dart';
-import 'package:editorconfiguracao/tabelas/menu/tabelas_page.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
 
 class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);
