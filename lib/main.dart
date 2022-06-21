@@ -1,5 +1,5 @@
 // páginas
-import 'package:editorconfiguracao/tela_principal/corpo_programa.dart';
+import 'package:editorconfiguracao/telas/corpo_programa.dart';
 // funções
 import 'package:flutter/material.dart';
 

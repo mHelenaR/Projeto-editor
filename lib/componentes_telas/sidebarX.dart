@@ -1,20 +1,20 @@
-import 'package:editorconfiguracao/Cores_Projeto/StyleSideBar.dart';
-import 'package:editorconfiguracao/Cores_Projeto/cores.dart';
+import 'package:editorconfiguracao/style_project/StyleSideBar.dart';
+import 'package:editorconfiguracao/style_project/cores.dart';
 import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
-import 'package:editorconfiguracao/tabelas/tabelas_page.dart';
-import 'package:editorconfiguracao/tela_principal/Home_Page.dart';
-import 'package:editorconfiguracao/tela_principal/app_bar.dart';
+import 'package:editorconfiguracao/tabelas/menu/tabelas_page.dart';
+import 'package:editorconfiguracao/telas/Home_Page.dart';
+import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
 
-import 'package:editorconfiguracao/tela_principal/corpo_programa.dart';
+import 'package:editorconfiguracao/telas/corpo_programa.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-class telaConfiguracao extends StatefulWidget {
+class SideBarExpansivel extends StatefulWidget {
   @override
-  _telaConfiguracaoState createState() => _telaConfiguracaoState();
+  _SideBarExpansivelState createState() => _SideBarExpansivelState();
 }
 
-class _telaConfiguracaoState extends State<telaConfiguracao> {
+class _SideBarExpansivelState extends State<SideBarExpansivel> {
   final _controller = SidebarXController(selectedIndex: 0);
 
   @override
@@ -59,7 +59,7 @@ class _telaConfiguracaoState extends State<telaConfiguracao> {
                   label: "Tabelas",
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => TablePages()));
+                        MaterialPageRoute(builder: (context) => TableMenu()));
                   },
                 ),
                 SidebarXItem(
@@ -110,7 +110,10 @@ class _ScreensExample extends StatelessWidget {
               style: theme.textTheme.headline5,
             );
           case 3:
-            return ExploradorArquivos();
+            return Text(
+              'Teste',
+              style: theme.textTheme.headline5,
+            );
 
           case 4:
             return Text(

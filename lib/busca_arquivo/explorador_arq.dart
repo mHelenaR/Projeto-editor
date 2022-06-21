@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
-import 'package:editorconfiguracao/tela_principal/app_bar.dart';
+import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
@@ -11,7 +11,7 @@ import 'package:file_picker/file_picker.dart';
 
 // importação arquivos
 import 'package:editorconfiguracao/main.dart';
-import 'package:editorconfiguracao/tabelas/tabelas_page.dart';
+import 'package:editorconfiguracao/tabelas/menu/tabelas_page.dart';
 
 class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);
@@ -38,10 +38,12 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
     } else {
       // validar um erro
     }
-    setState(() {
-      _recebeCaminho =
-          caminhoArquivo!; // espera a variavel ser inicializada para receber valor
-    });
+    setState(
+      () {
+        _recebeCaminho =
+            caminhoArquivo!; // espera a variavel ser inicializada para receber valor
+      },
+    );
   }
 
 // lê e decodifica o texto do arquivo;
@@ -51,9 +53,11 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
         .readAsStringSync(encoding: Latin1Codec(allowInvalid: true));
 
 // variavel conteudo recebendo o texto decodificado
-    setState(() {
-      _conteudo = _dadosArquivo;
-    });
+    setState(
+      () {
+        _conteudo = _dadosArquivo;
+      },
+    );
   }
 
   Future<void> _tabela() async {
@@ -65,15 +69,19 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
       //var nome = _teste[cont].substring(0, 3);
       if (_teste[i++].substring(0, 3) == 'TIT') {
         List<String> strarray = _teste[cont].split('|');
-        setState(() {
-          _array = strarray;
-        });
+        setState(
+          () {
+            _array = strarray;
+          },
+        );
       } else if (_teste[i++].substring(0, 3) == 'CPO') {
         List<String> estacao = _teste[cont].split('^');
 
-        setState(() {
-          _estac = estacao;
-        });
+        setState(
+          () {
+            _estac = estacao;
+          },
+        );
       }
     }
   }
@@ -99,91 +107,114 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Stack(children: [
-            SizedBox(
+          Stack(
+            children: [
+              SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: Container(
                   decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 238, 238, 238),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(17.0),
-                        topRight: Radius.circular(17.0),
-                        bottomLeft: Radius.circular(17.0),
-                        bottomRight: Radius.circular(17.0),
-                      )),
+                    color: Color.fromARGB(255, 238, 238, 238),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(17.0),
+                      topRight: Radius.circular(17.0),
+                      bottomLeft: Radius.circular(17.0),
+                      bottomRight: Radius.circular(17.0),
+                    ),
+                  ),
                   child: SingleChildScrollView(
-                    child: Column(children: [
-                      Container(
+                    child: Column(
+                      children: [
+                        Container(
                           color: Colors.blue,
-                          child: Column(children: [
-                            TextButton(
-                                onPressed: abreArquivo, child: Text('Abrir')),
-                            ElevatedButton(
-                              child: Text('Abrir'),
+                          child: Column(
+                            children: [
+                              TextButton(
+                                  onPressed: abreArquivo, child: Text('Abrir')),
+                              ElevatedButton(
+                                child: Text('Abrir'),
 
-                              onPressed:
-                                  _lerDados, // aqui ele recebe o arquivo e a conversao dele
-                            ),
-                          ])),
-                      ElevatedButton(
-                        child: Text('tabela'),
-                        onPressed: _tabela,
-                      ),
-                      Container(
+                                onPressed:
+                                    _lerDados, // aqui ele recebe o arquivo e a conversao dele
+                              ),
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                          child: Text('tabela'),
+                          onPressed: _tabela,
+                        ),
+                        Container(
                           height: MediaQuery.of(context).size.height * 0.8,
                           child: AdaptiveScrollbar(
-                              controller: _verticalScrollController,
-                              child: AdaptiveScrollbar(
+                            controller: _verticalScrollController,
+                            child: AdaptiveScrollbar(
+                              controller: _horizontalScrollController,
+                              position: ScrollbarPosition.bottom,
+                              child: SingleChildScrollView(
+                                controller: _verticalScrollController,
+                                scrollDirection: Axis.vertical,
+                                child: SingleChildScrollView(
                                   controller: _horizontalScrollController,
-                                  position: ScrollbarPosition.bottom,
-                                  child: SingleChildScrollView(
-                                      controller: _verticalScrollController,
-                                      scrollDirection: Axis.vertical,
-                                      child: SingleChildScrollView(
-                                        controller: _horizontalScrollController,
-                                        scrollDirection: Axis.horizontal,
-                                        child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: tabelaDados()),
-                                      )))))
-                    ]),
+                                  scrollDirection: Axis.horizontal,
+                                  child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: tabelaDados()),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )),
-          ]),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
   Widget tabelaDados() {
-    return DataTable(showCheckboxColumn: true, columns: [
-      if (_array != null) ...{
-        for (final nov in _array) ...{
-          DataColumn(
+    return DataTable(
+      showCheckboxColumn: true,
+      columns: [
+        if (_array != null) ...{
+          for (final nov in _array) ...{
+            DataColumn(
               label: Text(
-            '${nov}',
-          )),
-        }
-      } else ...{
-        DataColumn(
-            label: Text(
-          '${_array}',
-        )),
-      }
-    ], rows: [
-      if (_estac != null) ...{
-        DataRow(cells: [
-          for (final teste in _estac) ...{
-            DataCell(Text('${teste}')),
+                '${nov}',
+              ),
+            ),
           }
-        ]),
-      } else ...{
-        DataRow(cells: [
-          DataCell(Text('${_estac}')),
-        ]),
-      }
-    ]);
+        } else ...{
+          DataColumn(
+            label: Text(
+              '${_array}',
+            ),
+          ),
+        }
+      ],
+      rows: [
+        if (_estac != null) ...{
+          DataRow(
+            cells: [
+              for (final teste in _estac) ...{
+                DataCell(Text('${teste}')),
+              }
+            ],
+          ),
+        } else ...{
+          DataRow(
+            cells: [
+              DataCell(Text('${_estac}')),
+            ],
+          ),
+        },
+      ],
+    );
   }
 }

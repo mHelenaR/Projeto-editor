@@ -1,24 +1,23 @@
-import 'package:editorconfiguracao/Cores_Projeto/StyleSideBar.dart';
-import 'package:editorconfiguracao/Cores_Projeto/cores.dart';
+import 'package:editorconfiguracao/style_project/StyleSideBar.dart';
+import 'package:editorconfiguracao/style_project/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:get/get.dart';
 import 'package:editorconfiguracao/busca_arquivo/explorador_arq.dart';
 
-class TablePages extends StatefulWidget {
-  TablePages({Key? key}) : super(key: key);
+class TableMenu extends StatefulWidget {
+  TableMenu({Key? key}) : super(key: key);
 
   @override
-  State<TablePages> createState() => _TablePagesState();
+  State<TableMenu> createState() => _TableMenuState();
 }
 
-class _TablePagesState extends State<TablePages> {
+class _TableMenuState extends State<TableMenu> {
   final _controller = SidebarXController(selectedIndex: 0);
 
   final List<String> menuTabelas = ["LISTA", "UNIDADE", "ESTAÇÃO"];
   final List<String> menuIconTabela = ["icon_prancheta"];
-  var _teste;
-  get MenuIte => menuTabelas;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,11 +41,11 @@ class _TablePagesState extends State<TablePages> {
                     Navigator.pop(context);
                   },
                 ),
-                for (final teste in menuTabelas) ...{
+                for (final nomeTabela in menuTabelas) ...{
                   SidebarXItem(
                     iconWidget: Image.asset("assets/images/icon_prancheta.png",
                         color: Colors.white),
-                    label: teste,
+                    label: nomeTabela,
                   ),
                 },
               ],
@@ -72,16 +71,14 @@ class _CorpoTabelas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var v = 2;
-    final theme = Theme.of(context);
     return AnimatedBuilder(
       animation: controleTela,
       builder: (context, child) {
-        for (int i = 0; i < v; i++) {
-          if (controleTela.selectedIndex != 0) {
-            return ExploradorArquivos();
-          }
+        //for (int i = 0; i < v; i++) {
+        if (controleTela.selectedIndex != 0) {
+          return const Text("data");
         }
+        //}
         return Container();
         /*switch (controleTela.selectedIndex) {
           case 1:

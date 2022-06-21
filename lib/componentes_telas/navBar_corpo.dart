@@ -2,8 +2,8 @@
 import 'dart:ffi';
 
 import 'package:editorconfiguracao/abre%20arquivo/abreExplorador.dart';
-import 'package:editorconfiguracao/tela_principal/app_bar.dart';
-import 'package:editorconfiguracao/telas/configuracao.dart';
+import 'package:editorconfiguracao/componentes_telas/sidebarX.dart';
+import 'package:editorconfiguracao/componentes_telas/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -44,8 +44,6 @@ class _barraContainerState extends State<barraContainer> {
     });
   }
 
-  final _estiloTexto = const TextStyle(color: Colors.white);
-
   String pageTitle = "Pagina Inicial";
 
   void setPageTitle() {
@@ -55,7 +53,7 @@ class _barraContainerState extends State<barraContainer> {
         break;
       case 1:
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => telaConfiguracao()));
+            MaterialPageRoute(builder: (context) => SideBarExpansivel()));
         break;
       case 2:
         pageTitle = "Comparar";
