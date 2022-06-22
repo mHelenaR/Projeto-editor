@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class PesquisaArquivo extends StatelessWidget {
   const PesquisaArquivo({Key? key}) : super(key: key);
@@ -17,7 +22,7 @@ class PesquisaArquivo extends StatelessWidget {
             width: 300,
             child: const DiretorioArquivo(),
           ),
-          const BotaoArquivo(),
+          BotaoArquivo(),
         ],
       ),
     );
@@ -40,13 +45,40 @@ class DiretorioArquivo extends StatelessWidget {
   }
 }
 
-class BotaoArquivo extends StatelessWidget {
-  const BotaoArquivo({Key? key}) : super(key: key);
+class BotaoArquivo extends StatefulWidget {
+  BotaoArquivo({Key? key}) : super(key: key);
+
+  @override
+  State<BotaoArquivo> createState() => _BotaoArquivoState();
+}
+
+class _BotaoArquivoState extends State<BotaoArquivo> {
+  var _recebeCaminho, _conteudo;
+
+  Future<void> abreArquivo() async {
+    String? caminhoArquivo = r'/storage/';
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      caminhoArquivo = result.files.single.path;
+    }
+
+    _recebeCaminho = caminhoArquivo!;
+
+    final _dadosArquivo = await File(_recebeCaminho)
+        .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+
+    setState(() {
+      _conteudo = _dadosArquivo;
+
+      print(_conteudo);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () {},
+        onPressed: abreArquivo,
         child: const Text("Procurar"),
         style: ElevatedButton.styleFrom(
           primary: const Color(0XFF673AB7),

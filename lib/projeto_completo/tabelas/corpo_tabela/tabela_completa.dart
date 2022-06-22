@@ -23,6 +23,7 @@ class _TelaTabelasState extends State<TelaTabelas> {
           alignment: Alignment.centerLeft,
           child: const PesquisaArquivo(),
         ),
+        // ExploradorArquivos(),
       ],
     );
   }
