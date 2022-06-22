@@ -37,9 +37,12 @@ class _AppBarraState extends State<AppBarra> {
               ),
             ),
           ),
+          const SizedBox(
+            width: 10,
+          ),
           Flexible(
             child: Container(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.centerLeft,
               child: BotaoPesquisa(),
             ),
           ),
