@@ -142,7 +142,7 @@ class _barraContainerState extends State<barraContainer> {
                 child: Stack(
                   children: const [
                     AppBarra(),
-                    pesquisaArquivo(),
+                    PesquisaArquivo(),
                     ExploradorArquivos(),
                   ],
                 ),

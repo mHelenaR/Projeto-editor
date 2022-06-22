@@ -1,42 +1,23 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 
-//Paginas
-import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
-
-class pesquisaArquivo extends StatelessWidget {
-  const pesquisaArquivo({Key? key}) : super(key: key);
+class PesquisaArquivo extends StatelessWidget {
+  const PesquisaArquivo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: 10,
-      top: 100,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: const EdgeInsets.only(left: 10),
+      width: 500,
+      child: Wrap(
+        spacing: 10,
+        direction: Axis.horizontal,
         children: [
-          Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: SizedBox(
-                  height: 36,
-                  width: 500,
-                  child: Stack(
-                    children: [
-                      SizedBox(width: 400, child: DiretorioArquivo()),
-                      Positioned(
-                        top: 4,
-                        left: 410,
-                        child: BotaoArquivo(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          Container(
+            height: 30,
+            width: 300,
+            child: const DiretorioArquivo(),
           ),
+          const BotaoArquivo(),
         ],
       ),
     );
@@ -44,11 +25,13 @@ class pesquisaArquivo extends StatelessWidget {
 }
 
 class DiretorioArquivo extends StatelessWidget {
+  const DiretorioArquivo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return TextField(
         decoration: InputDecoration(
-      prefixIcon: Icon(Icons.archive),
+      prefixIcon: const Icon(Icons.archive),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(50),
       ),
@@ -58,13 +41,15 @@ class DiretorioArquivo extends StatelessWidget {
 }
 
 class BotaoArquivo extends StatelessWidget {
+  const BotaoArquivo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: () {},
-        child: Text("Procurar"),
+        child: const Text("Procurar"),
         style: ElevatedButton.styleFrom(
-          primary: Color(0XFF673AB7),
+          primary: const Color(0XFF673AB7),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
