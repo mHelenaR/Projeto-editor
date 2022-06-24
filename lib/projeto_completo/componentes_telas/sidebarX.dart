@@ -1,3 +1,4 @@
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/carrega_tabela.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
@@ -107,15 +108,9 @@ class _ScreensExample extends StatelessWidget {
             return const HomePage();
 
           case 2:
-            return Text(
-              'Teste',
-              style: theme.textTheme.headline5,
-            );
+            return ExploradorArquivos();
           case 3:
-            return Text(
-              'Teste',
-              style: theme.textTheme.headline5,
-            );
+            return tabelaTeste();
 
           case 4:
             return Text(

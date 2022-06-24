@@ -7,7 +7,6 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class PesquisaArquivo extends StatelessWidget {
   const PesquisaArquivo({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,16 +45,22 @@ class DiretorioArquivo extends StatelessWidget {
 }
 
 class BotaoArquivo extends StatefulWidget {
-  BotaoArquivo({Key? key}) : super(key: key);
+  const BotaoArquivo({Key? key}) : super(key: key);
 
   @override
-  State<BotaoArquivo> createState() => _BotaoArquivoState();
+  State<BotaoArquivo> createState() => BotaoArquivoState();
 }
 
-class _BotaoArquivoState extends State<BotaoArquivo> {
-  var _recebeCaminho, _conteudo;
+class BotaoArquivoState extends State<BotaoArquivo> {
+  var _recebeCaminho, conteudo, dadosArquivo;
 
-  Future<void> abreArquivo() async {
+  void aslteraValor() {
+    setState(() {
+      conteudo = !conteudo;
+    });
+  }
+
+  Future<String> abreArquivo() async {
     String? caminhoArquivo = r'/storage/';
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
@@ -65,26 +70,33 @@ class _BotaoArquivoState extends State<BotaoArquivo> {
 
     _recebeCaminho = caminhoArquivo!;
 
-    final _dadosArquivo = await File(_recebeCaminho)
+    final dadosArquivo = await File(_recebeCaminho)
         .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
-    setState(() {
-      _conteudo = _dadosArquivo;
+    //recebe(_conteudo);
 
-      print(_conteudo);
-    });
+    conteudo = dadosArquivo;
+    print(conteudo);
+    return conteudo;
   }
 
+  String recebe(String afeefesfs) {
+    conteudo = afeefesfs;
+    return conteudo;
+  }
+
+  get n => conteudo;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: abreArquivo,
-        child: const Text("Procurar"),
-        style: ElevatedButton.styleFrom(
-          primary: const Color(0XFF673AB7),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ));
+      onPressed: abreArquivo,
+      child: const Text("Procurar"),
+      style: ElevatedButton.styleFrom(
+        primary: const Color(0XFF673AB7),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+      ),
+    );
   }
 }

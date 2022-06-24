@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
+import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +18,21 @@ class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);
 
   @override
-  State<ExploradorArquivos> createState() => _ExploradorArquivosState();
+  State<ExploradorArquivos> createState() => ExploradorArquivosState();
 }
 
-class _ExploradorArquivosState extends State<ExploradorArquivos> {
+class ExploradorArquivosState extends State<ExploradorArquivos> {
+  final myController = TextEditingController();
+
   var _recebeCaminho = '';
-  var _conteudo = '';
+  var _conteudo = 'ftfdyegfde';
   var strarray, estacao, _estac, _array, teste, _nj;
   var nom;
 
+  get ncwejfnc => _estac;
+
 // abre o explorador e armazena o caminho do arquivo em uma variavel
-  Future<void> abreArquivo() async {
+  abreArquivo() async {
     _recebeCaminho = '';
     String? caminhoArquivo = r'/storage/';
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -44,10 +49,9 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
             caminhoArquivo!; // espera a variavel ser inicializada para receber valor
       },
     );
-  }
 
 // lê e decodifica o texto do arquivo;
-  Future<void> _lerDados() async {
+
     final File _meuArquivo = File(_recebeCaminho);
     final _dadosArquivo = await File(_recebeCaminho)
         .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
@@ -68,7 +72,7 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
       var cont = i + 1;
       //var nome = _teste[cont].substring(0, 3);
       if (_teste[i++].substring(0, 3) == 'TIT') {
-        List<String> strarray = _teste[cont].split('|');
+        List<String> strarray = _teste[i].split('|');
         setState(
           () {
             _array = strarray;
@@ -86,11 +90,23 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
     }
   }
 
-  List get n {
-    return estacao;
+  Future<String> carrega() async {
+    var tested = await _conteudo;
+    return tested;
   }
 
-  //final List<String> testando =  _estac;
+  Future<String> testes() async {
+    var nod = await _conteudo;
+
+    return _conteudo;
+  }
+
+  get n => carrega();
+
+  String get m {
+    var yhsdhs = "mfeklmf";
+    return yhsdhs;
+  }
 
 // scrollbar bidimencional
   final _verticalScrollController = ScrollController();
@@ -132,12 +148,6 @@ class _ExploradorArquivosState extends State<ExploradorArquivos> {
                               TextButton(
                                 onPressed: abreArquivo,
                                 child: const Text('Abrir'),
-                              ),
-                              ElevatedButton(
-                                onPressed: _lerDados,
-                                child: const Text(
-                                  'Abrir',
-                                ), // aqui ele recebe o arquivo e a conversao dele
                               ),
                             ],
                           ),
