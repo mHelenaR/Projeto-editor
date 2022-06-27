@@ -1,4 +1,5 @@
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class AppBarra extends StatefulWidget {
@@ -94,12 +95,7 @@ class BotaoPesquisa extends StatelessWidget {
           },
         );
       },
-      style: ElevatedButton.styleFrom(
-        primary: const Color(0XFF673AB7),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-      ),
+      style: estiloBotao,
       child: const Text("Pesquisar"),
     );
   }
