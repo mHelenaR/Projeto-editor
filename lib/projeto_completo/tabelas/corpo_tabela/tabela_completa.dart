@@ -14,6 +14,9 @@ class _TelaTabelasState extends State<TelaTabelas> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
         const AppBarra(),
         const SizedBox(

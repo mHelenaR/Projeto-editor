@@ -33,7 +33,6 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
               // expande a barra
               extendedTheme: StyleExpandeSideBar,
               // linha de divisa
-
               footerDivider: divider,
               //texto lista do cabeçalho
               headerBuilder: (context, extended) {

@@ -1,38 +1,42 @@
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+// ignore: deprecated_member_use
+import 'package:data_table_2/paginated_data_table_2.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 
+import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+
 class PesquisaArquivo extends StatelessWidget {
   const PesquisaArquivo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 10),
-      width: MediaQuery.of(context).size.width,
       child: Wrap(
-        verticalDirection: VerticalDirection.down,
+        spacing: 10,
+        runSpacing: 10,
+        // verticalDirection: VerticalDirection.down,
         children: [
-          Wrap(
-            spacing: 10,
-            direction: Axis.horizontal,
-            children: [
-              Container(
-                height: 30,
-                width: 300,
-                child: const DiretorioArquivo(),
-              ),
-              const Arquivo(),
-            ],
-          ),
-          Container(
-            height: 50,
-            width: 50,
-            color: Colors.amber,
+          // Container(
+          //   width: 300,
+          //   height: 30,
+          //   child: const DiretorioArquivo(),
+          // ),
+          // Container(
+          //   width: 200,
+          //   height: 30,
+          //   child: const Arquivo(),
+          // ),
+          Expanded(
+            child: CarregarTabelas(),
           ),
         ],
       ),
@@ -69,7 +73,6 @@ class ArquivoState extends State<Arquivo> {
   Future<void> abreArquivo() async {
     String? caminhoArquivo = r'/storage/';
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-
     if (result != null) {
       caminhoArquivo = result.files.single.path;
     }
@@ -81,16 +84,19 @@ class ArquivoState extends State<Arquivo> {
   Future<String> carregaArquivo() async {
     final dadosArquivo = await File(_recebeCaminho)
         .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
-
     conteudo = dadosArquivo;
-    print(conteudo);
+    if (kDebugMode) {
+      print(conteudo);
+    }
     return conteudo;
   }
 
   Future<String> a() async {
     await abreArquivo();
     var envia = conteudo;
-    print(envia);
+    if (kDebugMode) {
+      print(envia);
+    }
     return envia;
   }
 
@@ -113,6 +119,77 @@ class ArquivoState extends State<Arquivo> {
           style: estiloBotao,
           child: const Text("Carregar"),
         ),
+      ],
+    );
+  }
+}
+
+class CarregarTabelas extends StatelessWidget {
+  CarregarTabelas({Key? key}) : super(key: key);
+  List<String> test = ["kfmekf"];
+  List<String> test2 = [
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv",
+    "kfmekf",
+    "nfsniefle",
+    "knsckjndec",
+    "jbcskjbdv"
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return DataTable2(
+      columns: [
+        for (final nome in test) ...{
+          DataColumn2(
+            label: Text('$nome'),
+          ),
+        },
+      ],
+      rows: [
+        for (int i = 0; i < test.length; i++) ...{
+          DataRow2(
+            cells: [
+              for (final nome in test) ...{
+                DataCell(Text('$nome')),
+              },
+            ],
+          ),
+        },
       ],
     );
   }

@@ -3,8 +3,6 @@ import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/tabela_completa.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
-import 'package:get/get.dart';
-import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
 
 class TableMenu extends StatefulWidget {
   TableMenu({Key? key}) : super(key: key);
@@ -25,6 +23,7 @@ class _TableMenuState extends State<TableMenu> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SidebarX(
               controller: _controller,
@@ -51,8 +50,20 @@ class _TableMenuState extends State<TableMenu> {
                 },
               ],
             ),
+            // Expanded(
+            //   child: Column(
+            //     children: [
+            //       _CorpoTabelas(
+            //         controleTela: _controller,
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _CorpoTabelas(
                     controleTela: _controller,
@@ -77,21 +88,11 @@ class _CorpoTabelas extends StatelessWidget {
     return AnimatedBuilder(
       animation: controleTela,
       builder: (context, child) {
-        //for (int i = 0; i < v; i++) {
         if (controleTela.selectedIndex != 0) {
           return const TelaTabelas();
         }
-        //}
-        return Container();
-        /*switch (controleTela.selectedIndex) {
-          case 1:
-            return Text(
-              'Teste',
-              style: theme.textTheme.headline5,
-            );
-          default:
-            return Container();
-        }*/
+        return const Text(
+            "O desenvolvedor foi preguiçoso e não exibiu nada por aqui, favor reclamar!!!");
       },
     );
   }

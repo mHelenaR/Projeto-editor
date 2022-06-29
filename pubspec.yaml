@@ -41,6 +41,7 @@ dependencies:
   collapsible_sidebar: ^2.0.1+2
   sidebarx: ^0.4.0
   get: ^4.6.5
+  data_table_2: ^2.3.3
 
 dev_dependencies:
   flutter_test:

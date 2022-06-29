@@ -203,26 +203,28 @@ class ExploradorArquivosState extends State<ExploradorArquivos> {
             ),
           }
         } else ...{
-          DataColumn(
+          const DataColumn(
             label: Text(
-              '$_array',
+              '',
             ),
           ),
         }
       ],
       rows: [
         if (_estac != null) ...{
-          DataRow(
-            cells: [
-              for (final teste in _estac) ...{
-                DataCell(Text('$teste')),
-              }
-            ],
-          ),
+          for (int i = 0; i < estacao.toString().length; i++) ...{
+            DataRow(
+              cells: [
+                for (final teste in _estac) ...{
+                  DataCell(Text('$teste')),
+                }
+              ],
+            ),
+          },
         } else ...{
-          DataRow(
+          const DataRow(
             cells: [
-              DataCell(Text('$_estac')),
+              DataCell(Text("")),
             ],
           ),
         },
