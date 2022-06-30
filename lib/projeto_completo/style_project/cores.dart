@@ -5,6 +5,7 @@ const scaffoldBackgroundColor = Color(0xFF3E3E61); //Color(0xFF532F99);
 const accentCanvasColor = Color.fromARGB(255, 113, 70, 185);
 const white = Colors.white;
 final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
+const corContainer = Color(0xfcfcfcfc);
 const formatarTexto = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,

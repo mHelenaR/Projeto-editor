@@ -49,22 +49,17 @@ class _TableMenuState extends State<TableMenu> {
                 },
               ],
             ),
-            // Expanded(
-            //   child: Column(
-            //     children: [
-            //       _CorpoTabelas(
-            //         controleTela: _controller,
-            //       ),
-            //     ],
-            //   ),
-            // ),
             Expanded(
-              child: Container(
-                height: 500,
-                width: MediaQuery.of(context).size.width,
-                child: _CorpoTabelas(
-                  controleTela: _controller,
-                ),
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: _CorpoTabelas(
+                      controleTela: _controller,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
