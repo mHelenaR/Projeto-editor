@@ -23,7 +23,6 @@ class _TableMenuState extends State<TableMenu> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             SidebarX(
               controller: _controller,
@@ -60,15 +59,12 @@ class _TableMenuState extends State<TableMenu> {
             //   ),
             // ),
             Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _CorpoTabelas(
-                    controleTela: _controller,
-                  ),
-                ],
+              child: Container(
+                height: 500,
+                width: MediaQuery.of(context).size.width,
+                child: _CorpoTabelas(
+                  controleTela: _controller,
+                ),
               ),
             ),
           ],

@@ -133,6 +133,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        alignment: Alignment.topCenter, child: const PaginaInicial());
+      alignment: Alignment.topCenter,
+      child: const PaginaInicial(),
+    );
   }
 }

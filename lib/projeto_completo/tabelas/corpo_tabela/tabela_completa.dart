@@ -13,21 +13,23 @@ class TelaTabelas extends StatefulWidget {
 class _TelaTabelasState extends State<TelaTabelas> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const AppBarra(),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          child: const PesquisaArquivo(),
-        ),
-        // ExploradorArquivos(),
-      ],
-    );
+    return PesquisaArquivo();
+    // Column(
+    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //   crossAxisAlignment: CrossAxisAlignment.stretch,
+    //   mainAxisSize: MainAxisSize.min,
+    //   children: [
+    //     const AppBarra(),
+    //     const SizedBox(
+    //       height: 20,
+    //     ),
+    //     Container(
+    //       height: 100,
+    //       //alignment: Alignment.centerLeft,
+    //       child: const PesquisaArquivo(),
+    //     ),
+    //     // ExploradorArquivos(),
+    //   ],
+    // );
   }
 }

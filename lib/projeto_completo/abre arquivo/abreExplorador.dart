@@ -19,23 +19,24 @@ class PesquisaArquivo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10),
+      padding: EdgeInsets.all(10),
       child: Wrap(
         spacing: 10,
         runSpacing: 10,
-        // verticalDirection: VerticalDirection.down,
+        verticalDirection: VerticalDirection.down,
         children: [
-          // Container(
-          //   width: 300,
-          //   height: 30,
-          //   child: const DiretorioArquivo(),
-          // ),
-          // Container(
-          //   width: 200,
-          //   height: 30,
-          //   child: const Arquivo(),
-          // ),
-          Expanded(
+          Container(
+            width: 300,
+            height: 30,
+            child: const DiretorioArquivo(),
+          ),
+          Container(
+            width: 200,
+            height: 30,
+            child: const Arquivo(),
+          ),
+          SizedBox(
+            height: 300,
             child: CarregarTabelas(),
           ),
         ],
@@ -126,8 +127,8 @@ class ArquivoState extends State<Arquivo> {
 
 class CarregarTabelas extends StatelessWidget {
   CarregarTabelas({Key? key}) : super(key: key);
-  List<String> test = ["kfmekf"];
-  List<String> test2 = [
+  List<String> test2 = ["kfmekf"];
+  List<String> test = [
     "kfmekf",
     "nfsniefle",
     "knsckjndec",
@@ -173,6 +174,7 @@ class CarregarTabelas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable2(
+      minWidth: 3000,
       columns: [
         for (final nome in test) ...{
           DataColumn2(
