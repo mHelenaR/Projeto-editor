@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, unused_import, unnecessary_import, await_only_futures, no_leading_underscores_for_local_identifiers, unused_local_variable, avoid_print, unused_element
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -43,7 +45,7 @@ class ArquivoState extends State<Arquivo> {
   String conteudoArquivo = "";
   String dadosArquivo = "";
   String _separaArquivo = "";
-  var _arrayString, _linhasArquivo, estacao;
+  var _arrayString, _linhasArquivo, estacao, strarray;
 
   //Abre o explorador e pega o caminho do arquivo
   Future<void> abreArquivo() async {
@@ -67,7 +69,7 @@ class ArquivoState extends State<Arquivo> {
       },
     );
 
-    print(conteudoArquivo);
+    // print(conteudoArquivo);
   }
 
   //recebe o arquivo e decodifica para preservar os caracteres especiais
@@ -79,14 +81,14 @@ class ArquivoState extends State<Arquivo> {
       var cont = i + 1;
       //var nome = _teste[cont].substring(0, 3);
       if (_teste[i++].substring(0, 3) == 'TIT') {
-        List<String> strarray = _teste[i++].split('|');
+        List<String> strarray = _teste[i].split('|');
         setState(
           () {
             _arrayString = strarray;
           },
         );
       } else if (_teste[i++].substring(0, 3) == 'CPO') {
-        List<String> estacao = _teste[i++].split('^');
+        List<String> estacao = _teste[cont].split('^');
 
         setState(
           () {
@@ -96,6 +98,61 @@ class ArquivoState extends State<Arquivo> {
       }
     }
   }
+
+  separador() async {
+    var nova = await conteudoArquivo;
+    // print(nova);
+
+    List<String> teste = [""];
+    List<String> sepa = nova.split('TIT ');
+
+    for (int i = 0; i <= sepa.length; i++) {
+      teste.add(percorreCfg(sepa.toString()));
+
+      print(teste.toString() + "teste");
+    }
+  }
+
+  percorreCfg(String str) {
+    var sAux, frase, nome, delimitador, result;
+    var tam, x;
+    var lista;
+
+    nome = str;
+    frase = '';
+    delimitador = '#';
+    // print("delimiter: $delimitador");
+
+    for (int i = 2; i <= nome.length; i++) {
+      if (nome[i] != delimitador) {
+        //print("entrou no If");
+        //print("nome:   " + nome[i]);
+        frase = frase + nome[i];
+        //print("frase:   " + frase.toString());
+      } else {
+        //print("entrou no else");
+
+        lista.add(frase);
+        print(lista.toString());
+
+        frase = '';
+      }
+    }
+    print("saiu do for");
+    result = lista;
+    print("result: $result");
+  }
+
+  // splitString(String aSeparador, aString, int aMax) {
+  //   int sepLen, vari, strt, cnt;
+
+  //   Future<void >addString(int aEnd) {
+  //     int endPos;
+  //     if(aEnd = -1){
+
+  //     }
+  //   }
+  // }
 
   // Tabela e pesquisa montadas
   @override
@@ -111,7 +168,7 @@ class ArquivoState extends State<Arquivo> {
           child: pesquisa(),
         ),
         SizedBox(
-          width: 200,
+          width: 400,
           height: 30,
           child: button(),
         ),
@@ -198,7 +255,7 @@ class ArquivoState extends State<Arquivo> {
               DataRow2(
                 cells: [
                   for (final nomelinha in _linhasArquivo) ...{
-                    DataCell(Text(nomelinha)),
+                    const DataCell(Text("")),
                   },
                 ],
               ),
@@ -229,6 +286,10 @@ class ArquivoState extends State<Arquivo> {
           onPressed: carregaArquivo,
           style: estiloBotao,
           child: const Text("Carregar"),
+        ),
+        ElevatedButton(
+          onPressed: separador,
+          child: const Text("Separa"),
         ),
       ],
     );
