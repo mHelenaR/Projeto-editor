@@ -1,3 +1,6 @@
+// ignore_for_file: use_key_in_widget_constructors
+
+import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/tabela_completa.dart';
@@ -12,9 +15,10 @@ class TableMenu extends StatefulWidget {
 }
 
 class _TableMenuState extends State<TableMenu> {
+  var test = ArquivoState();
   final _controller = SidebarXController(selectedIndex: 0);
 
-  final List<String> menuTabelas = ["LISTA", "UNIDADE", "ESTAÇÃO"];
+  final List<String> menuTabelas = [];
   final List<String> menuIconTabela = ["icon_prancheta"];
 
   @override
@@ -36,11 +40,9 @@ class _TableMenuState extends State<TableMenu> {
                     color: Colors.white,
                   ),
                   label: "Voltar",
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                 ),
-                for (final nomeTabela in menuTabelas) ...{
+                for (final nomeTabela in menuIconTabela) ...{
                   SidebarXItem(
                     iconWidget: Image.asset("assets/images/icon_prancheta.png",
                         color: Colors.white),
@@ -79,11 +81,7 @@ class _CorpoTabelas extends StatelessWidget {
     return AnimatedBuilder(
       animation: controleTela,
       builder: (context, child) {
-        if (controleTela.selectedIndex != 0) {
-          return const TelaTabelas();
-        }
-        return const Text(
-            "O desenvolvedor foi preguiçoso e não exibiu nada por aqui, favor reclamar!!!");
+        return const TelaTabelas();
       },
     );
   }

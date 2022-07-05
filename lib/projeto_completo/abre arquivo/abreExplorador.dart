@@ -100,59 +100,23 @@ class ArquivoState extends State<Arquivo> {
   }
 
   separador() async {
-    var nova = await conteudoArquivo;
-    // print(nova);
+    List<String> listaTIT = await conteudoArquivo.split('TIT ');
+    List<String> nomeTabelas = [];
+    int posicaoSeparador = 0;
 
-    List<String> teste = [""];
-    List<String> sepa = nova.split('TIT ');
-
-    for (int i = 0; i <= sepa.length; i++) {
-      teste.add(percorreCfg(sepa.toString()));
-
-      print(teste.toString() + "teste");
-    }
-  }
-
-  percorreCfg(String str) {
-    var sAux, frase, nome, delimitador, result;
-    var tam, x;
-    var lista;
-
-    nome = str;
-    frase = '';
-    delimitador = '#';
-    // print("delimiter: $delimitador");
-
-    for (int i = 2; i <= nome.length; i++) {
-      if (nome[i] != delimitador) {
-        //print("entrou no If");
-        //print("nome:   " + nome[i]);
-        frase = frase + nome[i];
-        //print("frase:   " + frase.toString());
+    for (int i = 0; i < listaTIT.length; i++) {
+      posicaoSeparador = listaTIT[i].indexOf("#");
+      if (posicaoSeparador != -1) {
+        nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
       } else {
-        //print("entrou no else");
-
-        lista.add(frase);
-        print(lista.toString());
-
-        frase = '';
+        nomeTabelas = [];
       }
+      print(nomeTabelas);
+      setState(() {
+        nomeTabelas;
+      });
     }
-    print("saiu do for");
-    result = lista;
-    print("result: $result");
   }
-
-  // splitString(String aSeparador, aString, int aMax) {
-  //   int sepLen, vari, strt, cnt;
-
-  //   Future<void >addString(int aEnd) {
-  //     int endPos;
-  //     if(aEnd = -1){
-
-  //     }
-  //   }
-  // }
 
   // Tabela e pesquisa montadas
   @override
@@ -168,7 +132,7 @@ class ArquivoState extends State<Arquivo> {
           child: pesquisa(),
         ),
         SizedBox(
-          width: 400,
+          width: 300,
           height: 30,
           child: button(),
         ),
@@ -182,52 +146,6 @@ class ArquivoState extends State<Arquivo> {
 
   //Criação das tabelas
   Widget tabelas() {
-    //String recebendo = "mfrlksmfjwemflimfj|fcwefefe";
-    //List<String> test2 = ["kfmekf"];
-    /* List<String> test = [
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv",
-      "kfmekf",
-      "nfsniefle",
-      "knsckjndec",
-      "jbcskjbdv"
-    ];
-*/
-
     return Container(
       decoration: decoracaoContainer,
       child: DataTable2(
@@ -255,7 +173,7 @@ class ArquivoState extends State<Arquivo> {
               DataRow2(
                 cells: [
                   for (final nomelinha in _linhasArquivo) ...{
-                    const DataCell(Text("")),
+                    DataCell(Text(nomelinha)),
                   },
                 ],
               ),

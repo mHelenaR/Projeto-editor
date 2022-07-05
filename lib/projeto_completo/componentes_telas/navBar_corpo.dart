@@ -1,4 +1,6 @@
 // bibliotecas
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'dart:ffi';
 
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
@@ -53,7 +55,7 @@ class _barraContainerState extends State<barraContainer> {
         break;
       case 1:
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => SideBarExpansivel()));
+            MaterialPageRoute(builder: (context) => const SideBarExpansivel()));
         break;
       case 2:
         pageTitle = "Comparar";
@@ -78,9 +80,6 @@ class _barraContainerState extends State<barraContainer> {
               children: [
                 const SizedBox(
                   height: 80,
-                ),
-                Container(
-                  child: const Text('titulo'),
                 ),
                 Container(
                   child: Expanded(
@@ -162,7 +161,7 @@ class ListMenu extends StatelessWidget {
   final String itemText;
   final int selecao;
   final int posicao;
-  ListMenu(
+  const ListMenu(
       {required this.itemIcon,
       required this.itemText,
       required this.selecao,
