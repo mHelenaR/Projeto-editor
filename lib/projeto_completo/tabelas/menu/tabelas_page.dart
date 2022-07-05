@@ -61,9 +61,7 @@ class _TableMenuState extends State<TableMenu> {
         conteudoArquivo = dadosArquivo;
       },
     );
-  }
 
-  Future<void> carregaArquivo() async {
     _separaArquivo = await conteudoArquivo;
     final _teste = _separaArquivo.split('\r\n');
 
@@ -92,6 +90,35 @@ class _TableMenuState extends State<TableMenu> {
     });
   }
 
+  /* Future<void> carregaArquivo() async {
+    _separaArquivo = await conteudoArquivo;
+    final _teste = _separaArquivo.split('\r\n');
+
+    for (int i = 0; i < _teste.length; i++) {
+      var cont = i + 1;
+      //var nome = _teste[cont].substring(0, 3);
+      if (_teste[i++].substring(0, 3) == 'TIT') {
+        List<String> strarray = _teste[i].split('|');
+        setState(
+          () {
+            _arrayString = strarray;
+          },
+        );
+      } else if (_teste[i++].substring(0, 3) == 'CPO') {
+        List<String> estacao = _teste[cont].split('^');
+
+        setState(
+          () {
+            _linhasArquivo = estacao;
+          },
+        );
+      }
+    }
+    setState(() {
+      separador();
+    });
+  }
+*/
   separador() async {
     List<String> listaTIT = await conteudoArquivo.split('TIT ');
     int posicaoSeparador = 0;
@@ -165,15 +192,6 @@ class _TableMenuState extends State<TableMenu> {
           onPressed: abreArquivo,
           style: estiloBotao,
           child: const Text("Procurar"),
-        ),
-        ElevatedButton(
-          onPressed: carregaArquivo,
-          style: estiloBotao,
-          child: const Text("Carregar"),
-        ),
-        ElevatedButton(
-          onPressed: separador,
-          child: const Text("Separa"),
         ),
       ],
     );
@@ -297,37 +315,7 @@ class _TableMenuState extends State<TableMenu> {
 //     return AnimatedBuilder(
 //       animation: controleTela,
 //       builder: (context, child) {
-//         return Column(
-//           children: [
-//             const AppBarra(),
-//             const SizedBox(
-//               height: 20,
-//             ),
-//             Expanded(
-//               child: Container(
-//                   alignment: Alignment.topLeft,
-//                   child: Container(
-//                     padding:
-//                         const EdgeInsets.only(left: 10, right: 20, top: 10),
-//                     child: Wrap(
-//                       spacing: 10,
-//                       runSpacing: 10,
-//                       verticalDirection: VerticalDirection.down,
-//                       children: const [
-//                         Arquivo(),
-//                       ],
-//                     ),
-//                   )),
-//             ),
-//             // ExploradorArquivos(),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
-
-// return  AnimatedBuilder (
+//         return  return  AnimatedBuilder (
 //       animação : controleTela,
 //       construtor : (contexto, filho) {
 //         if (controleTela.selectedIndex !=  0 ) {
@@ -338,4 +326,8 @@ class _TableMenuState extends State<TableMenu> {
 //         return  const  TelaTabelas ();
 //       },
 //     );
+//   
+//       },
+//     );
 //   }
+// }
