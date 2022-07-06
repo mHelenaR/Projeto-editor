@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, await_only_futures, no_leading_underscores_for_local_identifiers, avoid_print, deprecated_member_use, unused_import
+// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, await_only_futures, no_leading_underscores_for_local_identifiers, avoid_print, deprecated_member_use, unused_import, unused_local_variable, unnecessary_null_comparison
 
 import 'dart:convert';
 import 'dart:io';
@@ -30,6 +30,7 @@ class _TableMenuState extends State<TableMenu> {
   String _separaArquivo = "";
   List<String> nomeTabelas = [];
   List<String> carrega = [];
+  List<String> tit = [];
   List<String> _linhasArquivo = [""];
   List<String> _arrayString = [""];
   var estacao, strarray, tes;
@@ -62,34 +63,87 @@ class _TableMenuState extends State<TableMenu> {
       },
     );
 
-    _separaArquivo = await conteudoArquivo;
-    final _teste = _separaArquivo.split('\r\n');
+    setState(
+      () {
+        colunaTabelas();
+      },
+    );
 
-    for (int i = 0; i < _teste.length; i++) {
-      var cont = i + 1;
-      //var nome = _teste[cont].substring(0, 3);
-      if (_teste[i++].substring(0, 3) == 'TIT') {
-        List<String> strarray = _teste[i].split('|');
-        setState(
-          () {
-            _arrayString = strarray;
-          },
-        );
-      } else if (_teste[i++].substring(0, 3) == 'CPO') {
-        List<String> estacao = _teste[cont].split('^');
-
-        setState(
-          () {
-            _linhasArquivo = estacao;
-          },
-        );
-      }
-    }
     setState(
       () {
         separador();
       },
     );
+  }
+
+  colunaTabelas() async {
+    _separaArquivo = await conteudoArquivo;
+    List<String> _teste = [_separaArquivo];
+    List<String> y = _separaArquivo.split('TIT ');
+    List<String> tit = _separaArquivo.split("\r\n");
+    int cont = 1;
+    int p = 0;
+    //print(tit[50]);// cria lista com a cpo junto
+    List<String> rec = [];
+    List<String> nomeColunas = [];
+
+    for (int i = 0; i < tit.length; i++) {
+      int tes = _teste.indexOf('#');
+
+      if (tit[i].substring(0, 3) == 'TIT') {
+        nomeColunas = tit[i++].split("|");
+        print(nomeColunas);
+        _arrayString = nomeColunas;
+
+        _linhasArquivo = tit[3].split('^');
+      }
+    }
+    //cria lista completa
+    /* rec = tit.toString().split("\r\n"); 
+      print(rec[i]);
+      */
+
+    // if (rec[i] == rec[i]) {
+
+    // }
+    // if (y[i++].substring(0, 4) == 'TIT ') {
+    //   List<String> strarray = y.toString().split('TIT ');
+    //   print(strarray);
+    // }
+
+    // // p = tit[i].indexOf('TIT');
+
+    // if (tit.toString().substring(0, 3) == 'TIT') {
+    //   print(tit[3]);
+    // }
+    //   int tes = _teste[i].indexOf('#');
+    //   int fim = _teste[i].indexOf('\n\r');
+
+    //   if (tes != -1) {
+    //     tit = [_teste[i].substring(tes)];
+    //} //else {
+    //     tit = [];
+    //   }
+    //print(tit[i]);
+    // var cont = i + 1;
+
+    //List<String> strarray = [_teste[i]];
+
+    // setState(
+    //   () {
+    //     _arrayString = strarray;
+    //     //  print(_arrayString);
+    //   },
+    // );
+    //  else if (_teste[i++].substring(0, 3) == 'CPO') {
+    //   List<String> estacao = _teste[cont].split('^');
+    //   setState(
+    //     () {
+    //       _linhasArquivo = estacao;
+    //       print(_linhasArquivo);
+    //     },
+    //   );
+    // }
   }
 
   /* Future<void> carregaArquivo() async {
@@ -144,7 +198,7 @@ class _TableMenuState extends State<TableMenu> {
     return Container(
       decoration: decoracaoContainer,
       child: DataTable2(
-        minWidth: 3000,
+        minWidth: 100000,
         horizontalMargin: 10,
         showCheckboxColumn: true,
         columnSpacing: 2,
@@ -164,10 +218,10 @@ class _TableMenuState extends State<TableMenu> {
         ],
         rows: [
           if (_linhasArquivo != null) ...{
-            for (int i = 0; i <= estacao.toString().length; i++) ...{
+            for (int i = 0; i < tit.length; i++) ...{
               DataRow2(
                 cells: [
-                  for (final nomelinha in _linhasArquivo) ...{
+                  for (final nomelinha in _arrayString) ...{
                     DataCell(Text(nomelinha)),
                   },
                 ],
@@ -262,6 +316,7 @@ class _TableMenuState extends State<TableMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -296,7 +351,37 @@ class _TableMenuState extends State<TableMenu> {
                   Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
-                    child: colunaComponentes(),
+                    child: AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, child) {
+                        switch (_controller.selectedIndex) {
+                          case 0:
+                            return colunaComponentes();
+                          case 1:
+                            return colunaComponentes();
+                          case 2:
+                            return Text(
+                              'People',
+                              style: theme.textTheme.headline5,
+                            );
+                          case 3:
+                            return Text(
+                              'Favorites',
+                              style: theme.textTheme.headline5,
+                            );
+                          case 4:
+                            return Text(
+                              'Custom iconWidget',
+                              style: theme.textTheme.headline5,
+                            );
+                          default:
+                            return Text(
+                              'Not found page',
+                              style: theme.textTheme.headline5,
+                            );
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -328,7 +413,7 @@ class _TableMenuState extends State<TableMenu> {
 //         return  const  TelaTabelas ();
 //       },
 //     );
-//   
+//
 //       },
 //     );
 //   }
