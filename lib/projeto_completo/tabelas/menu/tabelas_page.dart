@@ -85,9 +85,11 @@ class _TableMenuState extends State<TableMenu> {
         );
       }
     }
-    setState(() {
-      separador();
-    });
+    setState(
+      () {
+        separador();
+      },
+    );
   }
 
   /* Future<void> carregaArquivo() async {
@@ -331,3 +333,55 @@ class _TableMenuState extends State<TableMenu> {
 //     );
 //   }
 // }
+
+/*@override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        switch (controller.selectedIndex) {
+          case 0:
+            return ListView.builder(
+              //padding: const EdgeInsets.only(top: 10),
+              itemBuilder: (context, index) => Container(
+                height: 100,
+                //width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 10, right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Theme.of(context).canvasColor,
+                  boxShadow: const [BoxShadow()],
+                ),
+              ),
+            );
+          case 1:
+            return Text(
+              'Search',
+              style: theme.textTheme.headline5,
+            );
+          case 2:
+            return Text(
+              'People',
+              style: theme.textTheme.headline5,
+            );
+          case 3:
+            return Text(
+              'Favorites',
+              style: theme.textTheme.headline5,
+            );
+          case 4:
+            return Text(
+              'Custom iconWidget',
+              style: theme.textTheme.headline5,
+            );
+          default:
+            return Text(
+              'Not found page',
+              style: theme.textTheme.headline5,
+            );
+        }
+      },
+    );
+  }
+} */
