@@ -58,7 +58,8 @@ class BarraPesquisa extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      initialValue: "Teste Pesquisa",
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(

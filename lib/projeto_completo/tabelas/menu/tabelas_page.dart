@@ -24,16 +24,19 @@ class TableMenu extends StatefulWidget {
 }
 
 class _TableMenuState extends State<TableMenu> {
+  // Declaração de listas e variáveis globais
+  var estacao, strarray, tes, caminhoArq;
   String _recebeCaminhoArquivo = "";
   String conteudoArquivo = "";
   String dadosArquivo = "";
   String _separaArquivo = "";
   List<String> nomeTabelas = [];
   List<String> carrega = [];
-  List<String> tit = [];
+  List<String> linhaTIT = [];
   List<String> _linhasArquivo = [""];
   List<String> _arrayString = [""];
-  var estacao, strarray, tes;
+  List<String> nomeColunas = [];
+  List<String> nomeColSeparada = [];
 
   final _controller = SidebarXController(selectedIndex: 0);
 
@@ -74,76 +77,44 @@ class _TableMenuState extends State<TableMenu> {
         separador();
       },
     );
+    caminhoArq = await caminhoArquivo;
   }
 
+// separa as colunas TIT  e CPO
   colunaTabelas() async {
+    // espera o carregamento da variavel
     _separaArquivo = await conteudoArquivo;
-    List<String> _teste = [_separaArquivo];
-    List<String> y = _separaArquivo.split('TIT ');
-    List<String> tit = _separaArquivo.split("\r\n");
-    int cont = 1;
-    int p = 0;
-    //print(tit[50]);// cria lista com a cpo junto
-    List<String> rec = [];
-    List<String> nomeColunas = [];
 
-    for (int i = 0; i < tit.length; i++) {
-      int tes = _teste.indexOf('#');
+    // cria lista com cpo
+    List<String> listaConct = _separaArquivo.split('TIT ');
+    List<String> linhaTIT = _separaArquivo.split("\r\n");
 
-      if (tit[i].substring(0, 3) == 'TIT') {
-        nomeColunas = tit[i++].split("|");
-        print(nomeColunas);
-        _arrayString = nomeColunas;
+    //print(tit[50]); -- cria lista com a cpo junto
 
-        _linhasArquivo = tit[3].split('^');
+    for (int i = 0; i < linhaTIT.length; i++) {
+      // pega a string a partir do caracter
+      int posCharacter = linhaTIT[i].indexOf('#') + 1;
+
+      if (linhaTIT[i].substring(0, 3) == 'TIT') {
+        // remove o # do nome das colunas
+        nomeColSeparada = [linhaTIT[i].substring(posCharacter)];
+        for (int j = 0; j < nomeColSeparada.length; j++) {
+          nomeColunas = nomeColSeparada[j].split('|');
+          //print(nomeColunas);
+          //print(nomeColSeparada);
+          setState(() {
+            _arrayString = nomeColunas;
+            //print(_arrayString);
+          });
+        }
+        _linhasArquivo = linhaTIT[3].split('^');
       }
     }
+
     //cria lista completa
     /* rec = tit.toString().split("\r\n"); 
       print(rec[i]);
       */
-
-    // if (rec[i] == rec[i]) {
-
-    // }
-    // if (y[i++].substring(0, 4) == 'TIT ') {
-    //   List<String> strarray = y.toString().split('TIT ');
-    //   print(strarray);
-    // }
-
-    // // p = tit[i].indexOf('TIT');
-
-    // if (tit.toString().substring(0, 3) == 'TIT') {
-    //   print(tit[3]);
-    // }
-    //   int tes = _teste[i].indexOf('#');
-    //   int fim = _teste[i].indexOf('\n\r');
-
-    //   if (tes != -1) {
-    //     tit = [_teste[i].substring(tes)];
-    //} //else {
-    //     tit = [];
-    //   }
-    //print(tit[i]);
-    // var cont = i + 1;
-
-    //List<String> strarray = [_teste[i]];
-
-    // setState(
-    //   () {
-    //     _arrayString = strarray;
-    //     //  print(_arrayString);
-    //   },
-    // );
-    //  else if (_teste[i++].substring(0, 3) == 'CPO') {
-    //   List<String> estacao = _teste[cont].split('^');
-    //   setState(
-    //     () {
-    //       _linhasArquivo = estacao;
-    //       print(_linhasArquivo);
-    //     },
-    //   );
-    // }
   }
 
   /* Future<void> carregaArquivo() async {
@@ -175,6 +146,8 @@ class _TableMenuState extends State<TableMenu> {
     });
   }
 */
+
+// Separa o nome das tabelas e cria uma lista para o menu
   separador() async {
     List<String> listaTIT = await conteudoArquivo.split('TIT ');
     int posicaoSeparador = 0;
@@ -198,11 +171,9 @@ class _TableMenuState extends State<TableMenu> {
     return Container(
       decoration: decoracaoContainer,
       child: DataTable2(
-        minWidth: 100000,
+        minWidth: 2000,
         horizontalMargin: 10,
-        showCheckboxColumn: true,
         columnSpacing: 2,
-        checkboxHorizontalMargin: 2.5,
         columns: [
           if (_arrayString != null) ...{
             for (final nomeColuna in _arrayString) ...{
@@ -212,17 +183,27 @@ class _TableMenuState extends State<TableMenu> {
             },
           } else ...{
             const DataColumn2(
+              size: ColumnSize.S,
               label: Text(""),
             ),
           }
         ],
         rows: [
-          if (_linhasArquivo != null) ...{
-            for (int i = 0; i < tit.length; i++) ...{
-              DataRow2(
+          if (_arrayString != null) ...{
+            for (int i = 0; i < _arrayString.length; i++) ...{
+              DataRow(
                 cells: [
                   for (final nomelinha in _arrayString) ...{
-                    DataCell(Text(nomelinha)),
+                    DataCell(
+                      Text(nomelinha),
+                      // onLongPress: () {},
+                      // TextFormField(
+                      //   decoration:
+                      //       const InputDecoration(border: InputBorder.none),
+                      //   initialValue: nomelinha,
+                      // ),
+                      // showEditIcon: true,
+                    ),
                   },
                 ],
               ),
@@ -239,7 +220,7 @@ class _TableMenuState extends State<TableMenu> {
     );
   }
 
-  //Criação dos botoes para abrir e carregar o arquivo
+//Criação dos botoes para abrir e carregar o arquivo
   Widget button() {
     return Wrap(
       spacing: 10,
@@ -253,20 +234,22 @@ class _TableMenuState extends State<TableMenu> {
     );
   }
 
-  //barra que recebe o caminho do arquivo
+//barra que recebe o caminho do arquivo
   Widget pesquisa() {
-    return TextField(
+    var v = caminhoArq;
+    return TextFormField(
+      initialValue: v,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.archive),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        labelText: 'Arquivo',
+        //labelText: v,
       ),
     );
   }
 
-  //carrega os componentes da tela de tabelas
+//carrega os componentes da tela de tabelas
   Widget colunaComponentes() {
     return Column(
       children: [
@@ -314,6 +297,7 @@ class _TableMenuState extends State<TableMenu> {
     );
   }
 
+// corpo da tela de tabelas
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
