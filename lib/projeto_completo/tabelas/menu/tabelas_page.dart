@@ -77,7 +77,6 @@ class _TableMenuState extends State<TableMenu> {
         separador();
       },
     );
-    caminhoArq = await caminhoArquivo;
   }
 
 // separa as colunas TIT  e CPO
@@ -190,7 +189,7 @@ class _TableMenuState extends State<TableMenu> {
         ],
         rows: [
           if (_arrayString != null) ...{
-            for (int i = 0; i < _arrayString.length; i++) ...{
+            for (int i = 0; i < nomeColunas.length; i++) ...{
               DataRow(
                 cells: [
                   for (final nomelinha in _arrayString) ...{
@@ -236,15 +235,20 @@ class _TableMenuState extends State<TableMenu> {
 
 //barra que recebe o caminho do arquivo
   Widget pesquisa() {
-    var v = caminhoArq;
+    var v;
+    if (_recebeCaminhoArquivo == '') {
+      v = 'Arquivo';
+    } else {
+      v = _recebeCaminhoArquivo;
+    }
+
     return TextFormField(
-      initialValue: v,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.archive),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        //labelText: v,
+        labelText: v,
       ),
     );
   }
@@ -273,7 +277,7 @@ class _TableMenuState extends State<TableMenu> {
                       verticalDirection: VerticalDirection.down,
                       children: [
                         SizedBox(
-                          width: 300,
+                          width: 400,
                           height: 30,
                           child: pesquisa(),
                         ),
