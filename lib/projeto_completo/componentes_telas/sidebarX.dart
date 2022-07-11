@@ -1,3 +1,4 @@
+import 'package:editorconfiguracao/projeto_completo/comparar/comprar_arquivos.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/carrega_tabela.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
@@ -51,27 +52,33 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
 
               items: [
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/homepage_1.png",
-                      color: Colors.white),
+                  iconWidget: Image.asset("assets/images/homepage_1.png", color: Colors.white),
                   label: "Pagina Inicial",
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_prancheta.png",
-                      color: Colors.white),
+                  iconWidget: Image.asset("assets/images/icon_prancheta.png", color: Colors.white),
                   label: "Tabelas",
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => TableMenu()));
+                      MaterialPageRoute(
+                        builder: (context) => TableMenu(),
+                      ),
+                    );
                   },
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_nuvem.png",
-                      color: Colors.white),
-                  label: "Pagina Inicial",
+                  iconWidget: Image.asset("assets/images/icon_nuvem.png", color: Colors.white),
+                  label: "Comparar Tabelas",
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CompararArquivos(),
+                      ),
+                    );
+                  },
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_configuracao.png",
-                      color: Colors.white),
+                  iconWidget: Image.asset("assets/images/icon_configuracao.png", color: Colors.white),
                   label: "Configuração",
                 ),
               ],
@@ -105,9 +112,6 @@ class _ScreensExample extends StatelessWidget {
         switch (controller.selectedIndex) {
           case 0:
             return const HomePage();
-
-          case 2:
-            return ExploradorArquivos();
           case 3:
             return tabelaTeste();
 

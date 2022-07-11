@@ -31,12 +31,17 @@ class _TableMenuState extends State<TableMenu> {
   String dadosArquivo = "";
   String _separaArquivo = "";
   List<String> nomeTabelas = [];
-  List<String> carrega = [];
+  List<String> carrega = [''];
   List<String> linhaTIT = [];
   List<String> _linhasArquivo = [""];
   List<String> _arrayString = [""];
   List<String> nomeColunas = [];
   List<String> nomeColSeparada = [];
+  List<String> listaCpo = [];
+  List<String> criaLista = [];
+  List<String> carregarLista = [];
+  List<String> listaTIT = [];
+  List<String> listaConct = [""];
 
   final _controller = SidebarXController(selectedIndex: 0);
 
@@ -85,30 +90,54 @@ class _TableMenuState extends State<TableMenu> {
     _separaArquivo = await conteudoArquivo;
 
     // cria lista com cpo
-    List<String> listaConct = _separaArquivo.split('TIT ');
+    listaConct = _separaArquivo.split('TIT ');
     List<String> linhaTIT = _separaArquivo.split("\r\n");
 
     //print(tit[50]); -- cria lista com a cpo junto
 
-    for (int i = 0; i < linhaTIT.length; i++) {
+    nomeColunas = listaConct[1].split('\r\n');
+    int posCharacter = nomeColunas[0].indexOf('#') + 1;
+    nomeColSeparada = [nomeColunas[0].substring(posCharacter)];
+    nomeColunas = nomeColSeparada[0].split('|');
+    setState(() {
+      _arrayString = nomeColunas;
+    });
+    carregarLista = listaConct[1].split('\r\n');
+    for (int i = 0; i < carregarLista.length; i++) {
+      criaLista = carregarLista[3].split('CPO ');
+      listaCpo = criaLista[i].split('^');
+      setState(() {
+        _linhasArquivo = listaCpo;
+      });
+    }
+
+    /* for (int i = 0; i < linhaTIT.length; i++) {
       // pega a string a partir do caracter
       int posCharacter = linhaTIT[i].indexOf('#') + 1;
+      int posChar = linhaTIT[3].indexOf('CPO ') + 1;
 
-      if (linhaTIT[i].substring(0, 3) == 'TIT') {
+      if (linhaTIT[1].substring(0, 3) == 'TIT') {
         // remove o # do nome das colunas
-        nomeColSeparada = [linhaTIT[i].substring(posCharacter)];
+        nomeColSeparada = [linhaTIT[1].substring(posCharacter)];
         for (int j = 0; j < nomeColSeparada.length; j++) {
           nomeColunas = nomeColSeparada[j].split('|');
-          //print(nomeColunas);
-          //print(nomeColSeparada);
           setState(() {
             _arrayString = nomeColunas;
-            //print(_arrayString);
           });
         }
-        _linhasArquivo = linhaTIT[3].split('^');
+        print(_arrayString);
+      } else if (linhaTIT[3].substring(0, 3) == 'CPO') {
+        nomeColunas = linhaTIT[3].split('^');
+
+        for (int j = 0; j < nomeColunas.length; j++) {
+          setState(() {
+            _linhasArquivo = nomeColunas;
+          });
+        }
+
+        print(_linhasArquivo);
       }
-    }
+    }*/
 
     //cria lista completa
     /* rec = tit.toString().split("\r\n"); 
@@ -148,7 +177,7 @@ class _TableMenuState extends State<TableMenu> {
 
 // Separa o nome das tabelas e cria uma lista para o menu
   separador() async {
-    List<String> listaTIT = await conteudoArquivo.split('TIT ');
+    listaTIT = await conteudoArquivo.split('TIT ');
     int posicaoSeparador = 0;
 
     for (int i = 0; i < listaTIT.length; i++) {
@@ -158,61 +187,78 @@ class _TableMenuState extends State<TableMenu> {
       } else {
         nomeTabelas = [];
       }
-
-      setState(() {
-        carrega = carrega + nomeTabelas;
-      });
+      setState(
+        () {
+          carrega = carrega + nomeTabelas;
+        },
+      );
     }
   }
+
+  // strpliString(List<String> lista, int start, int end) {
+  //   List<String> ret = [];
+  //   for(int i = start; i<end;i++){
+  //     ret.add(lista.getRange(start, end))
+  //   }
+  // }
 
 //Criação das tabelas
   Widget tabelas() {
     return Container(
+      padding: const EdgeInsets.only(bottom: 10),
       decoration: decoracaoContainer,
       child: DataTable2(
-        minWidth: 2000,
+        minWidth: 70000,
         horizontalMargin: 10,
         columnSpacing: 2,
         columns: [
-          if (_arrayString != null) ...{
-            for (final nomeColuna in _arrayString) ...{
-              DataColumn2(
-                label: Text(nomeColuna),
-              ),
+          for (int i = 0; i < carrega.length; i++) ...{
+            if (_controller.selectedIndex == i) ...{
+              if (_arrayString != null) ...{
+                for (final nomeColuna in _arrayString) ...{
+                  DataColumn2(
+                    label: Text(nomeColuna),
+                  ),
+                },
+              } else ...{
+                const DataColumn2(
+                  size: ColumnSize.S,
+                  label: Text(""),
+                ),
+              }
             },
-          } else ...{
-            const DataColumn2(
-              size: ColumnSize.S,
-              label: Text(""),
-            ),
           }
         ],
         rows: [
-          if (_arrayString != null) ...{
-            for (int i = 0; i < nomeColunas.length; i++) ...{
-              DataRow(
-                cells: [
-                  for (final nomelinha in _arrayString) ...{
-                    DataCell(
-                      Text(nomelinha),
-                      // onLongPress: () {},
-                      // TextFormField(
-                      //   decoration:
-                      //       const InputDecoration(border: InputBorder.none),
-                      //   initialValue: nomelinha,
-                      // ),
-                      // showEditIcon: true,
-                    ),
-                  },
-                ],
-              ),
-            },
-          } else ...{
-            const DataRow2(
-              cells: [
-                DataCell(Text("")),
-              ],
-            ),
+          for (int i = 0; i < carrega.length; i++) ...{
+            if (_controller.selectedIndex == i) ...{
+              if (_linhasArquivo != null) ...{
+                //for (int i = 0; i < nomeColunas.length; i++) ...{
+                DataRow2(
+                  cells: [
+                    for (final nomelinha in _linhasArquivo) ...{
+                      DataCell(
+                        Text(nomelinha),
+                        // onLongPress: () {},
+                        // TextFormField(
+                        //   decoration:
+                        //       const InputDecoration(border: InputBorder.none),
+                        //   initialValue: nomelinha,
+                        // ),
+                        // showEditIcon: true,
+                      ),
+                    },
+                  ],
+                ),
+                //},
+              } else ...{
+                const DataRow2(
+                  cells: [
+                    DataCell(Text("")),
+                  ],
+                ),
+              }
+            }
           }
         ],
       ),
@@ -257,46 +303,59 @@ class _TableMenuState extends State<TableMenu> {
   Widget colunaComponentes() {
     return Column(
       children: [
-        const AppBarra(),
-        const SizedBox(
-          height: 20,
-        ),
-        Expanded(
-          child: Container(
-              alignment: Alignment.topLeft,
-              child: Container(
-                padding: const EdgeInsets.only(left: 10, right: 20, top: 10),
-                child: Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  verticalDirection: VerticalDirection.down,
-                  children: [
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      verticalDirection: VerticalDirection.down,
-                      children: [
-                        SizedBox(
-                          width: 400,
-                          height: 30,
-                          child: pesquisa(),
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return Column(
+                children: [
+                  const AppBarra(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 20, top: 10),
+                        child: Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          verticalDirection: VerticalDirection.down,
+                          children: [
+                            Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              verticalDirection: VerticalDirection.down,
+                              children: [
+                                SizedBox(
+                                  width: 400,
+                                  height: 30,
+                                  child: pesquisa(),
+                                ),
+                                SizedBox(
+                                  width: 300,
+                                  height: 30,
+                                  child: button(),
+                                ),
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height * 0.8,
+                                  child: tabelas(),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: 300,
-                          height: 30,
-                          child: button(),
-                        ),
-                        SizedBox(
-                          height: 700,
-                          child: tabelas(),
-                        ),
-                      ],
+                      ),
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
-        // ExploradorArquivos(),
       ],
     );
   }
@@ -326,53 +385,14 @@ class _TableMenuState extends State<TableMenu> {
                 ),
                 for (int i = 0; i < carrega.length; i++) ...{
                   SidebarXItem(
-                    iconWidget: Image.asset("assets/images/icon_prancheta.png",
-                        color: Colors.white),
+                    iconWidget: Image.asset("assets/images/icon_prancheta.png", color: Colors.white),
                     label: carrega[i],
                   ),
                 },
               ],
             ),
             Expanded(
-              child: Column(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: AnimatedBuilder(
-                      animation: _controller,
-                      builder: (context, child) {
-                        switch (_controller.selectedIndex) {
-                          case 0:
-                            return colunaComponentes();
-                          case 1:
-                            return colunaComponentes();
-                          case 2:
-                            return Text(
-                              'People',
-                              style: theme.textTheme.headline5,
-                            );
-                          case 3:
-                            return Text(
-                              'Favorites',
-                              style: theme.textTheme.headline5,
-                            );
-                          case 4:
-                            return Text(
-                              'Custom iconWidget',
-                              style: theme.textTheme.headline5,
-                            );
-                          default:
-                            return Text(
-                              'Not found page',
-                              style: theme.textTheme.headline5,
-                            );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              child: colunaComponentes(),
             ),
           ],
         ),
@@ -406,55 +426,3 @@ class _TableMenuState extends State<TableMenu> {
 //     );
 //   }
 // }
-
-/*@override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        switch (controller.selectedIndex) {
-          case 0:
-            return ListView.builder(
-              //padding: const EdgeInsets.only(top: 10),
-              itemBuilder: (context, index) => Container(
-                height: 100,
-                //width: double.infinity,
-                margin: const EdgeInsets.only(bottom: 10, right: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Theme.of(context).canvasColor,
-                  boxShadow: const [BoxShadow()],
-                ),
-              ),
-            );
-          case 1:
-            return Text(
-              'Search',
-              style: theme.textTheme.headline5,
-            );
-          case 2:
-            return Text(
-              'People',
-              style: theme.textTheme.headline5,
-            );
-          case 3:
-            return Text(
-              'Favorites',
-              style: theme.textTheme.headline5,
-            );
-          case 4:
-            return Text(
-              'Custom iconWidget',
-              style: theme.textTheme.headline5,
-            );
-          default:
-            return Text(
-              'Not found page',
-              style: theme.textTheme.headline5,
-            );
-        }
-      },
-    );
-  }
-} */
