@@ -6,15 +6,17 @@ import 'package:flutter/material.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  doWhenWindowReady(() {
-    final win = appWindow;
-    const initialSize = Size(1270, 700);
-    win.minSize = initialSize;
-    win.size = initialSize;
-    win.alignment = Alignment.center;
-    win.title = "Editor de Configuração";
-    win.show();
-  });
+  doWhenWindowReady(
+    () {
+      final win = appWindow;
+      const initialSize = Size(1270, 700);
+      win.minSize = initialSize;
+      win.size = initialSize;
+      win.alignment = Alignment.center;
+      win.title = "Editor de Configuração";
+      win.show();
+    },
+  );
 
-  runApp(new CorpoProjeto());
+  runApp(const CorpoProjeto());
 }

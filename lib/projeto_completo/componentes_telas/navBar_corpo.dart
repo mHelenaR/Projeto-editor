@@ -21,18 +21,8 @@ class barraContainer extends StatefulWidget {
 }
 
 class _barraContainerState extends State<barraContainer> {
-  final List<String> menuItens = [
-    "Página principal",
-    "Tabelas",
-    "Conexão",
-    "Configuração"
-  ];
-  final List<String> menuIcons = [
-    "homepage_1",
-    "icon_prancheta",
-    "icon_nuvem",
-    "icon_configuracao"
-  ];
+  final List<String> menuItens = ["Página principal", "Tabelas", "Conexão", "Configuração"];
+  final List<String> menuIcons = ["homepage_1", "icon_prancheta", "icon_nuvem", "icon_configuracao"];
   bool sidebarOpen = true;
 
   double xOffset = 60;
@@ -54,8 +44,7 @@ class _barraContainerState extends State<barraContainer> {
         pageTitle = "Pagina Inicial";
         break;
       case 1:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SideBarExpansivel()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SideBarExpansivel()));
         break;
       case 2:
         pageTitle = "Comparar";
@@ -161,20 +150,14 @@ class ListMenu extends StatelessWidget {
   final String itemText;
   final int selecao;
   final int posicao;
-  const ListMenu(
-      {required this.itemIcon,
-      required this.itemText,
-      required this.selecao,
-      required this.posicao});
+  const ListMenu({required this.itemIcon, required this.itemText, required this.selecao, required this.posicao});
 
   final _estiloTexto = const TextStyle(color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: selecao == posicao
-          ? const Color(0xFF532F99)
-          : const Color(0XFF673AB7),
+      color: selecao == posicao ? const Color(0xFF532F99) : const Color(0XFF673AB7),
       child: Row(
         children: [
           Container(

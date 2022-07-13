@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, await_only_futures, no_leading_underscores_for_local_identifiers, avoid_print, deprecated_member_use, unused_import, unused_local_variable, unnecessary_null_comparison
+// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, unused_field, prefer_typing_uninitialized_variables, prefer_const_constructors_in_immutables, await_only_futures, no_leading_underscores_for_local_identifiers, avoid_print, deprecated_member_use, unused_import, unused_local_variable, unnecessary_null_comparison, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -24,7 +24,7 @@ class TableMenu extends StatefulWidget {
 }
 
 class _TableMenuState extends State<TableMenu> {
-  // Declaração de listas e variáveis globais
+  // Declaração de listas e variáveis da classe
   var estacao, strarray, tes, caminhoArq;
   String _recebeCaminhoArquivo = "";
   String conteudoArquivo = "";
@@ -49,39 +49,67 @@ class _TableMenuState extends State<TableMenu> {
 
 //Abre o explorador e pega o caminho do arquivo
   Future<void> abreArquivo() async {
-    String? caminhoArquivo = r'/storage/';
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      caminhoArquivo = result.files.single.path;
+    try {
+      String? caminhoArquivo = r'/storage/';
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['cfg', 'txt'],
+        dialogTitle: 'Abrir',
+      );
+      if (result != null) {
+        caminhoArquivo = result.files.single.path;
+
+        // caso aconteça mudanças no estado da variavel
+        setState(
+          () {
+            _recebeCaminhoArquivo = caminhoArquivo!;
+          },
+        );
+
+        //recebe o arquivo e decodifica para preservar os caracteres especiais
+        final dadosArquivo = await File(_recebeCaminhoArquivo).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+        setState(
+          () {
+            conteudoArquivo = dadosArquivo;
+          },
+        );
+
+        setState(
+          () {
+            colunaTabelas();
+          },
+        );
+
+        setState(
+          () {
+            separador();
+          },
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Operação cancelada! O arquivo não foi selecionado!"),
+          ),
+        );
+        setState(
+          () {
+            _recebeCaminhoArquivo = '';
+          },
+        );
+      }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Exeption: $e'),
+        ),
+      );
+      setState(
+        () {
+          _recebeCaminhoArquivo = '';
+        },
+      );
     }
-    // caso aconteça mudanças no estado da variavel
-    setState(
-      () {
-        _recebeCaminhoArquivo = caminhoArquivo!;
-      },
-    );
-
-    //recebe o arquivo e decodifica para preservar os caracteres especiais
-    final dadosArquivo = await File(_recebeCaminhoArquivo).readAsStringSync(
-      encoding: const Latin1Codec(allowInvalid: true),
-    );
-    setState(
-      () {
-        conteudoArquivo = dadosArquivo;
-      },
-    );
-
-    setState(
-      () {
-        colunaTabelas();
-      },
-    );
-
-    setState(
-      () {
-        separador();
-      },
-    );
   }
 
 // separa as colunas TIT  e CPO
@@ -301,10 +329,20 @@ class _TableMenuState extends State<TableMenu> {
 
 //carrega os componentes da tela de tabelas
   Widget colunaComponentes() {
+    double heightScreen = MediaQuery.of(context).size.height;
+    double widthScreen = MediaQuery.of(context).size.width;
+    double screen = 0;
+    if ((heightScreen < 960) && (heightScreen > 760)) {
+      screen = MediaQuery.of(context).size.height * 0.75;
+    } else if ((heightScreen > 961)) {
+      screen = MediaQuery.of(context).size.height * 0.8;
+    } else if (heightScreen < 760) {
+      screen = MediaQuery.of(context).size.height * 0.7;
+    }
     return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height,
+          height: screen,
           width: MediaQuery.of(context).size.width,
           child: AnimatedBuilder(
             animation: _controller,

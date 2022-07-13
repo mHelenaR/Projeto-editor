@@ -25,7 +25,6 @@ class _TelaTabelasState extends State<TelaTabelas> {
             child: const PesquisaArquivo(),
           ),
         ),
-        // ExploradorArquivos(),
       ],
     );
   }

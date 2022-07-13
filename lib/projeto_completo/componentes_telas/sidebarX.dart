@@ -49,7 +49,6 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
               },
 
               // opções menu
-
               items: [
                 SidebarXItem(
                   iconWidget: Image.asset("assets/images/homepage_1.png", color: Colors.white),
@@ -113,7 +112,7 @@ class _ScreensExample extends StatelessWidget {
           case 0:
             return const HomePage();
           case 3:
-            return tabelaTeste();
+            return const tabelaTeste();
 
           case 4:
             return Text(
