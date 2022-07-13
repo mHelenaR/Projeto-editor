@@ -232,7 +232,18 @@ class _TableMenuState extends State<TableMenu> {
 
 //Criação das tabelas
   Widget tabelas() {
+    double heightScreen = MediaQuery.of(context).size.height;
+    double widthScreen = MediaQuery.of(context).size.width;
+    double screen = 0;
+    if ((heightScreen < 960) && (heightScreen > 760)) {
+      screen = MediaQuery.of(context).size.height * 0.75;
+    } else if ((heightScreen > 961)) {
+      screen = MediaQuery.of(context).size.height * 0.8;
+    } else if (heightScreen < 760) {
+      screen = MediaQuery.of(context).size.height * 0.7;
+    }
     return Container(
+      height: screen,
       padding: const EdgeInsets.only(bottom: 10),
       decoration: decoracaoContainer,
       child: DataTable2(
@@ -317,6 +328,7 @@ class _TableMenuState extends State<TableMenu> {
     }
 
     return TextFormField(
+      readOnly: true,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.archive),
         border: OutlineInputBorder(
@@ -379,7 +391,7 @@ class _TableMenuState extends State<TableMenu> {
                                   child: button(),
                                 ),
                                 SizedBox(
-                                  height: MediaQuery.of(context).size.height * 0.8,
+                                  height: screen,
                                   child: tabelas(),
                                 ),
                               ],
@@ -402,6 +414,7 @@ class _TableMenuState extends State<TableMenu> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -412,6 +425,17 @@ class _TableMenuState extends State<TableMenu> {
               theme: StyleSideBar,
               extendedTheme: StyleExpandeSideBar,
               footerDivider: divider,
+              headerBuilder: (context, extended) {
+                return SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset(
+                      'assets/images/icon_archive.png',
+                    ),
+                  ),
+                );
+              },
               items: [
                 SidebarXItem(
                   iconWidget: Image.asset(
@@ -421,10 +445,10 @@ class _TableMenuState extends State<TableMenu> {
                   label: "Voltar",
                   onTap: () => Navigator.pop(context),
                 ),
-                for (int i = 0; i < carrega.length; i++) ...{
+                for (final teste in carrega) ...{
                   SidebarXItem(
                     iconWidget: Image.asset("assets/images/icon_prancheta.png", color: Colors.white),
-                    label: carrega[i],
+                    label: teste,
                   ),
                 },
               ],

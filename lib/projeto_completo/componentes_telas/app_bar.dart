@@ -25,7 +25,7 @@ class _AppBarraState extends State<AppBarra> {
             child: Container(
               alignment: Alignment.centerLeft,
               child: const Text(
-                "Editor de Configuração",
+                "Tabelas",
                 style: fontePreta,
               ),
             ),
@@ -77,7 +77,7 @@ class BotaoPesquisa extends StatelessWidget {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("teste"),
-              content: const Text("cdsfvsev"),
+              content: const Text("teste"),
               actions: <Widget>[
                 TextButton(
                   child: const Text("Fechar"),

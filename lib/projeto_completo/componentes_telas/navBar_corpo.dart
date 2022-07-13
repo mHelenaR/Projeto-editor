@@ -11,7 +11,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 // importar arquivo
-import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
 
 class barraContainer extends StatefulWidget {
   const barraContainer({Key? key}) : super(key: key);

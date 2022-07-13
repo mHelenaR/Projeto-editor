@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';

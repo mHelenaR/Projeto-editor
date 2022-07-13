@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 const canvaCores = Color(0xFF532F99);
@@ -9,7 +11,7 @@ const corContainer = Color(0xfcfcfcfc);
 const corContainerTeste = Color.fromARGB(251, 59, 60, 165);
 const formatarTexto = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255));
 
-const TextFormato = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
+const textFormato = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
 const coresTexto = TextStyle(color: Colors.white);
 const formtLeft30 = EdgeInsets.only(left: 30);
 

@@ -18,6 +18,7 @@ class ContainerDicionario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 70,
       width: MediaQuery.of(context).size.width * 0.9,
       color: Colors.black,
     );

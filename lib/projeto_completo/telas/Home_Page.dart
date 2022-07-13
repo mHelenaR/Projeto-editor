@@ -22,7 +22,7 @@ class PaginaInicial extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: const Text(
                     'Editor de Configuração',
-                    style: TextFormato,
+                    style: textFormato,
                   ),
                 ),
               ),

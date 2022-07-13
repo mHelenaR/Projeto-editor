@@ -1,8 +1,7 @@
 import 'package:editorconfiguracao/projeto_completo/comparar/comprar_arquivos.dart';
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/carrega_tabela.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
-import 'package:editorconfiguracao/projeto_completo/busca_arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/home_page.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
@@ -112,7 +111,10 @@ class _ScreensExample extends StatelessWidget {
           case 0:
             return const HomePage();
           case 3:
-            return const tabelaTeste();
+            return Text(
+              'Custom ',
+              style: theme.textTheme.headline5,
+            );
 
           case 4:
             return Text(
