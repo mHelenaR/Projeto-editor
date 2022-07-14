@@ -7,3 +7,10 @@ final styleBarraPesquisa = InputDecoration(
   ),
   labelText: 'Pesquisar',
 );
+
+final styleBarraArquivo = InputDecoration(
+  prefixIcon: const Icon(Icons.archive),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(50),
+  ),
+);

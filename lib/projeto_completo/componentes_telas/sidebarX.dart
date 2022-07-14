@@ -2,6 +2,7 @@ import 'package:editorconfiguracao/projeto_completo/comparar/comprar_arquivos.da
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/table_page.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/home_page.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
@@ -59,7 +60,7 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => TableMenu(),
+                        builder: (context) => ArquivoPagina() /*TableMenu()*/,
                       ),
                     );
                   },

@@ -14,7 +14,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.d
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/tabela_completa.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/table_page.dart';
 
 class TableMenu extends StatefulWidget {
   TableMenu({Key? key}) : super(key: key);
