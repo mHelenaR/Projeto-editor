@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
 
+import '../../style_project/style_plutoGrid.dart';
+
 class Arquivo extends StatelessWidget {
   const Arquivo({Key? key}) : super(key: key);
 
@@ -117,6 +119,9 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<String> teste1 = [];
   List<String> teste2 = [];
   List<String> teste3 = [];
+  List<PlutoRow> rows = [];
+  List<PlutoColumn> columns = [];
+  Map<int, String> teste4 = Map();
 
   colunasTabelasArquivo() async {
     // espera o carregamento da variavel
@@ -126,36 +131,99 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
     separaTabelasArquivo = _separarArquivo.split('TIT ');
     List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
 
+    //----------- TIT------------//
+
     //encontra posição do caracter para extrair
-    int posCharacterArquivo = _linhasTIT[0].indexOf('|') + 1;
+    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
     nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
 
     // retira o separador
     nomeColunas = nomeColSeparada[0].split('|');
+
     setState(() {
       _arrayString = nomeColunas;
-      //print(_arrayString);
     });
 
-    //----------- CPO------------
-    for (int i = 0; i < _linhasTIT.length; i++) {
-      int posCPO = _linhasTIT[i].indexOf('CPO ');
-      if (posCPO == 0) {
-        linhaCPO = [_linhasTIT[i].substring(posCPO)];
+    //----------- TIT------------//
 
-        setState(() {
-          linhaCPO;
-        });
+    //----------- CPO------------//
+    // for (int i = 1; i < _linhasTIT.length; i++) {
+    //   if (_linhasTIT[i] != '') {
+    //     String testeP = _linhasTIT[i];
+    //     String? testeO = testeP.split('CPO ').toString();
+    //     teste1 = [testeO];
+    //     teste3 = teste3 + teste1;
+    //     for (int p = 0; p < teste3.length; p++) {
+    //       teste2 = teste3[p].split('^');
+    //       for (int m = 0; m < teste3.length; m++) {
+    //         teste4[p] = teste2[m];
+    //       }
+    //     }
+    //   }
+    // }
+
+    //arrumar colunas com tamanhos iguais
+    columns = <PlutoColumn>[
+      for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+        //coluna
+
+        PlutoColumn(
+          title: 'Coluna - $colTam| ${_arrayString[colTam]}',
+          field: colTam.toString(),
+          type: PlutoColumnType.text(),
+        ),
       }
-      teste1 = teste1 + linhaCPO;
-    }
-    for (int p = 0; p < teste1.length; p++) {
-      //print(teste1[p]);
-      teste2 = teste1[p].split('^');
-      teste3 = teste3 + teste2;
-    }
+    ];
+    rows = [
+      for (int rowTam = 0; rowTam < _arrayString.length; rowTam++) ...{
+        //linha
 
-    print(teste3);
+        PlutoRow(
+          cells: {
+            for (int rColTam = 0; rColTam < _arrayString.length; rColTam++) ...{
+              //coluna
+
+              rColTam.toString(): PlutoCell(value: 'Col - $rColTam | Row - $rowTam'),
+            },
+          },
+        ),
+      }
+    ];
+    //columns: columns,
+    // [
+    //   for (int j = 0; j < _arrayString.length; j++) ...{
+    //     PlutoColumn(
+    //       title: _arrayString[j],
+    //       field: j.toString(),
+    //       type: PlutoColumnType.text(),
+    //     ),
+    //   }
+    // ],
+
+    // rows: rows,
+    // [
+    //   for (int i = 0; i < teste3.length; i++) ...{
+    //     PlutoRow(
+    //       cells: {
+    //         for (int j = 0; j < teste2.length; j++) ...{
+    //           j.toString(): PlutoCell(value: j.toString() + '  ' + i.toString() + '  ' + teste2[j]),
+    //         },
+    //       },
+    //     ),
+    //   }
+    // ],
+
+    //print(teste4);
+    // print(teste4);
+
+    //   if (posCPO == 0) {
+    //     linhaCPO = [_linhasTIT[i].substring(0, 3)];
+    //   }
+    //   teste1 = teste1 + linhaCPO;
+    // }
+    // print(teste1);
+
+    //----------- CPO------------//
   }
 
   nomeTabelasArquivo() async {
@@ -200,33 +268,35 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   Widget arquivoGridTabelas() {
     late final PlutoGridStateManager stateManager;
 
-    print('teste 1');
     return Container(
         padding: const EdgeInsets.all(10),
         child: PlutoGrid(
+          configuration: consfiguracaoPlutoGrid,
           onLoaded: (PlutoGridOnLoadedEvent event) {
             stateManager = event.stateManager;
           },
-          columns: [
-            for (int j = 0; j < _arrayString.length; j++) ...{
-              PlutoColumn(
-                title: _arrayString[j],
-                field: j.toString(),
-                type: PlutoColumnType.text(),
-              ),
-            }
-          ],
-          rows: [
-            for (int i = 0; i < teste1.length; i++) ...{
-              PlutoRow(
-                cells: {
-                  for (int j = 0; j < teste3.length; j++) ...{
-                    j.toString(): PlutoCell(value: teste3[j]),
-                  },
-                },
-              ),
-            }
-          ],
+          columns: columns,
+          // [
+          //   for (int j = 0; j < _arrayString.length; j++) ...{
+          //     PlutoColumn(
+          //       title: _arrayString[j],
+          //       field: j.toString(),
+          //       type: PlutoColumnType.text(),
+          //     ),
+          //   }
+          // ],
+          rows: rows,
+          // [
+          //   for (int i = 0; i < teste3.length; i++) ...{
+          //     PlutoRow(
+          //       cells: {
+          //         for (int j = 0; j < teste2.length; j++) ...{
+          //           j.toString(): PlutoCell(value: j.toString() + '  ' + i.toString() + '  ' + teste2[j]),
+          //         },
+          //       },
+          //     ),
+          //   }
+          // ],
         ));
   }
 

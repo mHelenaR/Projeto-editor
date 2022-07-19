@@ -8,13 +8,13 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   doWhenWindowReady(
     () {
-      final win = appWindow;
+      final windowsScreen = appWindow;
       const initialSize = Size(1270, 700);
-      win.minSize = initialSize;
-      win.size = initialSize;
-      win.alignment = Alignment.center;
-      win.title = "Editor de Configuração";
-      win.show();
+      windowsScreen.minSize = initialSize;
+      windowsScreen.size = initialSize;
+      windowsScreen.alignment = Alignment.center;
+      windowsScreen.title = "Editor de Configuração";
+      windowsScreen.show();
     },
   );
 
