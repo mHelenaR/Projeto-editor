@@ -122,6 +122,9 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<PlutoRow> rows = [];
   List<PlutoColumn> columns = [];
   Map<int, String> teste4 = Map();
+  List<String> teste5 = [];
+  Map<dynamic, dynamic> teste6 = Map();
+  List<List<String>> teste7 = [];
 
   colunasTabelasArquivo() async {
     // espera o carregamento da variavel
@@ -156,32 +159,59 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
 
         for (int p = 0; p < teste3.length; p++) {
           teste2 = teste3[p].split('^');
-          teste4[p] = teste3[p];
-          // for (int n = 0; n < teste3.length; n++) {
-          //   }
+          // teste4[p] = teste3[p];
+          for (int n = 0; n < teste2.length; n++) {
+            teste4[n] = teste2[n];
+            //teste5 = teste4[n];
+            // teste7 = [
+            //   [p.toString()],
+            //   [teste2[n]]
+            // ];
+            // print(teste7);
 
+            // rows = [P
+            //   for (int rowTam = 0; rowTam < teste3.length; rowTam++) ...{
+            //     //linha
+            //     PlutoRow(
+            //       cells: {
+            //         //for (int rowTam = 0; rowTam < teste2.length; rowTam++) ...{
+            //         for (int rColTam = 0; rColTam < teste4.length; rColTam++) ...{
+            //           //coluna
+            //           rColTam.toString(): PlutoCell(
+            //               value: Container(
+            //             child: Center(
+            //               child: Text('{$teste4[rColTam]}'),
+            //             ),
+            //           )),
+            //         },
+            //         //}
+            //       },
+            //     ),
+            //   }
+            // ];
+          }
         }
+        // for (int p = 0; p < teste3.length; p++) {
+        //   teste6[p] = [teste3];
+        // }
+        // print(teste6);
+        // print(teste4.length);
+        // print(teste2.length);
 
-        rows = [
-          for (int rowTam = 0; rowTam < teste3.length; rowTam++) ...{
-            //linha
-
+        rows.addAll(
+          [
             PlutoRow(
               cells: {
-                //for (int rowTam = 0; rowTam < teste2.length; rowTam++) ...{
-                for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
-                  //coluna
-
-                  rColTam.toString(): PlutoCell(value: /*'$rColTam|$rowTam'*/ ' ${teste2[rColTam]}'),
+                for (int rColTam = 0; rColTam < teste4.length; rColTam++) ...{
+                  rColTam.toString(): PlutoCell(value: teste2[rColTam]),
                 },
-                //}
               },
             ),
-          }
-        ];
+          ],
+        );
       }
     }
-    print(teste4);
+
     //backup
 /* for (int i = 1; i < _linhasTIT.length; i++) {
       if (_linhasTIT[i] != '') {
@@ -223,9 +253,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
     columns = <PlutoColumn>[
       for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
         //coluna
-
         PlutoColumn(
-          title: ' $colTam|  ${_arrayString[colTam]}',
+          title: '$colTam|${_arrayString[colTam]}',
           field: colTam.toString(),
           type: PlutoColumnType.text(),
         ),
