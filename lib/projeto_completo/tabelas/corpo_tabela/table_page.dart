@@ -119,97 +119,190 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<String> teste1 = [];
   List<String> teste2 = [];
   List<String> teste3 = [];
+  List<String> teste4 = [];
   List<String> teste5 = [];
-  List<String> _linhasTIT = [];
+  // List<String> _linhasTIT = [];
 
   List<PlutoRow> rows = [];
   List<PlutoColumn> columns = [];
 
   colunasTabelasArquivo() async {
+    /* _separarArquivo = await conteudoArquivo;
+    // cria lista com cpo
+    separaTabelasArquivo = _separarArquivo.split('TIT ');
+    _linhasTIT = separaTabelasArquivo[1].split('\r\n');
+    //----------- TIT------------//
+    //encontra posição do caracter para extrair
+    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
+    // retira o separador
+    nomeColunas = nomeColSeparada[0].split('|');
+    setState(() {
+      _arrayString = nomeColunas;
+    });
+
+     // espera o carregamento da variavel
+    _separarArquivo = await conteudoArquivo;
+
+    // cria lista com cpo
+   
+    //----------- TIT-INICIO-----------//
+
+    //encontra posição do caracter para extrair
+    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
+
+    // retira o separador
+    nomeColunas = nomeColSeparada[0].split('|');
+
+    setState(() {
+      _arrayString = nomeColunas;
+    });*/
+
     // espera o carregamento da variavel
     _separarArquivo = await conteudoArquivo;
 
     // cria lista com cpo
-    //separaTabelasArquivo = _separarArquivo.split('TIT ');
-    separaTabelasArquivo = _separarArquivo.split('\r\n');
-    for (int i = 0; i < separaTabelasArquivo.length; i++) {
-      // String recebe = separaTabelasArquivo[i].split('\r\n').toString();
-      String nova = separaTabelasArquivo[i];
-      print(nova);
-      // if (nova.substring(0, 3) == 'TIT') {
-      //   int posCharacterArquivo = separaTabelasArquivo[i].indexOf('#') + 1;
-      //   String recebe = separaTabelasArquivo[i].substring(posCharacterArquivo);
-      //   nomeColSeparada.add('teste');
-      //   print(nomeColSeparada);
-      // }
+    separaTabelasArquivo = _separarArquivo.split('TIT ');
+    List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
 
-      // int posCharacterArquivo = recebe.indexOf('#') + 1;
-      // int posC = recebe.indexOf(', ') - 1;
-      // String recebendo = recebe.substring(posCharacterArquivo);
+    //----------- TIT------------//
 
-      // String recebe = separaTabelasArquivo[i].split('\r\n').toString();
-      // _linhasTIT.add(recebe);
-      //print(_linhasTIT);
-    }
-
-    // for (int j = 0; j < _linhasTIT.length; j++) {
-    //   int posCharacterArquivo = _linhasTIT[j].indexOf('#') + 1;
-    //   String recebe = _linhasTIT[j].substring(posCharacterArquivo);
-    //   nomeColSeparada.add(recebe);
-    //   //print(nomeColSeparada);
-
-    // }
-    // for (int m = 0; m < nomeColSeparada.length; m++) {
-    //   nomeColunas = nomeColSeparada[m].split('|');
-    //   print(nomeColunas);
-    // }
-
-    //----------- TIT-INICIO-----------//
     //encontra posição do caracter para extrair
-    // int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    // nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-    // retira o separador
-    // nomeColunas = nomeColSeparada[0].split('|');
+    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
 
-    // setState(() {
-    //   _arrayString = nomeColunas;
-    // });
+    // retira o separador
+    nomeColunas = nomeColSeparada[0].split('|');
+
+    setState(() {
+      _arrayString = nomeColunas;
+    });
     //----------- TIT-FIM-----------//
 
-    //---------- CPO-INICIO---------//
-    // for (int i = 1; i < _linhasTIT.length; i++) {
-    //   if (_linhasTIT[i] != '') {
-    //     String testeP = _linhasTIT[i];
-    //     String? testeO = testeP.split('CPO ').toString();
-    //     teste1 = [testeO];
-    //     teste3 = teste3 + teste1;
-    //     for (int p = 0; p < teste3.length; p++) {
-    //       teste2 = teste3[p].split('^');
-    //     }
-    //     rows.addAll([
-    //       PlutoRow(
-    //         cells: {
-    //           for (int rowTam = 0; rowTam < teste2.length; rowTam++) ...{
-    //             rowTam.toString(): PlutoCell(value: teste2[rowTam]),
-    //           },
-    //         },
-    //       ),
-    //     ]);
-    //   }
-    // }
-    // columns = <PlutoColumn>[
-    //   for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
-    //     //coluna
-    //     PlutoColumn(
-    //       title: '$colTam|${_arrayString[colTam]}',
-    //       field: colTam.toString(),
-    //       type: PlutoColumnType.text(),
-    //     ),
-    //   }
-    // ];
-    //----------- CPO-FIM-----------//
+    //----------- CPO-INICIO-----------//
+    for (int i = 1; i < _linhasTIT.length; i++) {
+      if (_linhasTIT[i] != '') {
+        String testeP = _linhasTIT[i];
+        String? testeO = testeP.split('CPO ').toString();
+        teste1 = [testeO];
+        teste3 = teste3 + teste1;
+
+        for (int p = 0; p < teste3.length; p++) {
+          teste2 = teste3[p].split('^');
+        }
+        rows.addAll([
+          PlutoRow(
+            cells: {
+              for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
+                rColTam.toString(): PlutoCell(value: teste2[rColTam]),
+              },
+            },
+          ),
+        ]);
+      }
+    }
+
+    //arrumar colunas com tamanhos iguais
+    columns = <PlutoColumn>[
+      for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+        //coluna
+        PlutoColumn(
+          title: '$colTam|${_arrayString[colTam]}',
+          field: colTam.toString(),
+          type: PlutoColumnType.text(),
+        ),
+      }
+    ];
+
+    //----------- CPO------------//
   }
 
+  /*// colunasTabelasArquivo() async {
+  //   // espera o carregamento da variavel
+  //   _separarArquivo = await conteudoArquivo;
+
+  //   // cria lista com cpo
+  //   separaTabelasArquivo = _separarArquivo.split('TIT ');
+  //   _linhasTIT = separaTabelasArquivo[1].split('\r\n');
+  //   //----------- TIT-INICIO-----------//
+  //   // for (int i = 1; i < separaTabelasArquivo.length; i++) {
+  //   //   teste1 = separaTabelasArquivo[i].split('\r\n');
+
+  //   //   int posCharacterArquivo = teste1[0].indexOf('#') + 1;
+  //   //   String recebendo = teste1[0].substring(posCharacterArquivo);
+
+  //   //   teste2.add(recebendo);
+  //   // }
+
+  //   // for (int j = 0; j < teste2.length; j++) {
+  //   //   teste3 = teste2[j].split('|');
+
+  //   //   setState(() {
+  //   //     _arrayString.add(teste3.toString());
+  //   //     // _arrayString = teste3;
+  //   //   });
+  //   // }
+  //   // columns = <PlutoColumn>[
+  //   //   for (int colTam = 0; colTam < teste3.length; colTam++) ...{
+  //   //     //coluna
+  //   //     PlutoColumn(
+  //   //       title: teste3[colTam],
+  //   //       field: colTam.toString(),
+  //   //       type: PlutoColumnType.text(),
+  //   //     ),
+  //   //   }
+  //   // ];
+
+  //   //encontra posição do caracter para extrair
+  //   int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+  //   nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
+
+  //   // retira o separador
+  //   nomeColunas = nomeColSeparada[0].split('|');
+
+  //   setState(() {
+  //     _arrayString = nomeColunas;
+  //   });
+  //   //arrumar colunas com tamanhos iguais
+  //   columns = <PlutoColumn>[
+  //     for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+  //       //coluna
+  //       PlutoColumn(
+  //         title: '$colTam|${_arrayString[colTam]}',
+  //         field: colTam.toString(),
+  //         type: PlutoColumnType.text(),
+  //       ),
+  //     }
+  //   ];
+  //   //----------- TIT-FIM-----------//
+
+  //   //---------- CPO-INICIO---------//
+  // for (int i = 0; i < separaTabelasArquivo.length; i++) {
+  //   teste1 = separaTabelasArquivo[i].split('\r\n');
+  //   //if (teste1[i] != '') {
+
+  //   String testeP = teste1[i];
+  //   String? testeO = testeP.split('CPO ').toString();
+  //   teste1 = [testeO];
+  //   teste3 = teste3 + teste1;
+  //   for (int p = 0; p < teste3.length; p++) {
+  //     teste2 = teste3[p].split('^');
+  //   }
+  //   rows.addAll([
+  //     PlutoRow(
+  //       cells: {
+  //         for (int rowTam = 0; rowTam < teste2.length; rowTam++) ...{
+  //           rowTam.toString(): PlutoCell(value: teste2[rowTam]),
+  //         },
+  //       },
+  //     ),
+  //   ]);
+  // }
+
+  //   //----------- CPO-FIM-----------//
+  // }*/
+  List<String> ordena = [];
   nomeTabelasArquivo() async {
     listaTIT = await conteudoArquivo.split('TIT ');
     int posicaoSeparador = 0;
@@ -225,6 +318,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         listaMenu = listaMenu + nomeTabelas;
       });
     }
+    ordena = listaMenu;
+    ordena.sort((num1, num2) => num1.compareTo(num2));
   }
 
   carregarTela() {
@@ -235,8 +330,11 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           if (snapshot.hasData) {
             return arquivoTabelas();
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.purple.shade300,
+                backgroundColor: canvaCores,
+              ),
             );
           }
         },
@@ -575,7 +673,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                   label: "Voltar",
                   onTap: () => Navigator.pop(context),
                 ),
-                for (final lista in listaMenu) ...{
+                for (final lista in ordena) ...{
                   SidebarXItem(
                     iconWidget: Image.asset(
                       "assets/images/icon_prancheta.png",
