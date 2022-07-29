@@ -12,6 +12,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pesquisa.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fluent_ui/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -42,73 +43,16 @@ class ArquivoPagina extends StatefulWidget {
 class _ArquivoPaginaState extends State<ArquivoPagina> {
   var _recebeCaminhoArquivo, conteudoArquivo;
 
-  List<String> listaTIT = [];
   List<String> nomeTabelas = [];
-  List<String> listaMenu = [''];
+  List<String> listaMenu = ['teste'];
 
   final _controller = SidebarXController(selectedIndex: 0);
 
-  Future<void> arquivoAbrirSeparar() async {
-    try {
-      String? caminhoArquivo = r'/storage/';
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['cfg'],
-        dialogTitle: 'Abrir',
-        withData: true,
-      );
-
-      if (result != null) {
-        caminhoArquivo = result.files.single.path;
-        setState(() {
-          _recebeCaminhoArquivo = caminhoArquivo!;
-        });
-
-        final dadosArquivo = await File(_recebeCaminhoArquivo).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
-
-        setState(() {
-          conteudoArquivo = dadosArquivo;
-        });
-
-        setState(() {
-          colunasTabelasArquivo();
-        });
-
-        setState(() {
-          nomeTabelasArquivo();
-        });
-      } else {
-        // dentro do metodo Scaffold ela nao executa
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            elevation: 50,
-            content: Text("Operação cancelada! O arquivo não foi selecionado!"),
-          ),
-        );
-
-        setState(() {
-          _recebeCaminhoArquivo = '';
-        });
-        print('else');
-      }
-    } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Exception: $e'),
-        ),
-      );
-      setState(() {
-        _recebeCaminhoArquivo = '';
-      });
-    }
-  }
-
-  String _separarArquivo = '';
+  final String _separarArquivo = '';
   List<String> separaTabelasArquivo = [];
   List<String> nomeColSeparada = [];
   List<String> nomeColunas = [];
-  List<String> _arrayString = [''];
+  final List<String> _arrayString = [''];
   List<String> linhaCPO = [];
   List<String> teste1 = [];
   List<String> teste2 = [];
@@ -120,227 +64,67 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<PlutoRow> rows = [];
   List<PlutoColumn> columns = [];
 
-  colunasTabelasArquivo() async {
-    /* _separarArquivo = await conteudoArquivo;
-    // cria lista com cpo
-    separaTabelasArquivo = _separarArquivo.split('TIT ');
-    _linhasTIT = separaTabelasArquivo[1].split('\r\n');
-    //----------- TIT------------//
-    //encontra posição do caracter para extrair
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
-    setState(() {
-      _arrayString = nomeColunas;
-    });
-
-     // espera o carregamento da variavel
-    _separarArquivo = await conteudoArquivo;
-
-    // cria lista com cpo
-   
-    //----------- TIT-INICIO-----------//
-
-    //encontra posição do caracter para extrair
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
-
-    setState(() {
-      _arrayString = nomeColunas;
-    });*/
-
-    _separarArquivo = await conteudoArquivo;
-
-    separaTabelasArquivo = _separarArquivo.split('TIT ');
-    List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
-
-    //----------- TIT------------//
-
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
-
-    setState(() {
-      _arrayString = nomeColunas;
-    });
-    setState(() {
-      columns = <PlutoColumn>[
-        if (_controller.selectedIndex == 1) ...{
-          PlutoColumn(
-            title: 'teste carrega',
-            field: 'teste',
-            type: PlutoColumnType.text(),
-          ),
-        } else if (_controller.selectedIndex != 1) ...{
-          for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
-            //coluna
-            PlutoColumn(
-              title: '$colTam|${_arrayString[colTam]}',
-              field: colTam.toString(),
-              type: PlutoColumnType.text(),
-            ),
-          }
-        }
-      ];
-    });
-
-    //----------- TIT-FIM-----------//
-
-    //----------- CPO-INICIO-----------//
-    for (int i = 1; i < _linhasTIT.length; i++) {
-      if (_linhasTIT[i] != '') {
-        String testeP = _linhasTIT[i];
-        String? testeO = testeP.split('CPO ').toString();
-        teste1 = [testeO];
-        teste3 = teste3 + teste1;
-
-        for (int p = 0; p < teste3.length; p++) {
-          teste2 = teste3[p].split('^');
-        }
-
-        setState(
-          () {
-            rows.addAll(
-              [
-                if (_controller.selectedIndex == 1) ...{
-                  PlutoRow(
-                    cells: {
-                      'teste': PlutoCell(value: 'testewrrwffw'),
-                    },
-                  ),
-                } else if (_controller.selectedIndex != 1) ...{
-                  PlutoRow(
-                    cells: {
-                      for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
-                        rColTam.toString(): PlutoCell(value: teste2[rColTam]),
-                      },
-                    },
-                  ),
-                }
-              ],
-            );
-          },
-        );
-      }
-    }
-
-    //----------- CPO------------//
+// função para limpar as listas
+  limpaListas() {
+    nomeTabelas.clear();
+    listaMenu.clear();
+    separaTabelasArquivo.clear();
+    nomeColSeparada.clear();
+    nomeColunas.clear();
+    _arrayString.clear();
+    linhaCPO.clear();
+    teste1.clear();
+    teste2.clear();
+    teste3.clear();
+    teste4.clear();
+    teste5.clear();
+    rows.clear();
+    columns.clear();
   }
 
-  nomeTabelasArquivo() async {
-    listaTIT = await conteudoArquivo.split('TIT ');
+  nomeTabelasArquivo() {
+    limpaListas();
+
+    conteudoArquivo = 'TIT teste#tabela1-1|tabela1-2|tabela1-3|tabela1-4|\r\nCPO 001^002^003^004^\r\nCPO 005^006^007^008^\r\nCPO 009^010^011^012^\r\nTIT teste1#tabela2-1|tabela2-2|tabela2-3|tabela2-4|\r\nCPO 100^200^300^400^\r\nCPO 500^600^700^800^\r\nCPO 900^100^110^120^\r\n';
+    List<String> listaTIT = conteudoArquivo.split('TIT ');
     int posicaoSeparador = 0;
 
     for (int i = 0; i < listaTIT.length; i++) {
       posicaoSeparador = listaTIT[i].indexOf('#');
       if (posicaoSeparador != -1) {
         nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
-      } else {
-        nomeTabelas = [];
       }
       setState(() {
         listaMenu = listaMenu + nomeTabelas;
+        //testeMapa[i] = listaMenu.toString();
       });
     }
-
-    // ordena = listaMenu;
-    // ordena.sort((num1, num2) => num1.compareTo(num2));
   }
 
-  carregarTela() {
-    return Container(
-      child: FutureBuilder(
-        future: getValue(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return arquivoTabelas();
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.purple.shade300,
-                backgroundColor: canvaCores,
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
+  //Map<int, String> testeMapa = {0: 'teste', 1: 'teste1'};
+  //var cont = 0;
+  teste() {
+    for (int i = 0; i < listaMenu.length; i++) {
+      //  print(i);
 
-  Future<String> getValue() async {
-    await Future.delayed(const Duration(seconds: 10));
-    return 'Aguarde!\n Carregando tabelas!';
-  }
-
-  Widget arquivoGridTabelas() {
-    late final PlutoGridStateManager stateManager;
-
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child: PlutoGrid(
-        //cabeçalho grid
-        /* createHeader: (PlutoGridStateManager stateManager) {
-          return ElevatedButton(
-            onPressed: () {},
-            child: const Text("Filtrar"),
-          );
-        },*/
-
-        //filtro na tela
-        onLoaded: (PlutoGridOnLoadedEvent event) {
-          event.stateManager.setShowColumnFilter(true);
-        },
-        onChanged: (PlutoGridOnChangedEvent event) {
-          var recebeTexto = event;
-          print(recebeTexto);
-        },
-        configuration: consfiguracaoPlutoGrid,
-
-        columns: columns,
-        rows: rows,
-      ),
-    );
-  }
-
-  Widget arquivoTabelas() {
-    double heightScreen = MediaQuery.of(context).size.height;
-    double widthScreen = MediaQuery.of(context).size.width;
-    double screen = 0;
-    if ((heightScreen < 960) && (heightScreen > 760)) {
-      screen = MediaQuery.of(context).size.height * 0.75;
-    } else if ((heightScreen > 961)) {
-      screen = MediaQuery.of(context).size.height * 0.8;
-    } else if (heightScreen < 760) {
-      screen = MediaQuery.of(context).size.height * 0.7;
-    }
-
-    return Flexible(
-      child: Container(
-        alignment: Alignment.topLeft,
-        child: Row(
+      if (_controller.selectedIndex == i) {
+        return Column(
           children: [
             const SizedBox(
-              width: 10,
+              height: 10,
             ),
-            Expanded(
-              child: Container(
-                height: screen,
-                child: arquivoGridTabelas(),
-              ),
-            ),
+            arquivoBusca(),
             const SizedBox(
-              width: 10,
+              height: 10,
             ),
+            Text("Dentro do IF = ${listaMenu[i]}"),
           ],
-        ),
-      ),
-    );
+        );
+      } else {
+        return Text("Else  do if ${listaMenu}");
+      }
+    }
+    return Text("Fora do loop");
   }
 
   Widget arquivoBusca() {
@@ -386,7 +170,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                   Flexible(
                     child: ElevatedButton(
                       onPressed: () {
-                        arquivoAbrirSeparar();
+                        nomeTabelasArquivo();
                       },
                       style: estiloBotao,
                       child: const Text("Procurar"),
@@ -398,61 +182,6 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           ),
           const SizedBox(
             width: 10,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget arquivoBarraPesquisa() {
-    return TextFormField(
-      decoration: styleBarraPesquisa,
-    );
-  }
-
-  Widget arquivoBotaoPesquisa() {
-    return ElevatedButton(
-      onPressed: () {},
-      child: const Text('Pesquisar'),
-      style: estiloBotao,
-    );
-  }
-
-  Widget arquivoAppBarTable() {
-    return SizedBox(
-      height: 70,
-      child: AppBar(
-        backgroundColor: white,
-        actions: [
-          const SizedBox(
-            width: 20,
-          ),
-          Flexible(
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: const Text(
-                "Tabelas",
-                style: fontePreta,
-              ),
-            ),
-          ),
-          Flexible(
-            child: Container(
-              alignment: Alignment.center,
-              child: SizedBox(
-                height: 40,
-                child: arquivoBarraPesquisa(),
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Flexible(
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: arquivoBotaoPesquisa(),
-            ),
           ),
         ],
       ),
@@ -483,88 +212,58 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                 );
               },
               items: [
-                SidebarXItem(
-                  iconWidget: Image.asset(
-                    "assets/images/icon_setaEsquerda.png",
-                    color: Colors.white,
-                  ),
-                  label: "Voltar",
-                  onTap: () => Navigator.pop(context),
+                const SidebarXItem(
+                  iconWidget: Icon(Icons.home, color: Colors.white),
+                  label: "Página Principal",
+                  //  onTap: () => Navigator.pop(context),
                 ),
-                for (final lista in listaMenu) ...{
+                for (int i = 0; i < listaMenu.length; i++) ...{
                   SidebarXItem(
                     iconWidget: Image.asset(
                       "assets/images/icon_prancheta.png",
                       color: Colors.white,
                     ),
-                    label: lista,
+                    label: listaMenu[i],
                   ),
                 },
               ],
             ),
             Expanded(
               child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return AnimatedBuilder(
-                    animation: _controller,
-                    builder: (contexto, filho) {
-                      if (_controller.selectedIndex == 3) {
-                        return const Text("teste tela");
-                      } else {
-                        return Column(
-                          children: [
-                            arquivoAppBarTable(),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            arquivoBusca(),
-                            arquivoTabelas(),
-                          ],
-                        );
-                      }
-                    },
-                  );
-                },
-              ),
+                  animation: _controller,
+                  builder: (context, child) {
+                    return teste();
+                    // switch (listaMenu.toString()) {
+                    //   case 't':
+                    //     return Column(
+                    //       children: [
+                    //         const SizedBox(
+                    //           height: 10,
+                    //         ),
+                    //         arquivoBusca(),
+                    //         const SizedBox(
+                    //           height: 10,
+                    //         ),
+                    //         const Text("Teste"),
+                    //       ],
+                    //     );
+                    //   case "teste2":
+                    //     return teste();
+
+                    //   case "teste3":
+                    //     return const Text("Case 2");
+
+                    //   default:
+                    //     return Text("$listaMenu");
+                    //   //}
+                  }
+                  // return const Text("Else fora do loop");
+
+                  ),
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class MenssagemErro {
-  void showSnackBar(BuildContext context) {
-    const snackBar = SnackBar(
-      content: Text("Operação cancelada! O arquivo não foi selecionado!"),
-      backgroundColor: Colors.teal,
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.all(50),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-}
-
-class Tetse extends StatelessWidget {
-  final String? title;
-  final String? topTitle;
-  final List<Widget>? topContents;
-  final List<Widget>? topButtons;
-  final Widget? body;
-
-  const Tetse({
-    Key? key,
-    this.title,
-    this.topTitle,
-    this.topContents,
-    this.topButtons,
-    this.body,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

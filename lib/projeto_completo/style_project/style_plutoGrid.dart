@@ -1,6 +1,6 @@
 import 'package:pluto_grid/pluto_grid.dart';
 
-const consfiguracaoPlutoGrid = PlutoGridConfiguration(
+const configuracaoPlutoGrid = PlutoGridConfiguration(
   localeText: PlutoGridLocaleText(
     unfreezeColumn: 'Desfixar',
     freezeColumnToEnd: 'Fixar a esquerda',
@@ -20,9 +20,9 @@ const consfiguracaoPlutoGrid = PlutoGridConfiguration(
     filterStartsWith: 'Iniciar com',
     filterEndsWith: 'Terminar com',
     filterGreaterThan: 'Maior que',
-    filterGreaterThanOrEqualTo: 'Greater than or equal to',
-    filterLessThan: 'Less than',
-    filterLessThanOrEqualTo: 'Less than or equal to',
+    filterGreaterThanOrEqualTo: 'Maior que ou igual a',
+    filterLessThan: 'Menor que',
+    filterLessThanOrEqualTo: 'Menor que ou igual a',
     sunday: 'Dom',
     monday: 'Seg',
     tuesday: 'Ter',
