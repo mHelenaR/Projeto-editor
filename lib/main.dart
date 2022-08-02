@@ -5,18 +5,22 @@ import 'package:editorconfiguracao/projeto_completo/telas/corpo_programa.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  doWhenWindowReady(
-    () {
-      final windowsScreen = appWindow;
-      const initialSize = Size(1270, 700);
-      windowsScreen.minSize = initialSize;
-      windowsScreen.size = initialSize;
-      windowsScreen.alignment = Alignment.center;
-      windowsScreen.title = "Editor de Configuração";
-      windowsScreen.show();
-    },
-  );
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    doWhenWindowReady(
+      () {
+        final windowsScreen = appWindow;
+        const initialSize = Size(1270, 700);
+        windowsScreen.minSize = initialSize;
+        windowsScreen.size = initialSize;
+        windowsScreen.alignment = Alignment.center;
+        windowsScreen.title = "Editor de Configuração";
+        windowsScreen.show();
+      },
+    );
 
-  runApp(const CorpoProjeto());
+    runApp(const CorpoProjeto());
+  } catch (e) {
+    debugPrint(e.toString());
+  }
 }

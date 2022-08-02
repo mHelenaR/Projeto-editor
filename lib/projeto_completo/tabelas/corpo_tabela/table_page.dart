@@ -20,6 +20,15 @@ import 'package:sidebarx/sidebarx.dart';
 
 import '../../style_project/style_plutoGrid.dart';
 
+enum Status {
+  loading(message: 'Carregando!'),
+  success(message: 'Sucesso'),
+  error(message: 'Erro: ');
+
+  const Status({required this.message});
+  final String message;
+}
+
 class Arquivo extends StatelessWidget {
   const Arquivo({Key? key}) : super(key: key);
 
@@ -82,207 +91,268 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   }
 
   nomeTabelasArquivo() {
-    limpaListas();
+    try {
+      //  limpaListas();
 
-    conteudoArquivo =
-        'TIT teste#tabela1-1|tabela1-2|tabela1-3|tabela1-4|\r\nCPO 001^002^003^004^\r\nCPO 005^006^007^008^\r\nCPO 009^010^011^012^\r\nTIT teste1#tabela2-1|tabela2-2|tabela2-3|tabela2-4|\r\nCPO 100^200^300^400^\r\nCPO 500^600^700^800^\r\nCPO 900^100^110^120^\r\nTIT teste2#tabela3-1|tabela3-2|tabela3-3|tabela3-4|\r\nCPO 101^102^103^104^\r\nCPO 105^106^107^108^\r\nCPO 109^110^111^112^\r\n';
-    listaTIT = conteudoArquivo.split('TIT ');
-    int posicaoSeparador = 0;
+      conteudoArquivo =
+          'TIT teste#tabela1-1|tabela1-2|tabela1-3|tabela1-4|\r\nCPO 001^002^003^004^\r\nCPO 005^006^007^008^\r\nCPO 009^010^011^012^\r\nTIT teste1#tabela2-1|tabela2-2|tabela2-3|tabela2-4|\r\nCPO 100^200^300^400^\r\nCPO 500^600^700^800^\r\nCPO 900^100^110^120^\r\nTIT teste2#tabela3-1|tabela3-2|tabela3-3|tabela3-4|\r\nCPO 101^102^103^104^\r\nCPO 105^106^107^108^\r\nCPO 109^110^111^112^\r\n';
+      listaTIT = conteudoArquivo.split('TIT ');
 
-    for (int i = 0; i < listaTIT.length; i++) {
-      posicaoSeparador = listaTIT[i].indexOf('#');
-      if (posicaoSeparador != -1) {
-        nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
+      int posicaoSeparador = 0;
+
+      for (int i = 0; i < listaTIT.length; i++) {
+        posicaoSeparador = listaTIT[i].indexOf('#');
+        if (posicaoSeparador != -1) {
+          nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
+        }
+        setState(() {
+          listaMenu = listaMenu + nomeTabelas;
+        });
       }
-      setState(() {
-        listaMenu = listaMenu + nomeTabelas;
-      });
+
+      for (int i = 0; i < listaTIT.length; i++) {
+        if (listaTIT[i] != '') {
+          String linha = listaTIT[i];
+          String? testeO = linha.split('\r\n').toString();
+          teste1 = teste1 + [testeO];
+          // print(teste1);
+
+        } else {
+          print("Primeiro IF");
+        }
+      }
+
+      for (int j = 0; j < teste1.length; j++) {
+        if (teste1[j] != "") {
+          String nova = teste1[j];
+          String? nova1 = nova.split("CPO ").toString();
+
+          teste3 = teste3 + [nova1];
+        } else {
+          print("Segundo IF");
+        }
+      }
+      print(teste3[4]);
+    } catch (e) {
+      print('${Status.error.message} $e');
     }
   }
 
   teste() {
-    for (int i = 0; i < listaMenu.length; i++) {
-      if ((_controller.selectedIndex == 0)) {
-        return Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            arquivoBusca(),
-            const SizedBox(
-              height: 10,
-            ),
-            Text("Dentro do IF = ${listaMenu[i]}"),
-          ],
-        );
+    try {
+      for (int i = 0; i < listaMenu.length; i++) {
+        if ((_controller.selectedIndex == 0)) {
+          return Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              arquivoBusca(),
+              const SizedBox(
+                height: 10,
+              ),
+              Text("Dentro do IF = ${listaMenu[i]}"),
+            ],
+          );
+        }
       }
+      return const Text("Fora do loop");
+    } catch (e) {
+      print('${Status.error}: $e');
     }
-    return const Text("Fora do loop");
   }
 
   Future<String> getValue() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return 'Aguarde!\n Carregando tabelas!';
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      return 'Aguarde!\n Carregando tabelas!';
+    } catch (e) {
+      print('${Status.error}: $e');
+      return "Erro";
+    }
   }
 
   carregarTela() {
-    return Container(
-      child: FutureBuilder(
-        future: getValue(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return nomeTabelasArquivo();
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.purple.shade300,
-                backgroundColor: canvaCores,
-              ),
-            );
-          }
-        },
-      ),
-    );
+    try {
+      return Container(
+        child: FutureBuilder(
+          future: getValue(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return nomeTabelasArquivo();
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.purple.shade300,
+                  backgroundColor: canvaCores,
+                ),
+              );
+            }
+          },
+        ),
+      );
+    } catch (e) {
+      print('${Status.error}: $e');
+    }
   }
 
   int cor = 0;
 
   mudarCor(int numero) {
-    if (_controller.selectedIndex == numero) {
-      cor = _controller.selectedIndex;
+    try {
+      if (_controller.selectedIndex == numero) {
+        cor = _controller.selectedIndex;
+        return cor;
+      }
+    } catch (e) {
+      print('${Status.error}: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Row(
-          children: [
-            SidebarX(
-              controller: _controller,
-              theme: StyleSideBar,
-              extendedTheme: StyleExpandeSideBar,
-              footerDivider: divider,
-              headerBuilder: (context, extended) {
-                return SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset(
-                      'assets/images/icon_archive.png',
+    try {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Row(
+            children: [
+              SidebarX(
+                controller: _controller,
+                theme: StyleSideBar,
+                extendedTheme: StyleExpandeSideBar,
+                footerDivider: divider,
+                headerBuilder: (context, extended) {
+                  return SizedBox(
+                    height: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Image.asset(
+                        'assets/images/icon_archive.png',
+                      ),
                     ),
-                  ),
-                );
-              },
-              items: [
-                const SidebarXItem(
-                  iconWidget: Icon(Icons.home, color: Colors.white),
-                  label: "Página Principal",
-                ),
-                for (int i = 0; i < listaMenu.length; i++) ...{
-                  SidebarXItem(
-                    iconWidget: Image.asset(
-                      "assets/images/icon_prancheta.png",
-                      color: Colors.white,
-                    ),
-                    label: listaMenu[i],
-                  ),
+                  );
                 },
-              ],
-            ),
-            Expanded(
-              child: AnimatedBuilder(
+                items: [
+                  const SidebarXItem(
+                    iconWidget: Icon(Icons.home, color: Colors.white),
+                    label: "Página Principal",
+                  ),
+                  for (int i = 0; i < listaMenu.length; i++) ...{
+                    SidebarXItem(
+                      iconWidget: Image.asset(
+                        "assets/images/icon_prancheta.png",
+                        color: Colors.white,
+                      ),
+                      label: listaMenu[i],
+                    ),
+                  },
+                ],
+              ),
+              Expanded(
+                child: AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
                     if (_controller.selectedIndex == 0) {
                       return teste();
                     } else {
-                      mudarCor(menu(_controller.selectedIndex));
+                      // mudarCor(menu(_controller.selectedIndex));
                       return Container(
                         child: Text(listaTIT[_controller.selectedIndex]),
                       );
                     }
-                  }),
-            ),
-          ],
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      print('${Status.error}: $e');
+      return Text('${Status.error}: $e');
+    }
   }
 
   menu(int numero) {
-    for (int i = 0; i < listaTIT.length; i++) {
-      if (listaTIT[_controller.selectedIndex] == listaTIT[i]) {
-        numero = i;
-        print(numero);
-        return numero;
+    try {
+      for (int i = 0; i < listaTIT.length; i++) {
+        if (listaTIT[_controller.selectedIndex] == listaTIT[i]) {
+          numero = i;
+          print(numero);
+          return numero;
+        }
       }
+      return 0;
+    } catch (e) {
+      print(e);
     }
-    return 0;
   }
 
   Widget arquivoBusca() {
-    var nomeArquivo;
-    if (_recebeCaminhoArquivo == '') {
-      nomeArquivo = 'Arquivo';
-    } else {
-      nomeArquivo = _recebeCaminhoArquivo;
-    }
+    try {
+      var nomeArquivo;
+      if (_recebeCaminhoArquivo == '') {
+        nomeArquivo = 'Arquivo';
+      } else {
+        nomeArquivo = _recebeCaminhoArquivo;
+      }
 
-    return SizedBox(
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      width: 400,
-                      height: 35,
-                      child: TextFormField(
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.archive),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
+      return SizedBox(
+        child: Row(
+          children: [
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        width: 400,
+                        height: 35,
+                        child: TextFormField(
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.archive),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            labelText: nomeArquivo,
                           ),
-                          labelText: nomeArquivo,
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        nomeTabelasArquivo();
-                      },
-                      style: estiloBotao,
-                      child: const Text("Procurar"),
+                    const SizedBox(
+                      width: 10,
                     ),
-                  ),
-                ],
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          nomeTabelasArquivo();
+                        },
+                        style: estiloBotao,
+                        child: const Text("Procurar"),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
-    );
+            const SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print('${Status.error.message} $e');
+      return Text('${Status.error.message} $e');
+    }
   }
 }
-
 // utilizar o  indexOf  para comparar o nome de item da lista
 //https://pt.stackoverflow.com/questions/303497/como-encontrar-e-mostrar-a-posi%C3%A7%C3%A3o-de-um-item-na-lista-n%C3%A3o-definindo-o-valor-da
