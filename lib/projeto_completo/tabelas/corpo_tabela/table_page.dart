@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, prefer_const_constructors_in_immutables, unused_element, no_leading_underscores_for_local_identifiers, prefer_typing_uninitialized_variables, unused_field, unused_local_variable, await_only_futures, use_build_context_synchronously, avoid_print
 
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:data_table_2/paginated_data_table_2.dart';
@@ -59,12 +60,10 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<String> teste3 = [];
   List<String> teste4 = [];
   List<String> teste5 = [];
-  // List<String> _linhasTIT = [];
-
+  List<String> listaTIT = [];
   List<PlutoRow> rows = [];
   List<PlutoColumn> columns = [];
 
-// função para limpar as listas
   limpaListas() {
     nomeTabelas.clear();
     listaMenu.clear();
@@ -85,8 +84,9 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   nomeTabelasArquivo() {
     limpaListas();
 
-    conteudoArquivo = 'TIT teste#tabela1-1|tabela1-2|tabela1-3|tabela1-4|\r\nCPO 001^002^003^004^\r\nCPO 005^006^007^008^\r\nCPO 009^010^011^012^\r\nTIT teste1#tabela2-1|tabela2-2|tabela2-3|tabela2-4|\r\nCPO 100^200^300^400^\r\nCPO 500^600^700^800^\r\nCPO 900^100^110^120^\r\n';
-    List<String> listaTIT = conteudoArquivo.split('TIT ');
+    conteudoArquivo =
+        'TIT teste#tabela1-1|tabela1-2|tabela1-3|tabela1-4|\r\nCPO 001^002^003^004^\r\nCPO 005^006^007^008^\r\nCPO 009^010^011^012^\r\nTIT teste1#tabela2-1|tabela2-2|tabela2-3|tabela2-4|\r\nCPO 100^200^300^400^\r\nCPO 500^600^700^800^\r\nCPO 900^100^110^120^\r\nTIT teste2#tabela3-1|tabela3-2|tabela3-3|tabela3-4|\r\nCPO 101^102^103^104^\r\nCPO 105^106^107^108^\r\nCPO 109^110^111^112^\r\n';
+    listaTIT = conteudoArquivo.split('TIT ');
     int posicaoSeparador = 0;
 
     for (int i = 0; i < listaTIT.length; i++) {
@@ -96,18 +96,13 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       }
       setState(() {
         listaMenu = listaMenu + nomeTabelas;
-        //testeMapa[i] = listaMenu.toString();
       });
     }
   }
 
-  //Map<int, String> testeMapa = {0: 'teste', 1: 'teste1'};
-  //var cont = 0;
   teste() {
     for (int i = 0; i < listaMenu.length; i++) {
-      //  print(i);
-
-      if (_controller.selectedIndex == i) {
+      if ((_controller.selectedIndex == 0)) {
         return Column(
           children: [
             const SizedBox(
@@ -120,11 +115,112 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
             Text("Dentro do IF = ${listaMenu[i]}"),
           ],
         );
-      } else {
-        return Text("Else  do if ${listaMenu}");
       }
     }
-    return Text("Fora do loop");
+    return const Text("Fora do loop");
+  }
+
+  Future<String> getValue() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return 'Aguarde!\n Carregando tabelas!';
+  }
+
+  carregarTela() {
+    return Container(
+      child: FutureBuilder(
+        future: getValue(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return nomeTabelasArquivo();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.purple.shade300,
+                backgroundColor: canvaCores,
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  int cor = 0;
+
+  mudarCor(int numero) {
+    if (_controller.selectedIndex == numero) {
+      cor = _controller.selectedIndex;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Row(
+          children: [
+            SidebarX(
+              controller: _controller,
+              theme: StyleSideBar,
+              extendedTheme: StyleExpandeSideBar,
+              footerDivider: divider,
+              headerBuilder: (context, extended) {
+                return SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Image.asset(
+                      'assets/images/icon_archive.png',
+                    ),
+                  ),
+                );
+              },
+              items: [
+                const SidebarXItem(
+                  iconWidget: Icon(Icons.home, color: Colors.white),
+                  label: "Página Principal",
+                ),
+                for (int i = 0; i < listaMenu.length; i++) ...{
+                  SidebarXItem(
+                    iconWidget: Image.asset(
+                      "assets/images/icon_prancheta.png",
+                      color: Colors.white,
+                    ),
+                    label: listaMenu[i],
+                  ),
+                },
+              ],
+            ),
+            Expanded(
+              child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    if (_controller.selectedIndex == 0) {
+                      return teste();
+                    } else {
+                      mudarCor(menu(_controller.selectedIndex));
+                      return Container(
+                        child: Text(listaTIT[_controller.selectedIndex]),
+                      );
+                    }
+                  }),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  menu(int numero) {
+    for (int i = 0; i < listaTIT.length; i++) {
+      if (listaTIT[_controller.selectedIndex] == listaTIT[i]) {
+        numero = i;
+        print(numero);
+        return numero;
+      }
+    }
+    return 0;
   }
 
   Widget arquivoBusca() {
@@ -144,7 +240,6 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           Expanded(
             child: Container(
               height: 70,
-              //color: Colors.amber,
               child: Row(
                 children: [
                   Flexible(
@@ -187,83 +282,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       ),
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Row(
-          children: [
-            SidebarX(
-              controller: _controller,
-              theme: StyleSideBar,
-              extendedTheme: StyleExpandeSideBar,
-              footerDivider: divider,
-              headerBuilder: (context, extended) {
-                return SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset(
-                      'assets/images/icon_archive.png',
-                    ),
-                  ),
-                );
-              },
-              items: [
-                const SidebarXItem(
-                  iconWidget: Icon(Icons.home, color: Colors.white),
-                  label: "Página Principal",
-                  //  onTap: () => Navigator.pop(context),
-                ),
-                for (int i = 0; i < listaMenu.length; i++) ...{
-                  SidebarXItem(
-                    iconWidget: Image.asset(
-                      "assets/images/icon_prancheta.png",
-                      color: Colors.white,
-                    ),
-                    label: listaMenu[i],
-                  ),
-                },
-              ],
-            ),
-            Expanded(
-              child: AnimatedBuilder(
-                  animation: _controller,
-                  builder: (context, child) {
-                    return teste();
-                    // switch (listaMenu.toString()) {
-                    //   case 't':
-                    //     return Column(
-                    //       children: [
-                    //         const SizedBox(
-                    //           height: 10,
-                    //         ),
-                    //         arquivoBusca(),
-                    //         const SizedBox(
-                    //           height: 10,
-                    //         ),
-                    //         const Text("Teste"),
-                    //       ],
-                    //     );
-                    //   case "teste2":
-                    //     return teste();
-
-                    //   case "teste3":
-                    //     return const Text("Case 2");
-
-                    //   default:
-                    //     return Text("$listaMenu");
-                    //   //}
-                  }
-                  // return const Text("Else fora do loop");
-
-                  ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
+
+// utilizar o  indexOf  para comparar o nome de item da lista
+//https://pt.stackoverflow.com/questions/303497/como-encontrar-e-mostrar-a-posi%C3%A7%C3%A3o-de-um-item-na-lista-n%C3%A3o-definindo-o-valor-da

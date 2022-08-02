@@ -64,7 +64,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           _recebeCaminhoArquivo = caminhoArquivo!;
         });
 
-        final dadosArquivo = await File(_recebeCaminhoArquivo).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+        final dadosArquivo = await File(_recebeCaminhoArquivo)
+            .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
         setState(() {
           conteudoArquivo = dadosArquivo;
@@ -217,7 +218,9 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                 } else if (_controller.selectedIndex != 1) ...{
                   PlutoRow(
                     cells: {
-                      for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
+                      for (int rColTam = 0;
+                          rColTam < teste2.length;
+                          rColTam++) ...{
                         rColTam.toString(): PlutoCell(value: teste2[rColTam]),
                       },
                     },
@@ -569,3 +572,8 @@ class Tetse extends StatelessWidget {
     return Container();
   }
 }
+// exemplo ponteiro
+
+    // Pointer? ptrToCopy; // i will assume that you have this already...
+    // Pointer<Pointer<NativeType>> _ptrToPtr = allocate();
+    // _ptrToPtr.value = Pointer.fromAddress(ptrToCopy!.address);
