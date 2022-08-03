@@ -51,11 +51,13 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
               // opções menu
               items: [
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/homepage_1.png", color: Colors.white),
+                  iconWidget: Image.asset("assets/images/homepage_1.png",
+                      color: Colors.white),
                   label: "Pagina Inicial",
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_prancheta.png", color: Colors.white),
+                  iconWidget: Image.asset("assets/images/icon_prancheta.png",
+                      color: Colors.white),
                   label: "Tabelas",
                   onTap: () {
                     Navigator.of(context).push(
@@ -66,7 +68,8 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
                   },
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_nuvem.png", color: Colors.white),
+                  iconWidget: Image.asset("assets/images/icon_nuvem.png",
+                      color: Colors.white),
                   label: "Comparar Tabelas",
                   onTap: () {
                     Navigator.of(context).push(
@@ -77,7 +80,8 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
                   },
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_configuracao.png", color: Colors.white),
+                  iconWidget: Image.asset("assets/images/icon_configuracao.png",
+                      color: Colors.white),
                   label: "Configuração",
                 ),
               ],

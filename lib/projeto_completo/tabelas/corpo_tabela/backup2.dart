@@ -64,7 +64,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           _recebeCaminhoArquivo = caminhoArquivo!;
         });
 
-        final dadosArquivo = await File(_recebeCaminhoArquivo).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+        final dadosArquivo = await File(_recebeCaminhoArquivo)
+            .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
         setState(() {
           conteudoArquivo = dadosArquivo;
@@ -202,6 +203,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         listaMenu = listaMenu + nomeTabelas;
       });
     }
+
+    //lista em ordem alfabetica
     ordena = listaMenu;
     ordena.sort((num1, num2) => num1.compareTo(num2));
   }
