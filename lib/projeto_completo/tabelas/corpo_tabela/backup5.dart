@@ -8,6 +8,7 @@ import 'package:data_table_2/paginated_data_table_2.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
 
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
@@ -153,7 +154,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         );
       }
     } catch (e) {
-      print('Função separação linhas e colunas = ${Status.error.message} $e');
+      // print('Função separação linhas e colunas = ${Status.error.message} $e');
     }
   }
 
@@ -176,7 +177,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         // }
       }
     } catch (e) {
-      print('${Status.error}: $e');
+      //  print('${Status.error}: $e');
     }
   }
 
@@ -185,8 +186,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       await Future.delayed(const Duration(seconds: 1));
       return 'Aguarde!\n Carregando tabelas!';
     } catch (e) {
-      print('${Status.error}: $e');
-      return '${Status.error.message} $e';
+      // print('${Status.error}: $e');
+      return ' $e';
     }
   }
 
@@ -294,7 +295,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         ),
       );
     } catch (e) {
-      print('${Status.error}: $e');
+      // print('${Status.error}: $e');
     }
   }
 
@@ -307,7 +308,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         return cor;
       }
     } catch (e) {
-      print('${Status.error}: $e');
+      // print('${Status.error}: $e');
     }
   }
 
@@ -456,19 +457,8 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         ),
       );
     } on Exception catch (e) {
-      print('${Status.error.message} $e');
-      return Text('${Status.error.message} $e');
+      // print('${Status.error.message} $e');
+      return Text('} $e');
     }
   }
 }
-
-enum Status {
-  loading(message: 'Carregando!'),
-  success(message: 'Sucesso'),
-  error(message: 'Erro: ');
-
-  const Status({required this.message});
-  final String message;
-}
-// utilizar o  indexOf  para comparar o nome de item da lista
-//https://pt.stackoverflow.com/questions/303497/como-encontrar-e-mostrar-a-posi%C3%A7%C3%A3o-de-um-item-na-lista-n%C3%A3o-definindo-o-valor-da

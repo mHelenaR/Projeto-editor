@@ -3,15 +3,19 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
-import 'package:data_table_2/paginated_data_table_2.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
 
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/projeto_completo/mensagens/snackbarWarning.dart';
+import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pesquisa.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/backup5.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -23,11 +27,8 @@ class Arquivo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: ArquivoPagina(),
-      ),
+    return Scaffold(
+      body: ArquivoPagina(),
     );
   }
 }
@@ -40,7 +41,7 @@ class ArquivoPagina extends StatefulWidget {
 }
 
 class _ArquivoPaginaState extends State<ArquivoPagina> {
-  var _recebeCaminhoArquivo, conteudoArquivo;
+  var _recebeCaminhoArquivo = '', conteudoArquivo;
 
   List<String> listaTIT = [];
   List<String> nomeTabelas = [];
@@ -81,13 +82,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           nomeTabelasArquivo();
         });
       } else {
-        // dentro do metodo Scaffold ela nao executa
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            elevation: 50,
-            content: Text("Operação cancelada! O arquivo não foi selecionado!"),
-          ),
-        );
+        erroCarregarArquivo(context);
 
         setState(() {
           _recebeCaminhoArquivo = '';
@@ -96,11 +91,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Exception: $e'),
-        ),
-      );
+      erroTryCatch(context, e);
       setState(() {
         _recebeCaminhoArquivo = '';
       });
@@ -119,123 +110,95 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<String> teste4 = [];
   List<String> teste5 = [];
   // List<String> _linhasTIT = [];
-  List<String> gravaArquivo = [];
+  List<String> gravaArquivo = ['inicio'];
   List<PlutoRow> rows = [];
   List<PlutoColumn> columns = [];
 
   colunasTabelasArquivo() async {
-    /* _separarArquivo = await conteudoArquivo;
-    // cria lista com cpo
-    separaTabelasArquivo = _separarArquivo.split('TIT ');
-    _linhasTIT = separaTabelasArquivo[1].split('\r\n');
-    //----------- TIT------------//
-    //encontra posição do caracter para extrair
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
-    setState(() {
-      _arrayString = nomeColunas;
-    });
+    try {
+      _separarArquivo = await conteudoArquivo;
 
-     // espera o carregamento da variavel
-    _separarArquivo = await conteudoArquivo;
+      separaTabelasArquivo = _separarArquivo.split('TIT ');
+      List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
 
-    // cria lista com cpo
-   
-    //----------- TIT-INICIO-----------//
+      //----------- TIT------------//
 
-    //encontra posição do caracter para extrair
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
+      int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+      nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
 
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
+      // retira o separador
+      nomeColunas = nomeColSeparada[0].split('|');
 
-    setState(() {
-      _arrayString = nomeColunas;
-    });*/
-
-    _separarArquivo = await conteudoArquivo;
-
-    separaTabelasArquivo = _separarArquivo.split('TIT ');
-    List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
-
-    //----------- TIT------------//
-
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
-
-    setState(() {
-      _arrayString = nomeColunas;
-    });
-    setState(() {
-      columns = <PlutoColumn>[
-        if (_controller.selectedIndex == 1) ...{
-          PlutoColumn(
-            title: 'teste carrega',
-            field: 'teste',
-            type: PlutoColumnType.text(),
-          ),
-        } else if (_controller.selectedIndex != 1) ...{
-          for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
-            //coluna
+      setState(() {
+        _arrayString = nomeColunas;
+      });
+      setState(() {
+        columns = <PlutoColumn>[
+          if (_controller.selectedIndex == 1) ...{
             PlutoColumn(
-              title: '$colTam|${_arrayString[colTam]}',
-              field: colTam.toString(),
+              title: 'teste carrega',
+              field: 'teste',
               type: PlutoColumnType.text(),
             ),
+          } else if (_controller.selectedIndex != 1) ...{
+            for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+              //coluna
+              PlutoColumn(
+                title: '$colTam|${_arrayString[colTam]}',
+                field: colTam.toString(),
+                type: PlutoColumnType.text(),
+              ),
+            }
           }
-        }
-      ];
-    });
+        ];
+      });
 
-    //----------- TIT-FIM-----------//
+      //----------- TIT-FIM-----------//
 
-    //----------- CPO-INICIO-----------//
-    for (int i = 1; i < _linhasTIT.length; i++) {
-      if (_linhasTIT[i] != '') {
-        String testeP = _linhasTIT[i];
-        String? testeO = testeP.split('CPO ').toString();
-        teste1 = [testeO];
-        teste3 = teste3 + teste1;
+      //----------- CPO-INICIO-----------//
+      for (int i = 1; i < _linhasTIT.length; i++) {
+        if (_linhasTIT[i] != '') {
+          String testeP = _linhasTIT[i];
+          String? testeO = testeP.split('CPO ').toString();
+          teste1 = [testeO];
+          teste3 = teste3 + teste1;
 
-        for (int p = 0; p < teste3.length; p++) {
-          teste2 = teste3[p].split('^');
-        }
+          for (int p = 0; p < teste3.length; p++) {
+            teste2 = teste3[p].split('^');
+          }
 
-        setState(
-          () {
-            rows.addAll(
-              [
-                if (_controller.selectedIndex == 1) ...{
-                  PlutoRow(
-                    cells: {
-                      'teste': PlutoCell(value: 'testewrrwffw'),
-                    },
-                  ),
-                } else if (_controller.selectedIndex != 1) ...{
-                  PlutoRow(
-                    cells: {
-                      for (int rColTam = 0;
-                          rColTam < teste2.length;
-                          rColTam++) ...{
-                        rColTam.toString(): PlutoCell(value: teste2[rColTam]),
+          setState(
+            () {
+              rows.addAll(
+                [
+                  if (_controller.selectedIndex == 1) ...{
+                    PlutoRow(
+                      cells: {
+                        'teste': PlutoCell(value: 'testewrrwffw'),
                       },
-                    },
-                  ),
-                }
-              ],
-            );
-          },
-        );
+                    ),
+                  } else if (_controller.selectedIndex != 1) ...{
+                    PlutoRow(
+                      cells: {
+                        for (int rColTam = 0;
+                            rColTam < teste2.length;
+                            rColTam++) ...{
+                          rColTam.toString(): PlutoCell(value: teste2[rColTam]),
+                        },
+                      },
+                    ),
+                  }
+                ],
+              );
+            },
+          );
+        }
       }
-    }
 
-    //----------- CPO------------//
+      //----------- CPO------------//
+    } catch (e) {
+      erroTryCatch(context, e);
+    }
   }
 
   nomeTabelasArquivo() async {
@@ -289,14 +252,6 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
     return Container(
       padding: const EdgeInsets.all(10),
       child: PlutoGrid(
-        //cabeçalho grid
-        /* createHeader: (PlutoGridStateManager stateManager) {}
-          return ElevatedButton(
-            onPressed: () {},
-            child: const Text("Filtrar"),
-          );
-        },*/
-
         //filtro na tela
         onLoaded: (PlutoGridOnLoadedEvent event) {
           event.stateManager.setShowColumnFilter(true);
@@ -319,25 +274,33 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
     );
   }
 
-  Future<void> salvaArquivo() async {
-    String? outputFile = await FilePicker.platform.saveFile(
-      dialogTitle: 'Please select an output file:',
-      fileName: 'output-file.pdf',
-    );
+  Future<void> _writeData() async {
+    final _dirPath = await _recebeCaminhoArquivo;
+    if (_recebeCaminhoArquivo != '') {
+      final _myFile = File(_dirPath);
+
+      for (int i = 0; i < gravaArquivo.length; i++) {
+        if (gravaArquivo[i] != 'inicio') {
+          await _myFile.writeAsString(gravaArquivo.toString());
+        } else {
+          Builder(
+            builder: (context) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("erro"),
+                ),
+              );
+              return Text('');
+            },
+          );
+        }
+      }
+    } else {
+      erroSalvarArquivo(context);
+    }
   }
 
   Widget arquivoTabelas() {
-    double heightScreen = MediaQuery.of(context).size.height;
-    double widthScreen = MediaQuery.of(context).size.width;
-    double screen = 0;
-    if ((heightScreen < 960) && (heightScreen > 760)) {
-      screen = MediaQuery.of(context).size.height * 0.75;
-    } else if ((heightScreen > 961)) {
-      screen = MediaQuery.of(context).size.height * 0.8;
-    } else if (heightScreen < 760) {
-      screen = MediaQuery.of(context).size.height * 0.7;
-    }
-
     return Flexible(
       child: Container(
         alignment: Alignment.topLeft,
@@ -348,7 +311,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
             ),
             Expanded(
               child: Container(
-                height: screen,
+                height: tamanho(context),
                 child: arquivoGridTabelas(),
               ),
             ),
@@ -417,7 +380,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                     child: ElevatedButton(
                       onPressed: () {
                         print(gravaArquivo);
-                        salvaArquivo();
+                        _writeData();
                       },
                       style: estiloBotao,
                       child: const Text("Salvar"),
@@ -492,115 +455,72 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Row(
-          children: [
-            SidebarX(
-              controller: _controller,
-              theme: StyleSideBar,
-              extendedTheme: StyleExpandeSideBar,
-              footerDivider: divider,
-              headerBuilder: (context, extended) {
-                return SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset(
-                      'assets/images/icon_archive.png',
-                    ),
-                  ),
-                );
-              },
-              items: [
-                SidebarXItem(
-                  iconWidget: Image.asset(
-                    "assets/images/icon_setaEsquerda.png",
-                    color: Colors.white,
-                  ),
-                  label: "Voltar",
-                  onTap: () => Navigator.pop(context),
+    return Row(
+      children: [
+        SidebarX(
+          controller: _controller,
+          theme: StyleSideBar,
+          extendedTheme: StyleExpandeSideBar,
+          footerDivider: divider,
+          headerBuilder: (context, extended) {
+            return SizedBox(
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Image.asset(
+                  'assets/images/icon_archive.png',
                 ),
-                for (final lista in listaMenu) ...{
-                  SidebarXItem(
-                    iconWidget: Image.asset(
-                      "assets/images/icon_prancheta.png",
-                      color: Colors.white,
-                    ),
-                    label: lista,
-                  ),
-                },
-              ],
-            ),
-            Expanded(
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return AnimatedBuilder(
-                    animation: _controller,
-                    builder: (contexto, filho) {
-                      if (_controller.selectedIndex == 3) {
-                        return const Text("teste tela");
-                      } else {
-                        return Column(
-                          children: [
-                            arquivoAppBarTable(),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            arquivoBusca(),
-                            arquivoTabelas(),
-                          ],
-                        );
-                      }
-                    },
-                  );
-                },
               ),
-            ),
+            );
+          },
+          items: [
+            SidebarXItem(
+                iconWidget: Image.asset(
+                  "assets/images/icon_setaEsquerda.png",
+                  color: Colors.white,
+                ),
+                label: "Voltar",
+                onTap: () {
+                  Navigator.pop(context);
+                }),
+            for (final lista in listaMenu) ...{
+              SidebarXItem(
+                iconWidget: Image.asset(
+                  "assets/images/icon_prancheta.png",
+                  color: Colors.white,
+                ),
+                label: lista,
+              ),
+            },
           ],
         ),
-      ),
+        Expanded(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return AnimatedBuilder(
+                animation: _controller,
+                builder: (contexto, filho) {
+                  if (_controller.selectedIndex == 3) {
+                    return const Text("teste tela");
+                  } else {
+                    return Column(
+                      children: [
+                        arquivoAppBarTable(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        arquivoBusca(),
+                        arquivoTabelas(),
+                      ],
+                    );
+                  }
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
-
-class MenssagemErro {
-  void showSnackBar(BuildContext context) {
-    const snackBar = SnackBar(
-      content: Text("Operação cancelada! O arquivo não foi selecionado!"),
-      backgroundColor: Colors.teal,
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.all(50),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-}
-
-class Tetse extends StatelessWidget {
-  final String? title;
-  final String? topTitle;
-  final List<Widget>? topContents;
-  final List<Widget>? topButtons;
-  final Widget? body;
-
-  const Tetse({
-    Key? key,
-    this.title,
-    this.topTitle,
-    this.topContents,
-    this.topButtons,
-    this.body,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-// exemplo ponteiro
-
-    // Pointer? ptrToCopy; // i will assume that you have this already...
-    // Pointer<Pointer<NativeType>> _ptrToPtr = allocate();
-    // _ptrToPtr.value = Pointer.fromAddress(ptrToCopy!.address);

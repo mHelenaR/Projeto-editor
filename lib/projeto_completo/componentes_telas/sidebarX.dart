@@ -62,7 +62,7 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => ArquivoPagina() /*TableMenu()*/,
+                        builder: (context) => Arquivo() /*TableMenu()*/,
                       ),
                     );
                   },
