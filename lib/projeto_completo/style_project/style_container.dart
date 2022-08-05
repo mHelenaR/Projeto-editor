@@ -12,3 +12,15 @@ final decoracaoContainer = BoxDecoration(
     ),
   ],
 );
+
+final containerSideBar = BoxDecoration(
+  color: corContainer,
+  borderRadius: BorderRadius.circular(20),
+  boxShadow: const <BoxShadow>[
+    BoxShadow(
+      color: Colors.black54,
+      blurRadius: 10.0,
+      offset: Offset(5.0, 5.0),
+    ),
+  ],
+);

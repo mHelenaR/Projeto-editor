@@ -1,7 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-const configuracaoPlutoGrid = PlutoGridConfiguration(
-  localeText: PlutoGridLocaleText(
+final configuracaoPlutoGrid = PlutoGridConfiguration(
+  style: PlutoGridStyleConfig(
+    gridPopupBorderRadius: BorderRadius.circular(10), //  Popup filtro
+    //enableGridBorderShadow: true,
+    //columnFilterHeight: 40, // altura barra filtro
+    //columnContextIcon: Icons.abc, // icone coluna
+    gridBorderRadius: BorderRadius.circular(10), // borda arredondada
+    // cellColorInEditState: Colors.black, // cor edição celula
+    // borderColor: Colors.pinkAccent, // cor de todas as bordas
+    // activatedBorderColor: Colors.purpleAccent, // cor da borda da celula
+    // enableCellBorderHorizontal: false, // desativa as bordas das celulas
+    // activatedColor: Colors.amber, // cor da linha selecionada
+  ),
+  localeText: const PlutoGridLocaleText(
     unfreezeColumn: 'Desfixar',
     freezeColumnToEnd: 'Fixar a esquerda',
     freezeColumnToStart: 'Fixar a direita',

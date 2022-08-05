@@ -10,12 +10,12 @@ import 'package:editorconfiguracao/projeto_completo/mensagens/snackbarWarning.da
 import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pesquisa.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/backup5.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -47,6 +47,11 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<String> nomeTabelas = [];
   List<String> listaMenu = [''];
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final _controller = SidebarXController(selectedIndex: 0);
 
   Future<void> arquivoAbrirSeparar() async {
@@ -56,6 +61,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: false,
+        initialDirectory: 'C:/frente',
         allowedExtensions: ['cfg'],
         dialogTitle: 'Abrir',
         withData: true,
@@ -87,7 +93,6 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         setState(() {
           _recebeCaminhoArquivo = '';
         });
-        print('else');
       }
     } catch (e) {
       print(e);
@@ -132,26 +137,28 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       setState(() {
         _arrayString = nomeColunas;
       });
-      setState(() {
-        columns = <PlutoColumn>[
-          if (_controller.selectedIndex == 1) ...{
-            PlutoColumn(
-              title: 'teste carrega',
-              field: 'teste',
-              type: PlutoColumnType.text(),
-            ),
-          } else if (_controller.selectedIndex != 1) ...{
-            for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
-              //coluna
+      setState(
+        () {
+          columns = <PlutoColumn>[
+            if (_controller.selectedIndex == 1) ...{
               PlutoColumn(
-                title: '$colTam|${_arrayString[colTam]}',
-                field: colTam.toString(),
+                title: 'teste carrega',
+                field: 'teste',
                 type: PlutoColumnType.text(),
               ),
+            } else if (_controller.selectedIndex != 1) ...{
+              for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+                //coluna
+                PlutoColumn(
+                  title: '$colTam|${_arrayString[colTam]}',
+                  field: colTam.toString(),
+                  type: PlutoColumnType.text(),
+                ),
+              }
             }
-          }
-        ];
-      });
+          ];
+        },
+      );
 
       //----------- TIT-FIM-----------//
 
@@ -202,55 +209,65 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   }
 
   nomeTabelasArquivo() async {
-    listaTIT = await conteudoArquivo.split('TIT ');
-    int posicaoSeparador = 0;
+    try {
+      listaTIT = await conteudoArquivo.split('TIT ');
+      int posicaoSeparador = 0;
 
-    for (int i = 0; i < listaTIT.length; i++) {
-      posicaoSeparador = listaTIT[i].indexOf('#');
-      if (posicaoSeparador != -1) {
-        nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
-      } else {
-        nomeTabelas = [];
+      for (int i = 0; i < listaTIT.length; i++) {
+        posicaoSeparador = listaTIT[i].indexOf('#');
+        if (posicaoSeparador != -1) {
+          nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
+        } else {
+          nomeTabelas = [];
+        }
+        setState(() {
+          listaMenu = listaMenu + nomeTabelas;
+        });
       }
-      setState(() {
-        listaMenu = listaMenu + nomeTabelas;
-      });
+    } catch (e) {
+      erroTryCatch(context, e);
     }
-
-    // ordena = listaMenu;
-    // ordena.sort((num1, num2) => num1.compareTo(num2));
   }
 
-  carregarTela() {
-    return Container(
-      child: FutureBuilder(
-        future: getValue(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return arquivoTabelas();
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Colors.purple.shade300,
-                backgroundColor: canvaCores,
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
+  // carregarTela() {
+  //   try {
+  //     return Container(
+  //       child: FutureBuilder(
+  //         future: getValue(),
+  //         builder: (context, snapshot) {
+  //           if (snapshot.hasData) {
+  //             return arquivoTabelas();
+  //           } else {
+  //             return Center(
+  //               child: CircularProgressIndicator(
+  //                 color: Colors.purple.shade300,
+  //                 backgroundColor: canvaCores,
+  //               ),
+  //             );
+  //           }
+  //         },
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     erroTryCatch(context, e);
+  //   }
+  // }
 
-  Future<String> getValue() async {
-    await Future.delayed(const Duration(seconds: 10));
-    return 'Aguarde!\n Carregando tabelas!';
-  }
+  // Future<String> getValue() async {
+  //   try {
+  //     await separaTabelasArquivo != '';
+  //     return 'Aguarde!\n Carregando tabelas!';
+  //   } catch (e) {
+  //     erroTryCatch(context, e);
+  //     return 'Error Delay';
+  //   }
+  // }
 
   Widget arquivoGridTabelas() {
     late final PlutoGridStateManager stateManager;
 
     return Container(
-      padding: const EdgeInsets.all(10),
+      // padding: const EdgeInsets.all(10),
       child: PlutoGrid(
         //filtro na tela
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -258,6 +275,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         },
         //pega o valor das celulas
         onChanged: (PlutoGridOnChangedEvent event) {
+          print(event.value);
           if (event.oldValue != event.value) {
             gravaArquivo.add(event.value);
             print(event.oldValue);
@@ -290,7 +308,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                   content: Text("erro"),
                 ),
               );
-              return Text('');
+              return const Text('');
             },
           );
         }
@@ -398,24 +416,12 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
     );
   }
 
-  Widget arquivoBarraPesquisa() {
-    return TextFormField(
-      decoration: styleBarraPesquisa,
-    );
-  }
-
-  Widget arquivoBotaoPesquisa() {
-    return ElevatedButton(
-      onPressed: () {},
-      child: const Text('Pesquisar'),
-      style: estiloBotao,
-    );
-  }
-
+  @override
   Widget arquivoAppBarTable() {
     return SizedBox(
       height: 70,
       child: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: white,
         actions: [
           const SizedBox(
@@ -475,21 +481,19 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           },
           items: [
             SidebarXItem(
-                iconWidget: Image.asset(
-                  "assets/images/icon_setaEsquerda.png",
-                  color: Colors.white,
-                ),
-                label: "Voltar",
-                onTap: () {
-                  Navigator.pop(context);
-                }),
-            for (final lista in listaMenu) ...{
+              iconWidget: const Icon(Icons.home, color: Colors.white),
+              label: "Página principal",
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            for (int i = 0; i < listaMenu.length; i++) ...{
               SidebarXItem(
                 iconWidget: Image.asset(
                   "assets/images/icon_prancheta.png",
                   color: Colors.white,
                 ),
-                label: lista,
+                label: listaMenu[i],
               ),
             },
           ],
@@ -521,6 +525,20 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget arquivoBarraPesquisa() {
+    return TextFormField(
+      decoration: styleBarraPesquisa,
+    );
+  }
+
+  Widget arquivoBotaoPesquisa() {
+    return ElevatedButton(
+      onPressed: () {},
+      child: const Text('Pesquisar'),
+      style: estiloBotao,
     );
   }
 }
