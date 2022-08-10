@@ -13,9 +13,19 @@ class CorpoProjeto extends StatefulWidget {
 class _CorpoProjetoState extends State<CorpoProjeto> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      // tratamento de erros de widget
+      builder: (context, widget) {
+        Widget error = const Text('...Erro de renderização...');
+        if (widget is Scaffold || widget is Navigator) {
+          error = Scaffold(body: Center(child: error));
+        }
+        ErrorWidget.builder = (errorDetails) => error;
+        if (widget != null) return widget;
+        throw ('widget is null');
+      },
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
+      home: const Scaffold(
         body: SideBarExpansivel(),
       ),
     );

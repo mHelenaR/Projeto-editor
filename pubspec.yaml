@@ -46,6 +46,7 @@ dependencies:
   flutter_layout_grid: ^2.0.1
   another_flushbar: ^1.10.24
   pluto_grid: ^5.0.4
+  postgres: ^2.4.6
 
 
 dev_dependencies:

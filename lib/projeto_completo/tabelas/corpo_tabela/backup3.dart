@@ -474,7 +474,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
               controller: _controller,
               theme: StyleSideBar,
               extendedTheme: StyleExpandeSideBar,
-              footerDivider: divider,
+              footerDivider: dividerWhite,
               headerBuilder: (context, extended) {
                 return SizedBox(
                   height: 100,

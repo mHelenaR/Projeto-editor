@@ -67,7 +67,8 @@ class _TableMenuState extends State<TableMenu> {
         );
 
         //recebe o arquivo e decodifica para preservar os caracteres especiais
-        final dadosArquivo = await File(_recebeCaminhoArquivo).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+        final dadosArquivo = await File(_recebeCaminhoArquivo)
+            .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
         setState(
           () {
             conteudoArquivo = dadosArquivo;
@@ -369,7 +370,8 @@ class _TableMenuState extends State<TableMenu> {
                     child: Container(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        padding: const EdgeInsets.only(left: 10, right: 20, top: 10),
+                        padding:
+                            const EdgeInsets.only(left: 10, right: 20, top: 10),
                         child: Wrap(
                           spacing: 10,
                           runSpacing: 10,
@@ -424,7 +426,7 @@ class _TableMenuState extends State<TableMenu> {
               controller: _controller,
               theme: StyleSideBar,
               extendedTheme: StyleExpandeSideBar,
-              footerDivider: divider,
+              footerDivider: dividerWhite,
               headerBuilder: (context, extended) {
                 return SizedBox(
                   height: 100,
@@ -447,7 +449,8 @@ class _TableMenuState extends State<TableMenu> {
                 ),
                 for (final teste in carrega) ...{
                   SidebarXItem(
-                    iconWidget: Image.asset("assets/images/icon_prancheta.png", color: Colors.white),
+                    iconWidget: Image.asset("assets/images/icon_prancheta.png",
+                        color: Colors.white),
                     label: teste,
                   ),
                 },

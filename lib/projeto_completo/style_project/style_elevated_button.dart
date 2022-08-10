@@ -6,3 +6,11 @@ final estiloBotao = ElevatedButton.styleFrom(
     borderRadius: BorderRadius.circular(5),
   ),
 );
+
+final estiloBotao2 = ElevatedButton.styleFrom(
+  elevation: 0,
+  primary: Colors.white,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+  ),
+);

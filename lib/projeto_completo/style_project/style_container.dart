@@ -14,13 +14,17 @@ final decoracaoContainer = BoxDecoration(
 );
 
 final containerSideBar = BoxDecoration(
-  color: corContainer,
-  borderRadius: BorderRadius.circular(20),
-  boxShadow: const <BoxShadow>[
+  gradient: const LinearGradient(
+    colors: [accentCanvasColor, canvaCores],
+  ),
+  border: Border.all(
+    color: actionColor.withOpacity(0.37),
+  ),
+  borderRadius: BorderRadius.circular(5),
+  boxShadow: [
     BoxShadow(
-      color: Colors.black54,
-      blurRadius: 10.0,
-      offset: Offset(5.0, 5.0),
+      color: Colors.black.withOpacity(0.28),
+      blurRadius: 30,
     ),
   ],
 );

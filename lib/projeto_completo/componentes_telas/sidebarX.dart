@@ -1,4 +1,7 @@
+// ignore_for_file: unused_import
+
 import 'package:editorconfiguracao/projeto_completo/comparar/comprar_arquivos.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
@@ -34,7 +37,7 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
               // expande a barra
               extendedTheme: StyleExpandeSideBar,
               // linha de divisa
-              footerDivider: divider,
+              footerDivider: dividerWhite,
               //texto lista do cabeçalho
               headerBuilder: (context, extended) {
                 return SizedBox(
@@ -116,10 +119,7 @@ class _ScreensExample extends StatelessWidget {
           case 0:
             return const HomePage();
           case 3:
-            return Text(
-              'Custom ',
-              style: theme.textTheme.headline5,
-            );
+            return ConexaoPostgres();
 
           case 4:
             return Text(

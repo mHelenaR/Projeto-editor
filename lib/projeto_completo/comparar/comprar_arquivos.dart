@@ -30,7 +30,7 @@ class CompararArquivos extends StatelessWidget {
               controller: _controller,
               theme: StyleSideBar,
               extendedTheme: StyleExpandeSideBar,
-              footerDivider: divider,
+              footerDivider: dividerWhite,
               items: [
                 SidebarXItem(
                   iconWidget: Image.asset(
@@ -41,7 +41,8 @@ class CompararArquivos extends StatelessWidget {
                   onTap: () => Navigator.pop(context),
                 ),
                 SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_prancheta.png", color: Colors.white),
+                  iconWidget: Image.asset("assets/images/icon_prancheta.png",
+                      color: Colors.white),
                   label: "Comparar",
                 ),
               ],
@@ -99,7 +100,10 @@ class TabelasComparar extends StatefulWidget {
 }
 
 class _TabelasCompararState extends State<TabelasComparar> {
-  var _arquivoUmRecebeCaminho, arquivoUmCaminho, arquivoDoisCaminho, _arquivoDoisRecebeCaminho = '';
+  var _arquivoUmRecebeCaminho,
+      arquivoUmCaminho,
+      arquivoDoisCaminho,
+      _arquivoDoisRecebeCaminho = '';
   String arquivoUmContent = '', arquivoDoisContent = '';
 
   Future<void> abreArqUm() async {
@@ -118,7 +122,8 @@ class _TabelasCompararState extends State<TabelasComparar> {
           _arquivoUmRecebeCaminho = arquivoUmCaminho!;
         });
 
-        final arquivoUmDados = await File(_arquivoUmRecebeCaminho).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+        final arquivoUmDados = await File(_arquivoUmRecebeCaminho)
+            .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
         setState(() {
           arquivoUmContent = arquivoUmDados;
@@ -160,7 +165,8 @@ class _TabelasCompararState extends State<TabelasComparar> {
           _arquivoDoisRecebeCaminho = arquivoDoisCaminho!;
         });
 
-        final arquivoDoisDados = await File(_arquivoDoisRecebeCaminho).readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+        final arquivoDoisDados = await File(_arquivoDoisRecebeCaminho)
+            .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
         setState(() {
           arquivoDoisContent = arquivoDoisDados;

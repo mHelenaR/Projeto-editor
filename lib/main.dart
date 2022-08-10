@@ -17,7 +17,7 @@ void main() {
         windowsScreen.size = initialSize;
         windowsScreen.alignment = Alignment.center;
         windowsScreen.title = "Editor de Configuração";
-
+        // windowsScreen.maximize();
         windowsScreen.show();
       },
     );
