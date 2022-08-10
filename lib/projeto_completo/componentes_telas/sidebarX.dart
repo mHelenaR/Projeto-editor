@@ -29,6 +29,7 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: white,
         body: Row(
           children: [
             SidebarX(

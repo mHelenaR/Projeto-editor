@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers
 
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
 
@@ -48,34 +49,95 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          appBarConfig(),
-          Container(
-            color: Colors.amber[50],
-            child: ElevatedButton(
-              child: const Text('Conectar teste'),
-              onPressed: initDatabaseConnection,
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        appBarConfig(),
+        // Container(
+        //   color: Colors.amber[50],
+        //   child: ElevatedButton(
+        //     onPressed: initDatabaseConnection,
+        //     child: const Text('Conectar teste'),
+        //   ),
+        // ),
+        const SizedBox(
+          height: 20,
+        ),
+        Flexible(
+          child: SizedBox(
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 20,
+                ),
+                conectarBanco(),
+              ],
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget conectarBanco() {
+    return Container(
+      height: 400,
+      width: 400,
+      decoration: containerConfig,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Conectar tabela Dicionário",
+                    style: fontePreta10,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Wrap(
+            verticalDirection: VerticalDirection.up,
+            children: [
+              Text('data'),
+              Text('data'),
+              Text('data'),
+              Text('data'),
+              Text('data'),
+            ],
+          )
         ],
       ),
     );
   }
 
   Widget appBarConfig() {
-    return Flexible(
-      child: Container(
-        height: 70,
-        child: AppBar(
-          backgroundColor: white,
-          actions: [
-            const SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
+    return Container(
+      height: 70,
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: white,
+        actions: [
+          const SizedBox(
+            width: 10,
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: const Text('Configurações do sistema', style: fontePreta),
+          ),
+          const Expanded(
+            child: SizedBox(),
+          )
+        ],
       ),
     );
   }

@@ -18,12 +18,6 @@ const formatarTexto = TextStyle(
   color: Color.fromARGB(255, 255, 255, 255),
 );
 
-const textFormato = TextStyle(
-  fontSize: 20,
-  fontWeight: FontWeight.bold,
-  color: Colors.black,
-);
-
 final dividerWhite = Divider(
   color: Colors.white.withOpacity(0.3),
   height: 1,
@@ -36,5 +30,11 @@ final dividerPurple = Divider(
 const fontePreta = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.bold,
+  color: Colors.black,
+);
+
+const fontePreta10 = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
   color: Colors.black,
 );

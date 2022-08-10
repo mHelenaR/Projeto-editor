@@ -28,3 +28,8 @@ final containerSideBar = BoxDecoration(
     ),
   ],
 );
+
+final containerConfig = BoxDecoration(
+    borderRadius: BorderRadius.circular(20),
+    color: white,
+    border: Border.all(color: Colors.black.withOpacity(0.28)));
