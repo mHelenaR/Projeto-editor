@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
@@ -53,7 +55,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
           Container(
             color: Colors.amber[50],
             child: ElevatedButton(
-              child: Text('Conectar teste'),
+              child: const Text('Conectar teste'),
               onPressed: initDatabaseConnection,
             ),
           ),
