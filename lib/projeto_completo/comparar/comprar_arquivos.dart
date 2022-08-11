@@ -9,6 +9,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.d
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';

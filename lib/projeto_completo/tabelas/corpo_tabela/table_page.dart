@@ -12,7 +12,7 @@ import 'package:editorconfiguracao/projeto_completo/mensagens/snackbarWarning.da
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_pesquisa.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/componentes/barra_pesquisa.dart';
 
@@ -84,7 +84,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           setState(() {
             _recebeCaminhoArquivo = caminhoArquivo!;
           });
-
+          print(_recebeCaminhoArquivo);
           final dadosArquivo = await File(_recebeCaminhoArquivo)
               .readAsStringSync(
                   encoding: const Latin1Codec(allowInvalid: true));
@@ -172,7 +172,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
       });
       setState(
         () {
-          //stateManager.notifyListeners();
+          stateManager.notifyListeners();
           columns = <PlutoColumn>[
             if (_controller.selectedIndex == 1) ...{
               PlutoColumn(

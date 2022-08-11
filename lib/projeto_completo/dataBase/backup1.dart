@@ -1,18 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers
 
-import 'dart:io';
-
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:postgres/postgres.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class ConexaoPostgres extends StatefulWidget {
   const ConexaoPostgres({Key? key}) : super(key: key);
@@ -22,7 +16,6 @@ class ConexaoPostgres extends StatefulWidget {
 }
 
 class _ConexaoPostgresState extends State<ConexaoPostgres> {
-  var _recebeCaminhoDB;
   var userDataBase = TextEditingController();
   var hostDataBase = TextEditingController();
   var passwordDataBase = TextEditingController();
@@ -40,68 +33,21 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   initDatabaseConnection() async {
     databaseConnection.open().then((value) async {
       if (databaseConnection.isClosed != true) {
-        var result = await databaseConnection
-            .query("SELECT * FROM unidades order by uni_codigo");
+        var email;
+        List<Map<String, Map<String, dynamic>>> result =
+            await databaseConnection.mappedResultsQuery(
+                "SELECT * FROM unidades",
+                substitutionValues: {
+              "aEmail": email,
+            });
 
-        // print(result);
+        for (var element in result) {
+          print(element.values);
+        }
       } else {
         debugPrint("Desconectado!");
       }
     });
-  }
-
-// Pega diretório da pasta
-  Future<void> caminhoDB() async {
-    String? caminhoArquivo = r'/storage/';
-
-    String? result = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Caminho .db',
-      initialDirectory: 'C:',
-    );
-
-    if (result != null) {
-      caminhoArquivo = result;
-      setState(() {
-        _recebeCaminhoDB = caminhoArquivo!;
-        print(_recebeCaminhoDB);
-      });
-    }
-  }
-
-  // static Database? _database;
-
-  // Future<Database?> get database async {
-  //   if (_database != null) return _database;
-
-  //   // if _database is null we instantiate it
-  //   _database = await initDB();
-  //   return _database;
-  // }
-
-  Future<void> initDB() async {
-    try {
-      sqfliteFfiInit();
-    } catch (e) {
-      print(e.toString());
-    }
-    var _databaseFactory = databaseFactoryFfi;
-    String? result = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Caminho Salvar Banco',
-      initialDirectory: 'C:',
-    );
-
-    String path = result! + '\\Dicionario.db';
-    print(path);
-    var _db = await _databaseFactory.openDatabase(path);
-
-    _db.execute(
-      "CREATE TABLE Client ("
-      "id INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ")",
-    );
   }
 
   @override
@@ -304,7 +250,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                         ),
                         ElevatedButton(
                           style: estiloBotao,
-                          onPressed: initDB,
+                          onPressed: () {},
                           child: const Text('Gerar .DB'),
                         ),
                       ],
@@ -340,9 +286,4 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       ),
     );
   }
-}
-
-class DBProvider {
-  DBProvider._();
-  static final DBProvider db = DBProvider._();
 }

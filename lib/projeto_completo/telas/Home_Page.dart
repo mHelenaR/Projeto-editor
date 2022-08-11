@@ -1,4 +1,5 @@
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:flutter/material.dart';
 
 class PaginaInicial extends StatelessWidget {

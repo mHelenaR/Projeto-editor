@@ -1,6 +1,7 @@
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_pesquisa.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:flutter/material.dart';
 
 class AppBarra extends StatefulWidget {

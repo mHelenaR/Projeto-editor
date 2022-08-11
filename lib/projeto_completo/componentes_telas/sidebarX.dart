@@ -5,6 +5,7 @@ import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart'
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/table_page.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/home_page.dart';

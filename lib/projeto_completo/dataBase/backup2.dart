@@ -86,11 +86,11 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
     }
     var _databaseFactory = databaseFactoryFfi;
     String? result = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Caminho Salvar Banco',
+      dialogTitle: 'Caminho .db',
       initialDirectory: 'C:',
     );
 
-    String path = result! + '\\Dicionario.db';
+    String path = result! + '\\TestDB.db';
     print(path);
     var _db = await _databaseFactory.openDatabase(path);
 
@@ -102,6 +102,38 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       "blocked BIT"
       ")",
     );
+  }
+
+  Future<void> initDB2() async {
+    try {
+      sqfliteFfiInit();
+    } catch (e) {
+      print(e.toString());
+    }
+    var _databaseFactory = databaseFactoryFfi;
+
+    String? resultw = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Caminho .db',
+      initialDirectory: 'C:',
+    );
+
+    String path = '${await resultw}\\myDB.db';
+    var _db = await _databaseFactory.openDatabase(path);
+
+    final List<Map<String, dynamic>> result = await _db.query(
+      'sqlite_master',
+      where: 'name = ?',
+      whereArgs: <String>['MyDB'],
+    );
+
+    if (result.isEmpty) {
+      await _db.execute('''
+CREATE TABLE MyDB (
+  id INTEGER PRIMARY KEY,
+  name TEXT
+)
+''');
+    }
   }
 
   @override
