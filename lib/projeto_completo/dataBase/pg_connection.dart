@@ -1,18 +1,19 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers
+// ignore_for_file: prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers, avoid_print
 
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:postgres/postgres.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:postgres/postgres.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class ConexaoPostgres extends StatefulWidget {
   const ConexaoPostgres({Key? key}) : super(key: key);
@@ -22,85 +23,222 @@ class ConexaoPostgres extends StatefulWidget {
 }
 
 class _ConexaoPostgresState extends State<ConexaoPostgres> {
-  var _recebeCaminhoDB;
-  var userDataBase = TextEditingController();
-  var hostDataBase = TextEditingController();
-  var passwordDataBase = TextEditingController();
-  var portDataBase = TextEditingController();
-  var nameDataBase = TextEditingController();
+  //focusNode captura eventos do teclado
+  late FocusNode myFocusNode;
 
-  var databaseConnection = PostgreSQLConnection(
-    '10.1.12.73',
-    5432,
-    'mariah_wrpdv',
-    username: 'rpdv',
-    password: 'rpdvwin1064',
-  );
+  bool? atualizaBanco;
 
-  initDatabaseConnection() async {
-    databaseConnection.open().then((value) async {
-      if (databaseConnection.isClosed != true) {
-        var result = await databaseConnection
-            .query("SELECT * FROM unidades order by uni_codigo");
+  var recebeCaminhoDB;
 
-        // print(result);
-      } else {
-        debugPrint("Desconectado!");
-      }
-    });
+  //Variavel recebendo a função de conexão com o banco e sendo inicializada
+  var databaseConnection = PostgreSQLConnection('', 0, '');
+
+  //Criando os controladores de texto, para receber os dados do banco
+  final _ctUserDataBase = TextEditingController();
+  final _ctHostDataBase = TextEditingController();
+  final _ctPasswordDataBase = TextEditingController();
+  final _ctPortDataBase = TextEditingController();
+  final _ctNameDataBase = TextEditingController();
+
+  //Inicializando varivais ao abrir a tela
+  @override
+  void initState() {
+    atualizaBanco = false;
+    myFocusNode = FocusNode();
+    super.initState();
   }
 
-// Pega diretório da pasta
-  Future<void> caminhoDB() async {
-    String? caminhoArquivo = r'/storage/';
+  //Liberando a memoria assim que a tela é fechada
+  @override
+  void dispose() {
+    _ctUserDataBase.dispose();
+    _ctHostDataBase.dispose();
+    _ctPasswordDataBase.dispose();
+    _ctPortDataBase.dispose();
+    _ctNameDataBase.dispose();
+    myFocusNode.dispose();
+    databaseConnection.close();
+    super.dispose();
+  }
 
-    String? result = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Caminho .db',
-      initialDirectory: 'C:',
-    );
+  //Inicializa a conexão com o banco
+  initDatabaseConnection() async {
+    //Verifica se a conexão com o banco esta fechada
+    if (databaseConnection.isClosed == true) {
+      databaseConnection = PostgreSQLConnection(
+        _ctHostDataBase.text,
+        int.parse(_ctPortDataBase.text),
+        _ctNameDataBase.text,
+        username: _ctUserDataBase.text,
+        password: _ctPasswordDataBase.text,
+      );
 
-    if (result != null) {
-      caminhoArquivo = result;
-      setState(() {
-        _recebeCaminhoDB = caminhoArquivo!;
-        print(_recebeCaminhoDB);
-      });
+      //Conecta o banco de dados
+      databaseConnection.open();
+
+      //teste de select no banco
+
+      // then(
+      //   (value) async {
+      //     if (databaseConnection.isClosed != true) {
+      //       // var result = await databaseConnection
+      //       //     .query("SELECT * FROM unidades order by uni_codigo");
+
+      //       // //  print(result);
+      //     } else {
+      //       debugPrint("Desconectado!");
+      //     }
+      //   },
+      // );
+    } else {
+      print('ja esta aberto');
     }
   }
 
-  // static Database? _database;
-
-  // Future<Database?> get database async {
-  //   if (_database != null) return _database;
-
-  //   // if _database is null we instantiate it
-  //   _database = await initDB();
-  //   return _database;
-  // }
-
+  var recebe;
+  // Criação do arquivo .db
   Future<void> initDB() async {
+    String? path;
     try {
+      //Prepara a conexão com o SQLite
       sqfliteFfiInit();
     } catch (e) {
       print(e.toString());
     }
-    var _databaseFactory = databaseFactoryFfi;
-    String? result = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Caminho Salvar Banco',
-      initialDirectory: 'C:',
-    );
 
-    String path = result! + '\\Dicionario.db';
-    print(path);
-    var _db = await _databaseFactory.openDatabase(path);
+    // verifica se esta desconectado
+    if (databaseConnection.isClosed == false) {
+      var databaseFactory = databaseFactoryFfi;
 
-    _db.execute(
-      "CREATE TABLE Client ("
+      if (atualizaBanco == false) {
+        String? result = await FilePicker.platform.getDirectoryPath(
+          dialogTitle: 'Caminho Salvar Banco',
+          initialDirectory: 'C:',
+        );
+        recebe = result;
+      }
+      path = '${recebe}\\Dicionario.db';
+
+      //FileSystemEntity gerencia os arquivos da maquina
+      //typeSync: Localiza de forma síncrona o tipo de objeto do sistema de arquivos para o
+      //qual um caminho aponta
+      if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
+        // criando o arquivo de banco sqlite
+        // criaBanco(await databaseFactory.openDatabase(path));
+        criaBanco(databaseFactory, path);
+
+        databaseConnection.close();
+      } else {
+        caixaBancoExiste(path);
+        print('O banco ja existe');
+      }
+
+      if (atualizaBanco == true) {
+        var t = await databaseFactory.openDatabase(path);
+
+        t.execute(
+          "CREATE TABLE IF NOT EXISTS Client ("
+          "id INTEGER PRIMARY KEY,"
+          "first_name TEXT,"
+          "last_name TEXT,"
+          "blocked BIT"
+          ");"
+          "CREATE TABLE IF NOT EXISTS teste ("
+          "iwd INTEGER PRIMARY KEY,"
+          "first_name TEXT,"
+          "last_name TEXT,"
+          "blocked BIT"
+          ");"
+          "CREATE TABLE IF NOT EXISTS teste1 ("
+          "iwde INTEGER PRIMARY KEY,"
+          "first_name TEXT,"
+          "last_name TEXT,"
+          "blocked BIT"
+          ");"
+          "CREATE TABLE IF NOT EXISTS teste2 ("
+          "iwder INTEGER PRIMARY KEY,"
+          "first_name TEXT,"
+          "last_name TEXT,"
+          "blocked BIT"
+          ");"
+          "CREATE TABLE IF NOT EXISTS teste3 ("
+          "iwdt INTEGER PRIMARY KEY,"
+          "first_name TEXT,"
+          "last_name TEXT,"
+          "blocked BIT"
+          ");",
+        );
+        // criaBanco(databaseFactory, path);
+
+        print('Atualizado');
+      }
+    } else {
+      print('Fechado');
+    }
+  }
+
+  criaBanco(var database, pathw) {
+    var at = database.openDatabase(pathw);
+    at.execute(
+      "CREATE TABLE IF NOT EXISTS Client ("
       "id INTEGER PRIMARY KEY,"
       "first_name TEXT,"
       "last_name TEXT,"
       "blocked BIT"
-      ")",
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste ("
+      "iwd INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste1 ("
+      "iwde INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste2 ("
+      "iwder INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste3 ("
+      "iwdt INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");",
+    );
+  }
+
+  void caixaBancoExiste(String caminho) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: erroCriacao,
+          content: descricaoErroCriacao(caminho),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text("Atualizar"),
+              onPressed: () {
+                atualizaBanco = true;
+                print(atualizaBanco);
+                initDB();
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text("Cancelar"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -176,6 +314,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                         height: 30,
                         width: 200,
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _ctHostDataBase,
                           decoration: tFBancoConexao1,
                         ),
                       ),
@@ -202,6 +342,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                         height: 30,
                         width: 200,
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _ctNameDataBase,
                           decoration: tFBancoConexao2,
                         ),
                       ),
@@ -228,6 +370,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                         height: 30,
                         width: 200,
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _ctPortDataBase,
                           decoration: tFBancoConexao3,
                         ),
                       ),
@@ -254,6 +398,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                         height: 30,
                         width: 200,
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _ctUserDataBase,
                           decoration: tFBancoConexao4,
                         ),
                       ),
@@ -280,6 +426,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                         height: 30,
                         width: 200,
                         child: TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: _ctPasswordDataBase,
                           decoration: tFBancoConexao5,
                         ),
                       ),
