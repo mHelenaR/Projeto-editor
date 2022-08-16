@@ -27,7 +27,7 @@ class ConexaoPostgres extends StatefulWidget {
 class _ConexaoPostgresState extends State<ConexaoPostgres> {
   //focusNode captura eventos do teclado
   late FocusNode myFocusNode;
-  String? path = r'/storage/';
+  String? path;
   bool? atualizaBanco;
   Color? cor;
   var recebeCaminhoDB;
@@ -86,10 +86,30 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
         username: "rpdv",
         password: "rpdvwin1064",
       );
+      // databaseConnection = PostgreSQLConnection(
+      //   _ctHostDataBase.text,
+      //   int.parse(_ctPortDataBase.text),
+      //   _ctNameDataBase.text,
+      //   username: _ctUserDataBase.text,
+      //   password: _ctPasswordDataBase.text,
+      // );
 
       //Conecta o banco de dados
       databaseConnection.open();
+      setState(() {
+        testeText();
+        getColor();
+      });
+      // .then(
+      //   (value) async {
+      //     if (databaseConnection.isClosed != true) {
+      //     } else {
+      //       debugPrint("Desconectado!");
+      //     }
+      //   },
+      // );
     } else {
+      databaseConnection.close();
       print('ja esta aberto');
     }
   }
@@ -106,56 +126,23 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
 
     // verifica se esta desconectado
     if (databaseConnection.isClosed == false) {
-      if (atualizaBanco == false) {
-        String? teste1 = await FilePicker.platform.getDirectoryPath();
-
-        recebe = teste1;
-      }
-
       var databaseFactory = databaseFactoryFfi;
 
-      path = '$recebe\\Dicionario.db';
+      // if (atualizaBanco == false) {
+      //   String? result = await FilePicker.platform.getDirectoryPath(
+      //     dialogTitle: 'Caminho Salvar Banco',
+      //     initialDirectory: 'C:',
+      //   );
+      //   recebe = result;
+      // }
+
+      path = '\\assets\\Dicionario.db';
 
       if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
         var novo = await databaseFactory.openDatabase(path!);
-        novo.execute(
-          "CREATE TABLE IF NOT EXISTS unidades ("
-          "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
-          "campo CHARACTER(30) NOT NULL,"
-          "tipo CHARACTER(1) NOT NULL,  "
-          "titulo CHARACTER(50) NOT NULL, "
-          "mensagem CHARACTER(255) NOT NULL, "
-          "mascara CHARACTER(50)"
-          ");"
-          "CREATE TABLE IF NOT EXISTS estac ("
-          "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
-          "campo CHARACTER(30) NOT NULL,"
-          "tipo CHARACTER(1) NOT NULL,  "
-          "titulo CHARACTER(50) NOT NULL, "
-          "mensagem CHARACTER(255) NOT NULL, "
-          "mascara CHARACTER(50)"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste1 ("
-          "iwde INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste2 ("
-          "iwder INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste3 ("
-          "iwdt INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");",
-        );
+        criaBanco(novo, path!);
 
-        // databaseConnection.close();
+        databaseConnection.close();
       } else {
         caixaBancoExiste(path!);
 
@@ -164,36 +151,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
 
       if (atualizaBanco == true) {
         var novo = await databaseFactory.openDatabase(path!);
-        var batch = novo.batch();
-        var tabela, campo, titulo, mensagem, mascara, tipo;
-
-        List<Map<String, Map<String, dynamic>>> listaDB =
-            await databaseConnection.mappedResultsQuery(
-          "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = 'UNIDADES'",
-        );
-
-        for (final element in listaDB) {
-          for (final valoresBanco in element.entries) {
-            tabela = valoresBanco.value["tabela"];
-            tipo = valoresBanco.value["tipo"];
-            campo = valoresBanco.value["campo"];
-            titulo = valoresBanco.value["titulo"];
-            mensagem = valoresBanco.value["mensagem"];
-            mascara = valoresBanco.value["mascara"];
-
-            var value = {
-              'campo': campo,
-              'tipo': tipo,
-              'titulo': titulo,
-              'mensagem': mensagem,
-              'mascara': mascara,
-            };
-
-            batch.insert(tabela, value);
-          }
-        }
-        await batch.commit();
-        novo.close();
+        insertTeste1(path!, novo);
         print(path);
       }
     } else {
@@ -202,8 +160,80 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
     }
   }
 
+  insertTeste1(String caminhoDB, Database baseDB) async {
+    var batch = baseDB.batch();
+    var tabela, campo, titulo, mensagem, mascara, tipo;
+
+    List<Map<String, Map<String, dynamic>>> listaDB =
+        await databaseConnection.mappedResultsQuery(
+      "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = 'UNIDADES'",
+    );
+
+    for (final element in listaDB) {
+      for (final valoresBanco in element.entries) {
+        tabela = valoresBanco.value["tabela"];
+        tipo = valoresBanco.value["tipo"];
+        campo = valoresBanco.value["campo"];
+        titulo = valoresBanco.value["titulo"];
+        mensagem = valoresBanco.value["mensagem"];
+        mascara = valoresBanco.value["mascara"];
+
+        var value = {
+          'campo': campo,
+          'tipo': tipo,
+          'titulo': titulo,
+          'mensagem': mensagem,
+          'mascara': mascara,
+        };
+
+        batch.insert(tabela, value);
+      }
+    }
+    await batch.commit();
+    baseDB.close();
+  }
+
   closeDialog(BuildContext context) {
     Navigator.of(context).pop();
+  }
+
+  criaBanco(Database database, String pathw) async {
+    database.execute(
+      "CREATE TABLE IF NOT EXISTS unidades ("
+      "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
+      "campo CHARACTER(30) NOT NULL,"
+      "tipo CHARACTER(1) NOT NULL,  "
+      "titulo CHARACTER(50) NOT NULL, "
+      "mensagem CHARACTER(255) NOT NULL, "
+      "mascara CHARACTER(50)"
+      ");"
+      "CREATE TABLE IF NOT EXISTS estac ("
+      "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
+      "campo CHARACTER(30) NOT NULL,"
+      "tipo CHARACTER(1) NOT NULL,  "
+      "titulo CHARACTER(50) NOT NULL, "
+      "mensagem CHARACTER(255) NOT NULL, "
+      "mascara CHARACTER(50)"
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste1 ("
+      "iwde INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste2 ("
+      "iwder INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");"
+      "CREATE TABLE IF NOT EXISTS teste3 ("
+      "iwdt INTEGER PRIMARY KEY,"
+      "first_name TEXT,"
+      "last_name TEXT,"
+      "blocked BIT"
+      ");",
+    );
   }
 
   void caixaBancoExiste(String caminho) {
@@ -234,6 +264,22 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
     );
   }
 
+  Color getColor() {
+    if (databaseConnection.isClosed == true) {
+      return Colors.red;
+    } else {
+      return Colors.green;
+    }
+  }
+
+  String testeText() {
+    if (databaseConnection.isClosed == true) {
+      return "Desconectado";
+    } else {
+      return "Conectado";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -253,6 +299,12 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
                   width: 20,
                 ),
                 conectarBanco(),
+                Container(
+                  color: getColor(),
+                  height: 50,
+                  width: 100,
+                  child: Text(testeText()),
+                ),
               ],
             ),
           ),
