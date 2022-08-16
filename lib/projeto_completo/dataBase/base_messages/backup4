@@ -209,6 +209,9 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
           'mensagem': mensagem,
           'mascara': mascara,
         };
+    
+
+       
 
         batch.insert('unidades', value);
 
@@ -230,7 +233,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       }
     }
 
-    /*
+     /*
       Utilize o Batch para realizar transações em lote, 
       nesse caso, ele faz o insert por uma certa quantidade de itens.
       para confirmar a ação, utilize batch.commit;

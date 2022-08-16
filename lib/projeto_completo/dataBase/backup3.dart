@@ -4,9 +4,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:postgres/postgres.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
@@ -27,7 +25,7 @@ class ConexaoPostgres extends StatefulWidget {
 class _ConexaoPostgresState extends State<ConexaoPostgres> {
   //focusNode captura eventos do teclado
   late FocusNode myFocusNode;
-  String? path;
+
   bool? atualizaBanco;
 
   var recebeCaminhoDB;
@@ -68,29 +66,30 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
     //Verifica se a conexão com o banco esta fechada
     if (databaseConnection.isClosed == true) {
       databaseConnection = PostgreSQLConnection(
-        "10.1.12.73",
-        5432,
-        "mariah_wrpdv",
-        username: "rpdv",
-        password: "rpdvwin1064",
+        _ctHostDataBase.text,
+        int.parse(_ctPortDataBase.text),
+        _ctNameDataBase.text,
+        username: _ctUserDataBase.text,
+        password: _ctPasswordDataBase.text,
       );
-      // databaseConnection = PostgreSQLConnection(
-      //   _ctHostDataBase.text,
-      //   int.parse(_ctPortDataBase.text),
-      //   _ctNameDataBase.text,
-      //   username: _ctUserDataBase.text,
-      //   password: _ctPasswordDataBase.text,
-      // );
 
       //Conecta o banco de dados
-      databaseConnection.open().then(
-        (value) async {
-          if (databaseConnection.isClosed != true) {
-          } else {
-            debugPrint("Desconectado!");
-          }
-        },
-      );
+      databaseConnection.open();
+
+      //teste de select no banco
+
+      // then(
+      //   (value) async {
+      //     if (databaseConnection.isClosed != true) {
+      //       // var result = await databaseConnection
+      //       //     .query("SELECT * FROM unidades order by uni_codigo");
+
+      //       // //  print(result);
+      //     } else {
+      //       debugPrint("Desconectado!");
+      //     }
+      //   },
+      // );
     } else {
       print('ja esta aberto');
     }
@@ -99,6 +98,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   var recebe;
   // Criação do arquivo .db
   Future<void> initDB() async {
+    String? path;
     try {
       //Prepara a conexão com o SQLite
       sqfliteFfiInit();
@@ -117,27 +117,24 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
         );
         recebe = result;
       }
-      setState(() {
-        path = '${recebe}\\Dicionario.db';
-      });
+      path = '${recebe}\\Dicionario.db';
 
       //FileSystemEntity gerencia os arquivos da maquina
       //typeSync: Localiza de forma síncrona o tipo de objeto do sistema de arquivos para o
       //qual um caminho aponta
-      if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
+      if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound) {
         // criando o arquivo de banco sqlite
         // criaBanco(await databaseFactory.openDatabase(path));
         criaBanco(databaseFactory, path);
 
         databaseConnection.close();
       } else {
-        caixaBancoExiste(path!);
-
+        caixaBancoExiste(path);
         print('O banco ja existe');
       }
 
       if (atualizaBanco == true) {
-        var t = await databaseFactory.openDatabase(path!);
+        var t = await databaseFactory.openDatabase(path);
 
         t.execute(
           "CREATE TABLE IF NOT EXISTS unidades ("
@@ -175,75 +172,15 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
           "blocked BIT"
           ");",
         );
-        insertTeste1(databaseConnection, path, t);
+
+        print('Atualizado');
       }
     } else {
       print('Fechado');
     }
   }
 
-  insertTeste1(
-      PostgreSQLConnection dataBase, var testes, Database teste) async {
-    // var result =
-    //     await dataBase.query("SELECT * FROM unidades order by uni_codigo");
-    //var t = await databaseFactoryFfi.openDatabase(path!);
-    var batch = await teste.batch();
-    var tabela, campo, titulo, mensagem, mascara, tipo;
-    List<Map<String, Map<String, dynamic>>> resul =
-        await databaseConnection.mappedResultsQuery(
-      "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = upper('unidades')",
-    );
-
-    for (final element in resul) {
-      for (final valoresBanco in element.entries) {
-        tabela = valoresBanco.value["tabela"];
-        tipo = valoresBanco.value["tipo"];
-        campo = valoresBanco.value["campo"];
-        titulo = valoresBanco.value["titulo"];
-        mensagem = valoresBanco.value["mensagem"];
-        mascara = valoresBanco.value["mascara"];
-        var value = {
-          'campo': campo,
-          'tipo': tipo,
-          'titulo': titulo,
-          'mensagem': mensagem,
-          'mascara': mascara,
-        };
-
-        batch.insert('unidades', value);
-
-        print('Atualizado');
-
-        // await t.insert('unidades', value);
-        // await testes.execute("insert into unidades(campo,"
-        //     " tipo , "
-        //     "titulo , "
-        //     "mensagem , "
-        //     "mascara ) values(1,2,3,4,5);");
-
-        // await db.insert(
-        //   'Dicionario',
-        //   <String, Object?>{'tabela': 'teste', 'campo': 'campo'},
-        // );
-        //   var testeInsert1 = await dataSqlite.insert();
-
-      }
-    }
-
-    /*
-      Utilize o Batch para realizar transações em lote, 
-      nesse caso, ele faz o insert por uma certa quantidade de itens.
-      para confirmar a ação, utilize batch.commit;
-      */
-    await batch.commit();
-    // for (var element in resul) {
-    //   tabela = element["dicionario"];
-
-    //   for (final w in element.entries) {
-    //     print(w.value["mensagem"]);
-    //   }
-    // }
-
+  insertTeste1(var dataBase) {
     // teste insert
     /*  insert into unidades(campo,
         tipo ,  
