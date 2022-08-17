@@ -4,9 +4,11 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/corpo_programa.dart';
 // funções
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   try {
+    sqfliteFfiInit();
     WidgetsFlutterBinding.ensureInitialized();
 
     doWhenWindowReady(
