@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_dataBase.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -99,13 +100,6 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   var recebe;
   // Criação do arquivo .db
   Future<void> initDB() async {
-    try {
-      //Prepara a conexão com o SQLite
-      sqfliteFfiInit();
-    } catch (e) {
-      print(e.toString());
-    }
-
     // verifica se esta desconectado
     if (databaseConnection.isClosed == false) {
       var databaseFactory = databaseFactoryFfi;
@@ -127,8 +121,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
         // criando o arquivo de banco sqlite
         // criaBanco(await databaseFactory.openDatabase(path));
-        criaBanco(databaseFactory, path);
-
+        // criaBanco(databaseFactory, path);
+        await criaTabelas(databaseFactory, path);
         databaseConnection.close();
       } else {
         caixaBancoExiste(path!);
@@ -193,7 +187,6 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
         await databaseConnection.mappedResultsQuery(
       "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = upper('unidades')",
     );
-
     for (final element in resul) {
       for (final valoresBanco in element.entries) {
         tabela = valoresBanco.value["tabela"];
