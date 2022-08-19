@@ -1,5 +1,7 @@
 // páginas
 
+import 'dart:io';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/corpo_programa.dart';
 // funções
@@ -8,7 +10,6 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   try {
-    sqfliteFfiInit();
     WidgetsFlutterBinding.ensureInitialized();
 
     doWhenWindowReady(
@@ -24,6 +25,9 @@ void main() {
       },
     );
 
+    if (Platform.isWindows) {
+      sqfliteFfiInit();
+    }
     runApp(const CorpoProjeto());
   } catch (e) {
     debugPrint(e.toString());

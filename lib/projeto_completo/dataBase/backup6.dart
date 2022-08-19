@@ -47,6 +47,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   void initState() {
     atualizaBanco = false;
     myFocusNode = FocusNode();
+
     super.initState();
   }
 
@@ -60,7 +61,20 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
     _ctNameDataBase.dispose();
     myFocusNode.dispose();
     databaseConnection.close();
+
     super.dispose();
+  }
+
+  testeConect(var cor) {
+    if (databaseConnection.isClosed != false) {
+      setState(() {
+        cor = Colors.green;
+      });
+    } else {
+      setState(() {
+        cor = Colors.red;
+      });
+    }
   }
 
   //Inicializa a conexão com o banco
@@ -74,23 +88,13 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
         username: "rpdv",
         password: "rpdvwin1064",
       );
-      // databaseConnection = PostgreSQLConnection(
-      //   _ctHostDataBase.text,
-      //   int.parse(_ctPortDataBase.text),
-      //   _ctNameDataBase.text,
-      //   username: _ctUserDataBase.text,
-      //   password: _ctPasswordDataBase.text,
-      // );
 
       //Conecta o banco de dados
-      databaseConnection.open().then(
-        (value) async {
-          if (databaseConnection.isClosed != true) {
-          } else {
-            debugPrint("Desconectado!");
-          }
-        },
-      );
+      try {
+        databaseConnection.open();
+      } catch (e) {
+        print("Coloque uma mensagem de erro aqui");
+      }
     } else {
       print('ja esta aberto');
     }
@@ -99,163 +103,42 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   var recebe;
   // Criação do arquivo .db
   Future<void> initDB() async {
-    try {
-      //Prepara a conexão com o SQLite
-      sqfliteFfiInit();
-    } catch (e) {
-      print(e.toString());
-    }
-
-    // verifica se esta desconectado
-    if (databaseConnection.isClosed == false) {
-      var databaseFactory = databaseFactoryFfi;
-
-      if (atualizaBanco == false) {
-        String? result = await FilePicker.platform.getDirectoryPath(
-          dialogTitle: 'Caminho Salvar Banco',
-          initialDirectory: 'C:',
-        );
-        recebe = result;
-      }
-      setState(() {
-        path = '${recebe}\\Dicionario.db';
-      });
-
-      //FileSystemEntity gerencia os arquivos da maquina
-      //typeSync: Localiza de forma síncrona o tipo de objeto do sistema de arquivos para o
-      //qual um caminho aponta
-      if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
-        // criando o arquivo de banco sqlite
-        // criaBanco(await databaseFactory.openDatabase(path));
-        criaBanco(databaseFactory, path);
-
-        databaseConnection.close();
-      } else {
-        caixaBancoExiste(path!);
-
-        print('O banco ja existe');
-      }
-
-      if (atualizaBanco == true) {
-        var t = await databaseFactory.openDatabase(path!);
-
-        t.execute(
-          "CREATE TABLE IF NOT EXISTS unidades ("
-          "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
-          "campo CHARACTER(30) NOT NULL,"
-          "tipo CHARACTER(1) NOT NULL,  "
-          "titulo CHARACTER(50) NOT NULL, "
-          "mensagem CHARACTER(255) NOT NULL, "
-          "mascara CHARACTER(50)"
-          ");"
-          "CREATE TABLE IF NOT EXISTS estac ("
-          "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
-          "campo CHARACTER(30) NOT NULL,"
-          "tipo CHARACTER(1) NOT NULL,  "
-          "titulo CHARACTER(50) NOT NULL, "
-          "mensagem CHARACTER(255) NOT NULL, "
-          "mascara CHARACTER(50)"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste1 ("
-          "iwde INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste2 ("
-          "iwder INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste3 ("
-          "iwdt INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");",
-        );
-        insertTeste1(databaseConnection, path, t);
-      }
-    } else {
-      print('Fechado');
-    }
-  }
-
-  insertTeste1(
-      PostgreSQLConnection dataBase, var testes, Database teste) async {
-    // var result =
-    //     await dataBase.query("SELECT * FROM unidades order by uni_codigo");
-    //var t = await databaseFactoryFfi.openDatabase(path!);
-    var batch = await teste.batch();
-    var tabela, campo, titulo, mensagem, mascara, tipo;
-    List<Map<String, Map<String, dynamic>>> resul =
-        await databaseConnection.mappedResultsQuery(
-      "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = upper('unidades')",
+    String? teste1 = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Novo teste 1 novo teste',
+      lockParentWindow: true,
+      initialDirectory: 'C:\\',
     );
 
-    for (final element in resul) {
-      for (final valoresBanco in element.entries) {
-        tabela = valoresBanco.value["tabela"];
-        tipo = valoresBanco.value["tipo"];
-        campo = valoresBanco.value["campo"];
-        titulo = valoresBanco.value["titulo"];
-        mensagem = valoresBanco.value["mensagem"];
-        mascara = valoresBanco.value["mascara"];
-        var value = {
-          'campo': campo,
-          'tipo': tipo,
-          'titulo': titulo,
-          'mensagem': mensagem,
-          'mascara': mascara,
-        };
+    setState(() {
+      path = '$teste1\\Dicionario.db';
+    });
 
-        batch.insert('unidades', value);
+    print(path);
 
-        print('Atualizado');
-      }
-    }
-
-    await batch.commit();
+    await databaseFactoryFfi.openDatabase(path!);
   }
 
-  void closeDialog(BuildContext context) {
+  closeDialog(BuildContext context) {
     Navigator.of(context).pop();
   }
 
-  criaBanco(var database, pathw) {
-    var at = database.openDatabase(pathw);
-    at.execute(
-      "CREATE TABLE IF NOT EXISTS Client ("
-      "id INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste ("
-      "iwd INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste1 ("
-      "iwde INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste2 ("
-      "iwder INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste3 ("
-      "iwdt INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");",
+  void bancoCriado(String caminho) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Banco Criado"),
+          content: descricaoErroCriacao(caminho),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text("Ok"),
+              onPressed: () {
+                closeDialog(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -278,7 +161,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
             ElevatedButton(
               child: const Text("Cancelar"),
               onPressed: () {
-                Navigator.of(context).pop();
+                closeDialog(context);
               },
             ),
           ],
@@ -300,6 +183,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
         Flexible(
           child: SizedBox(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(
                   width: 20,
@@ -533,9 +417,4 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       ),
     );
   }
-}
-
-class DBProvider {
-  DBProvider._();
-  static final DBProvider db = DBProvider._();
 }
