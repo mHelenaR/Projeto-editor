@@ -5,16 +5,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
-import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:file_picker/file_picker.dart';
 
 // importação arquivos
-import 'package:editorconfiguracao/main.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
 
 class ExploradorArquivos extends StatefulWidget {
   const ExploradorArquivos({Key? key}) : super(key: key);
@@ -54,34 +48,34 @@ class ExploradorArquivosState extends State<ExploradorArquivos> {
 
 // lê e decodifica o texto do arquivo;
 
-    final File _meuArquivo = File(_recebeCaminho);
-    final _dadosArquivo = await File(_recebeCaminho)
+    final File meuArquivo = File(_recebeCaminho);
+    final dadosArquivo = await File(_recebeCaminho)
         .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
 
 // variavel conteudo recebendo o texto decodificado
     setState(
       () {
-        _conteudo = _dadosArquivo;
+        _conteudo = dadosArquivo;
       },
     );
   }
 
   Future<void> _tabela() async {
     _nj = await _conteudo;
-    final _teste = _nj.split('\r\n');
+    final teste = _nj.split('\r\n');
 
-    for (int i = 0; i < _teste.length; i++) {
+    for (int i = 0; i < teste.length; i++) {
       var cont = i + 1;
       //var nome = _teste[cont].substring(0, 3);
-      if (_teste[i++].substring(0, 3) == 'TIT') {
-        List<String> strarray = _teste[i].split('|');
+      if (teste[i++].substring(0, 3) == 'TIT') {
+        List<String> strarray = teste[i].split('|');
         setState(
           () {
             _array = strarray;
           },
         );
-      } else if (_teste[i++].substring(0, 3) == 'CPO') {
-        List<String> estacao = _teste[cont].split('^');
+      } else if (teste[i++].substring(0, 3) == 'CPO') {
+        List<String> estacao = teste[cont].split('^');
 
         setState(
           () {

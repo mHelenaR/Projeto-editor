@@ -10,11 +10,13 @@ class TabelaDicionario extends StatefulWidget {
 class _TabelaDicionarioState extends State<TabelaDicionario> {
   @override
   Widget build(BuildContext context) {
-    return ContainerDicionario();
+    return const ContainerDicionario();
   }
 }
 
 class ContainerDicionario extends StatelessWidget {
+  const ContainerDicionario({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(

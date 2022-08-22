@@ -2,14 +2,16 @@
 
 import 'dart:io';
 
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_dataBase.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/insert_dataBase.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/update_base.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:get/get.dart';
 import 'package:postgres/postgres.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_dataBase.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
@@ -32,9 +34,11 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   bool? atualizaBanco;
 
   var recebeCaminhoDB;
+  var recebe;
 
   //Variavel recebendo a função de conexão com o banco e sendo inicializada
   var databaseConnection = PostgreSQLConnection('', 0, '');
+  var databaseFactory = databaseFactoryFfi;
 
   //Criando os controladores de texto, para receber os dados do banco
   final _ctUserDataBase = TextEditingController();
@@ -83,27 +87,14 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       //   password: _ctPasswordDataBase.text,
       // );
 
-      //Conecta o banco de dados
-      databaseConnection.open().then(
-        (value) async {
-          if (databaseConnection.isClosed != true) {
-          } else {
-            debugPrint("Desconectado!");
-          }
-        },
-      );
+      databaseConnection.open();
     } else {
       print('ja esta aberto');
     }
   }
 
-  var recebe;
-  // Criação do arquivo .db
   Future<void> initDB() async {
-    // verifica se esta desconectado
     if (databaseConnection.isClosed == false) {
-      var databaseFactory = databaseFactoryFfi;
-
       if (atualizaBanco == false) {
         String? result = await FilePicker.platform.getDirectoryPath(
           dialogTitle: 'Caminho Salvar Banco',
@@ -115,141 +106,27 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
         path = '${recebe}\\Dicionario.db';
       });
 
-      //FileSystemEntity gerencia os arquivos da maquina
-      //typeSync: Localiza de forma síncrona o tipo de objeto do sistema de arquivos para o
-      //qual um caminho aponta
       if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
-        // criando o arquivo de banco sqlite
-        // criaBanco(await databaseFactory.openDatabase(path));
-        // criaBanco(databaseFactory, path);
-        await criaTabelas(databaseFactory, path);
-        databaseConnection.close();
+        var novo = await databaseFactory.openDatabase(path!);
+
+        criaTabelas(novo, path!, databaseConnection, atualizaBanco!);
       } else {
         caixaBancoExiste(path!);
 
         print('O banco ja existe');
-      }
-
-      if (atualizaBanco == true) {
-        var t = await databaseFactory.openDatabase(path!);
-
-        t.execute(
-          "CREATE TABLE IF NOT EXISTS unidades ("
-          "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
-          "campo CHARACTER(30) NOT NULL,"
-          "tipo CHARACTER(1) NOT NULL,  "
-          "titulo CHARACTER(50) NOT NULL, "
-          "mensagem CHARACTER(255) NOT NULL, "
-          "mascara CHARACTER(50)"
-          ");"
-          "CREATE TABLE IF NOT EXISTS estac ("
-          "id_unidades INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,"
-          "campo CHARACTER(30) NOT NULL,"
-          "tipo CHARACTER(1) NOT NULL,  "
-          "titulo CHARACTER(50) NOT NULL, "
-          "mensagem CHARACTER(255) NOT NULL, "
-          "mascara CHARACTER(50)"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste1 ("
-          "iwde INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste2 ("
-          "iwder INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");"
-          "CREATE TABLE IF NOT EXISTS teste3 ("
-          "iwdt INTEGER PRIMARY KEY,"
-          "first_name TEXT,"
-          "last_name TEXT,"
-          "blocked BIT"
-          ");",
-        );
-        insertTeste1(databaseConnection, path, t);
       }
     } else {
       print('Fechado');
     }
   }
 
-  insertTeste1(
-      PostgreSQLConnection dataBase, var testes, Database teste) async {
-    // var result =
-    //     await dataBase.query("SELECT * FROM unidades order by uni_codigo");
-    //var t = await databaseFactoryFfi.openDatabase(path!);
-    var batch = await teste.batch();
-    var tabela, campo, titulo, mensagem, mascara, tipo;
-    List<Map<String, Map<String, dynamic>>> resul =
-        await databaseConnection.mappedResultsQuery(
-      "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = upper('unidades')",
-    );
-    for (final element in resul) {
-      for (final valoresBanco in element.entries) {
-        tabela = valoresBanco.value["tabela"];
-        tipo = valoresBanco.value["tipo"];
-        campo = valoresBanco.value["campo"];
-        titulo = valoresBanco.value["titulo"];
-        mensagem = valoresBanco.value["mensagem"];
-        mascara = valoresBanco.value["mascara"];
-        var value = {
-          'campo': campo,
-          'tipo': tipo,
-          'titulo': titulo,
-          'mensagem': mensagem,
-          'mascara': mascara,
-        };
-
-        batch.insert('unidades', value);
-
-        print('Atualizado');
-      }
-    }
-
-    await batch.commit();
+  atualizar() async {
+    var novo = await databaseFactory.openDatabase(path!);
+    atualizarBanco(novo, path!, atualizaBanco!, databaseConnection);
   }
 
   void closeDialog(BuildContext context) {
     Navigator.of(context).pop();
-  }
-
-  criaBanco(var database, pathw) {
-    var at = database.openDatabase(pathw);
-    at.execute(
-      "CREATE TABLE IF NOT EXISTS Client ("
-      "id INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste ("
-      "iwd INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste1 ("
-      "iwde INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste2 ("
-      "iwder INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");"
-      "CREATE TABLE IF NOT EXISTS teste3 ("
-      "iwdt INTEGER PRIMARY KEY,"
-      "first_name TEXT,"
-      "last_name TEXT,"
-      "blocked BIT"
-      ");",
-    );
   }
 
   void caixaBancoExiste(String caminho) {
@@ -264,8 +141,8 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
               child: const Text("Atualizar"),
               onPressed: () {
                 atualizaBanco = true;
-                closeDialog(context);
-                initDB();
+                atualizar();
+                Navigator.pop(context);
               },
             ),
             ElevatedButton(
@@ -526,9 +403,4 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       ),
     );
   }
-}
-
-class DBProvider {
-  DBProvider._();
-  static final DBProvider db = DBProvider._();
 }
