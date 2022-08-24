@@ -72,20 +72,20 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
   initDatabaseConnection() async {
     //Verifica se a conexão com o banco esta fechada
     if (databaseConnection.isClosed == true) {
-      databaseConnection = PostgreSQLConnection(
-        "10.1.12.73",
-        5432,
-        "mariah_wrpdv",
-        username: "rpdv",
-        password: "rpdvwin1064",
-      );
       // databaseConnection = PostgreSQLConnection(
-      //   _ctHostDataBase.text,
-      //   int.parse(_ctPortDataBase.text),
-      //   _ctNameDataBase.text,
-      //   username: _ctUserDataBase.text,
-      //   password: _ctPasswordDataBase.text,
+      //   "10.1.12.73",
+      //   5432,
+      //   "mariah_wrpdv",
+      //   username: "rpdv",
+      //   password: "rpdvwin1064",
       // );
+      databaseConnection = PostgreSQLConnection(
+        _ctHostDataBase.text,
+        int.parse(_ctPortDataBase.text),
+        _ctNameDataBase.text,
+        username: _ctUserDataBase.text,
+        password: _ctPasswordDataBase.text,
+      );
 
       databaseConnection.open();
     } else {

@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -37,7 +39,10 @@ class ArquivoPagina extends StatefulWidget {
 }
 
 class _ArquivoPaginaState extends State<ArquivoPagina> {
-  var _recebeCaminhoArquivo = '', conteudoArquivo;
+  var _recebeCaminhoArquivo = '';
+
+  String conteudoArquivo = '';
+
   PlutoGridColumnSizeConfig columnSizeConfig =
       const PlutoGridColumnSizeConfig();
 
@@ -61,6 +66,9 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   @override
   void dispose() {
     super.dispose();
+    stateManager.dispose();
+    gerenciador.dispose();
+    rot.dispose();
   }
 
   final _controller = SidebarXController(selectedIndex: 0);
@@ -68,44 +76,22 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   Future<void> arquivoAbrirSeparar() async {
     try {
       if (clicked == true) {
-        String? caminhoArquivo = r'/storage/';
+        _recebeCaminhoArquivo = await arquivoTabela();
+        conteudoArquivo = await converteArquivo(_recebeCaminhoArquivo);
 
-        FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowMultiple: false,
-          initialDirectory: 'C:/frente',
-          allowedExtensions: ['cfg'],
-          dialogTitle: 'Abrir',
-          withData: true,
-        );
+        setState(() {
+          colunasTabelasArquivo();
+        });
 
-        if (result != null) {
-          caminhoArquivo = result.files.single.path;
-          setState(() {
-            _recebeCaminhoArquivo = caminhoArquivo!;
-          });
-          print(_recebeCaminhoArquivo);
-          final dadosArquivo = await File(_recebeCaminhoArquivo)
-              .readAsStringSync(
-                  encoding: const Latin1Codec(allowInvalid: true));
-
-          setState(() {
-            conteudoArquivo = dadosArquivo;
-          });
-
-          setState(() {
-            colunasTabelasArquivo();
-          });
-
-          setState(() {
-            nomeTabelasArquivo();
-          });
-        }
+        setState(() {
+          nomeTabelasArquivo();
+        });
+        // }
       } else {
         erroCarregarArquivo(context);
 
         setState(() {
-          _recebeCaminhoArquivo = '';
+          conteudoArquivo = '';
         });
       }
     } catch (e) {
@@ -153,95 +139,95 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   }
 
   colunasTabelasArquivo() async {
-    try {
-      _separarArquivo = await conteudoArquivo;
+    // try {
+    _separarArquivo = await conteudoArquivo;
 
-      separaTabelasArquivo = _separarArquivo.split('TIT ');
-      List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
+    separaTabelasArquivo = _separarArquivo.split('TIT ');
+    List<String> _linhasTIT = separaTabelasArquivo[61].split('\r\n');
 
-      //----------- TIT------------//
+    //----------- TIT------------//
 
-      int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-      nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
+    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
 
-      // retira o separador
-      nomeColunas = nomeColSeparada[0].split('|');
+    // retira o separador
+    nomeColunas = nomeColSeparada[0].split('|');
 
-      setState(() {
-        _arrayString = nomeColunas;
-      });
-      setState(
-        () {
-          stateManager.notifyListeners();
-          columns = <PlutoColumn>[
-            if (_controller.selectedIndex == 1) ...{
+    setState(() {
+      _arrayString = nomeColunas;
+    });
+    setState(
+      () {
+        stateManager.notifyListeners();
+        columns = <PlutoColumn>[
+          if (_controller.selectedIndex == 1) ...{
+            PlutoColumn(
+              title: 'teste carrega',
+              field: 'teste',
+              type: PlutoColumnType.text(),
+            ),
+          } else if (_controller.selectedIndex != 1) ...{
+            for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+              //coluna
               PlutoColumn(
-                title: 'teste carrega',
-                field: 'teste',
+                title: '$colTam|${_arrayString[colTam]}',
+                field: colTam.toString(),
                 type: PlutoColumnType.text(),
               ),
-            } else if (_controller.selectedIndex != 1) ...{
-              for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
-                //coluna
-                PlutoColumn(
-                  title: '$colTam|${_arrayString[colTam]}',
-                  field: colTam.toString(),
-                  type: PlutoColumnType.text(),
-                ),
-              }
             }
-          ];
-        },
-      );
-
-      //----------- TIT-FIM-----------//
-
-      //----------- CPO-INICIO-----------//
-      for (int i = 1; i < _linhasTIT.length; i++) {
-        if (_linhasTIT[i] != '') {
-          String testeP = _linhasTIT[i];
-          String? testeO = testeP.split('CPO ').toString();
-          teste1 = [testeO];
-          teste3 = teste3 + teste1;
-
-          for (int p = 0; p < teste3.length; p++) {
-            teste2 = teste3[p].split('^');
           }
+        ];
+      },
+    );
 
-          setState(
-            () {
-              rows.addAll(
-                [
-                  if (_controller.selectedIndex == 1) ...{
-                    PlutoRow(
-                      cells: {
-                        'teste': PlutoCell(value: 'TesteValor'),
-                      },
-                    ),
-                  } else if (_controller.selectedIndex != 1) ...{
-                    PlutoRow(
-                      cells: {
-                        for (int rColTam = 0;
-                            rColTam < teste2.length;
-                            rColTam++) ...{
-                          rColTam.toString(): PlutoCell(
-                            value: teste2[rColTam],
-                          ),
-                        },
-                      },
-                    ),
-                  },
-                ],
-              );
-            },
-          );
+    //----------- TIT-FIM-----------//
+
+    //----------- CPO-INICIO-----------//
+    for (int i = 1; i < _linhasTIT.length; i++) {
+      if (_linhasTIT[i] != '') {
+        String testeP = _linhasTIT[i];
+        String? testeO = testeP.split('CPO ').toString();
+        teste1 = [testeO];
+        teste3 = teste3 + teste1;
+
+        for (int p = 0; p < teste3.length; p++) {
+          teste2 = teste3[p].split('^');
         }
-      }
 
-      //----------- CPO------------//
-    } catch (e) {
-      erroTryCatch(context, e);
+        setState(
+          () {
+            rows.addAll(
+              [
+                if (_controller.selectedIndex == 1) ...{
+                  PlutoRow(
+                    cells: {
+                      'teste': PlutoCell(value: 'TesteValor'),
+                    },
+                  ),
+                } else if (_controller.selectedIndex != 1) ...{
+                  PlutoRow(
+                    cells: {
+                      for (int rColTam = 0;
+                          rColTam < teste2.length;
+                          rColTam++) ...{
+                        rColTam.toString(): PlutoCell(
+                          value: teste2[rColTam],
+                        ),
+                      },
+                    },
+                  ),
+                },
+              ],
+            );
+          },
+        );
+      }
     }
+
+    //----------- CPO------------//
+    // } catch (e) {
+    //   erroTryCatch(context, e);
+    // }
   }
 
   nomeTabelasArquivo() async {
@@ -517,7 +503,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
             ],
           );
         },
-        createHeader: (stateManager) => headerPlutoGrid(),
+        //createHeader: (stateManager) => headerPlutoGrid(),
 
         onLoaded: (PlutoGridOnLoadedEvent event) {
           stateManager = event.stateManager;

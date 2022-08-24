@@ -12,35 +12,36 @@ insertTabelas(PostgreSQLConnection basePostgresql, var caminhoArquivo,
   List<String> listaTabelas = [];
 
   listaTabelas = await tabelas;
+  try {
+    for (final nomeTabelas in listaTabelas) {
+      List<Map<String, Map<String, dynamic>>> resul =
+          await basePostgresql.mappedResultsQuery(
+        "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = upper('$nomeTabelas')",
+      );
 
-  for (final nomeTabelas in listaTabelas) {
-    List<Map<String, Map<String, dynamic>>> resul =
-        await basePostgresql.mappedResultsQuery(
-      "SELECT tabela, campo, titulo, mensagem, mascara, tipo FROM dicionario where tabela = upper('$nomeTabelas')",
-    );
+      for (final element in resul) {
+        for (final valoresBanco in element.entries) {
+          tabela = valoresBanco.value["tabela"];
+          tipo = valoresBanco.value["tipo"];
+          campo = valoresBanco.value["campo"];
+          titulo = valoresBanco.value["titulo"];
+          mensagem = valoresBanco.value["mensagem"];
+          mascara = valoresBanco.value["mascara"];
+          var value = {
+            'campo': campo,
+            'tipo': tipo,
+            'titulo': titulo,
+            'mensagem': mensagem,
+            'mascara': mascara,
+          };
 
-    for (final element in resul) {
-      for (final valoresBanco in element.entries) {
-        tabela = valoresBanco.value["tabela"];
-        tipo = valoresBanco.value["tipo"];
-        campo = valoresBanco.value["campo"];
-        titulo = valoresBanco.value["titulo"];
-        mensagem = valoresBanco.value["mensagem"];
-        mascara = valoresBanco.value["mascara"];
-        var value = {
-          'campo': campo,
-          'tipo': tipo,
-          'titulo': titulo,
-          'mensagem': mensagem,
-          'mascara': mascara,
-        };
+          batch.insert(nomeTabelas, value);
 
-        batch.insert(nomeTabelas, value);
-
-        print('Atualizado');
+          print('Atualizado');
+        }
       }
     }
+  } finally {
+    await batch.commit();
   }
-
-  await batch.commit();
 }
