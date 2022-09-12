@@ -1,14 +1,11 @@
 // bibliotecas
 // ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
-import 'dart:ffi';
+import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/sidebarX.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
 
 // importar arquivo
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
@@ -21,8 +18,18 @@ class barraContainer extends StatefulWidget {
 }
 
 class _barraContainerState extends State<barraContainer> {
-  final List<String> menuItens = ["Página principal", "Tabelas", "Conexão", "Configuração"];
-  final List<String> menuIcons = ["homepage_1", "icon_prancheta", "icon_nuvem", "icon_configuracao"];
+  final List<String> menuItens = [
+    "Página principal",
+    "Tabelas",
+    "Conexão",
+    "Configuração"
+  ];
+  final List<String> menuIcons = [
+    "homepage_1",
+    "icon_prancheta",
+    "icon_nuvem",
+    "icon_configuracao"
+  ];
   bool sidebarOpen = true;
 
   double xOffset = 60;
@@ -44,7 +51,8 @@ class _barraContainerState extends State<barraContainer> {
         pageTitle = "Pagina Inicial";
         break;
       case 1:
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const SideBarExpansivel()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const MenuPrincipal()));
         break;
       case 2:
         pageTitle = "Comparar";
@@ -150,14 +158,20 @@ class ListMenu extends StatelessWidget {
   final String itemText;
   final int selecao;
   final int posicao;
-  const ListMenu({required this.itemIcon, required this.itemText, required this.selecao, required this.posicao});
+  const ListMenu(
+      {required this.itemIcon,
+      required this.itemText,
+      required this.selecao,
+      required this.posicao});
 
   final _estiloTexto = const TextStyle(color: Colors.white);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: selecao == posicao ? const Color(0xFF532F99) : const Color(0XFF673AB7),
+      color: selecao == posicao
+          ? const Color(0xFF532F99)
+          : const Color(0XFF673AB7),
       child: Row(
         children: [
           Container(

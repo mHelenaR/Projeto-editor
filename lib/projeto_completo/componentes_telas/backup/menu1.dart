@@ -6,6 +6,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.d
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/body_table.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/table_page.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/menu/tabelas_page.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/home_page.dart';
@@ -64,13 +65,13 @@ class _SideBarExpansivelState extends State<SideBarExpansivel> {
                   iconWidget: Image.asset("assets/images/icon_prancheta.png",
                       color: Colors.white),
                   label: "Tabelas",
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Arquivo() /*TableMenu()*/,
-                      ),
-                    );
-                  },
+                  // onTap: () {
+                  //   Navigator.of(context).push(
+                  //     MaterialPageRoute(
+                  //       builder: (context) => Arquivo() /*TableMenu()*/,
+                  //     ),
+                  //   );
+                  // },
                 ),
                 SidebarXItem(
                   iconWidget: Image.asset("assets/images/icon_nuvem.png",
@@ -120,8 +121,10 @@ class _ScreensExample extends StatelessWidget {
         switch (controller.selectedIndex) {
           case 0:
             return const HomePage();
+          case 1:
+            return const TelaTabela();
           case 3:
-            return ConexaoPostgres();
+            return TelaConexao();
 
           case 4:
             return Text(

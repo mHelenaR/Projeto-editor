@@ -61,7 +61,7 @@ class BarraPesquisa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: styleBarraPesquisa,
+      decoration: styleBarraPesquisa(white),
     );
   }
 }

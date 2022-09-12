@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
 
+@override
 Future<List<PlutoRow>> linhasCpoArquivo(
     String conteudoArquivo, SidebarXController controller) async {
   List<String> teste1 = [];
@@ -29,7 +30,7 @@ Future<List<PlutoRow>> linhasCpoArquivo(
   separarArquivo = conteudoArquivo;
 
   separaTabelasArquivo = separarArquivo.split('TIT ');
-  List<String> linhasTIT = separaTabelasArquivo[5].split('\r\n');
+  List<String> linhasTIT = separaTabelasArquivo[1].split('\r\n');
 
   for (int i = 1; i < linhasTIT.length; i++) {
     if (linhasTIT[i] != '') {
@@ -42,48 +43,49 @@ Future<List<PlutoRow>> linhasCpoArquivo(
         teste2 = teste3[p].split('^');
       }
 
-      rows.addAll(
-        [
-          PlutoRow(
-            cells: {
-              for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
-                rColTam.toString(): PlutoCell(
-                  value: teste2[rColTam],
-                ),
-              },
-            },
-          ),
-        ],
-      );
+      // rows.addAll(
+      //   [
+      //     PlutoRow(
+      //       cells: {
+      //         for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
+      //           rColTam.toString(): PlutoCell(
+      //             value: teste2[rColTam],
+      //           ),
+      //         },
+      //       },
+      //     ),
+      //   ],
+      // );
 //teste
 
-      // Timer.periodic(const Duration(milliseconds: 1), (timer) {
-      //   if (count == max) {
-      //     return;
-      //   }
+      Timer.periodic(const Duration(milliseconds: 1), (timer) {
+        if (count == max) {
+          return;
+        }
 
-      //   ++count;
+        ++count;
+        Future(() {
+          return rows.addAll(
+            [
+              PlutoRow(
+                cells: {
+                  for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
+                    rColTam.toString(): PlutoCell(
+                      value: teste2[rColTam],
+                    ),
+                  },
+                },
+              ),
+            ],
+          );
+        });
 
-      //   rows.addAll(
-      //     [
-      //       PlutoRow(
-      //         cells: {
-      //           for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
-      //             rColTam.toString(): PlutoCell(
-      //               value: teste2[rColTam],
-      //             ),
-      //           },
-      //         },
-      //       ),
-      //     ],
-      //   );
+        if (_rows.length == totalRows) {
+          completer.complete(_rows);
 
-      //   if (_rows.length == totalRows) {
-      //     completer.complete(_rows);
-
-      //     timer.cancel();
-      //   }
-      // });
+          timer.cancel();
+        }
+      });
       //teste
     }
   }

@@ -20,14 +20,14 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 
-class ConexaoPostgres extends StatefulWidget {
-  const ConexaoPostgres({Key? key}) : super(key: key);
+class TelaConexao extends StatefulWidget {
+  const TelaConexao({Key? key}) : super(key: key);
 
   @override
-  State<ConexaoPostgres> createState() => _ConexaoPostgresState();
+  State<TelaConexao> createState() => _TelaConexaoState();
 }
 
-class _ConexaoPostgresState extends State<ConexaoPostgres> {
+class _TelaConexaoState extends State<TelaConexao> {
   //focusNode captura eventos do teclado
   late FocusNode myFocusNode;
   String? path;

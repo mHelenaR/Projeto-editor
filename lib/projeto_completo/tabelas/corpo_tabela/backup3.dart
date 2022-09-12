@@ -411,7 +411,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
 
   Widget arquivoBarraPesquisa() {
     return TextFormField(
-      decoration: styleBarraPesquisa,
+      decoration: styleBarraPesquisa(white),
     );
   }
 

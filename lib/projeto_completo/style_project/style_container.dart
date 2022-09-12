@@ -30,6 +30,19 @@ final containerSideBar = BoxDecoration(
 );
 
 final containerConfig = BoxDecoration(
-    borderRadius: BorderRadius.circular(20),
-    color: white,
-    border: Border.all(color: Colors.black.withOpacity(0.28)));
+  borderRadius: BorderRadius.circular(20),
+  color: white,
+  border: Border.all(
+    color: Colors.black.withOpacity(0.28),
+  ),
+);
+
+final containerOpSelecionada = BoxDecoration(
+  borderRadius: BorderRadius.circular(5),
+  color: Colors.purple[50],
+);
+
+final containerOp = BoxDecoration(
+  borderRadius: BorderRadius.circular(5),
+  color: white,
+);

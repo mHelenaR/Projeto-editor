@@ -1,6 +1,9 @@
+// ignore_for_file: file_names
+
+import 'package:flutter/material.dart';
+
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
-import 'package:flutter/material.dart';
 
 class PaginaInicial extends StatelessWidget {
   const PaginaInicial({Key? key}) : super(key: key);

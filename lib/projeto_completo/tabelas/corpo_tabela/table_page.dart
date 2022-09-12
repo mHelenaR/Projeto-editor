@@ -1,25 +1,19 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_typing_uninitialized_variables, unused_local_variable, sized_box_for_whitespace, avoid_print, no_leading_underscores_for_local_identifiers, await_only_futures, must_be_immutable
 
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/linhasCPO.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/linhasTIT.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 import 'package:editorconfiguracao/projeto_completo/mensagens/snackbarWarning.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/componentes/barra_pesquisa.dart';
 
 import '../../style_project/style_plutoGrid.dart';
@@ -70,22 +64,15 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   @override
   void dispose() {
     super.dispose();
-    gerenciador.dispose();
     rot.dispose();
   }
 
   final _controller = SidebarXController(selectedIndex: 0);
-  final controla = StreamController();
 
   Future<void> arquivoAbrirSeparar() async {
     try {
       if (clicked == true) {
         _recebeCaminhoArquivo = await arquivoTabela();
-
-        setState(() {
-          _recebeCaminhoArquivo;
-        });
-
         conteudoArquivo = await converteArquivo(_recebeCaminhoArquivo);
 
         setState(() {
@@ -93,8 +80,9 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         });
 
         setState(() {
-          nomeTabelasArquivos();
+          nomeTabelasArquivo();
         });
+        // }
       } else {
         erroCarregarArquivo(context);
 
@@ -109,6 +97,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         _recebeCaminhoArquivo = '';
       });
     } finally {
+      limpaListas();
       clicked = false;
     }
   }
@@ -128,21 +117,167 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   List<PlutoRow> rows = [];
   List<PlutoColumn> columns = [];
 
+  limpaListas() {
+    nomeTabelas.clear();
+    listaMenu.clear();
+    separaTabelasArquivo.clear();
+    nomeColSeparada.clear();
+    nomeColunas.clear();
+    _arrayString.clear();
+    linhaCPO.clear();
+    teste1.clear();
+    teste2.clear();
+    teste3.clear();
+    teste4.clear();
+    teste5.clear();
+    rows.clear();
+    columns.clear();
+  }
+
   colunasTabelasArquivo() async {
+    // try {
+    _separarArquivo = await conteudoArquivo;
+
+    separaTabelasArquivo = _separarArquivo.split('TIT ');
+    List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
+
+    //----------- TIT------------//
+
+    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
+    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
+
+    // retira o separador
+    nomeColunas = nomeColSeparada[0].split('|');
+
+    setState(() {
+      _arrayString = nomeColunas;
+    });
+    setState(
+      () {
+        stateManager.notifyListeners();
+        columns = <PlutoColumn>[
+          if (_controller.selectedIndex == 1) ...{
+            PlutoColumn(
+              title: 'teste carrega',
+              field: 'teste',
+              type: PlutoColumnType.text(),
+            ),
+          } else if (_controller.selectedIndex != 1) ...{
+            for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
+              //coluna
+              PlutoColumn(
+                title: '$colTam|${_arrayString[colTam]}',
+                field: colTam.toString(),
+                type: PlutoColumnType.text(),
+              ),
+            }
+          }
+        ];
+      },
+    );
+
+    //----------- TIT-FIM-----------//
+
+    //----------- CPO-INICIO-----------//
+    for (int i = 1; i < _linhasTIT.length; i++) {
+      if (_linhasTIT[i] != '') {
+        String testeP = _linhasTIT[i];
+        String? testeO = testeP.split('CPO ').toString();
+        teste1 = [testeO];
+        teste3 = teste3 + teste1;
+
+        for (int p = 0; p < teste3.length; p++) {
+          teste2 = teste3[p].split('^');
+        }
+
+        setState(
+          () {
+            rows.addAll(
+              [
+                if (_controller.selectedIndex == 1) ...{
+                  PlutoRow(
+                    cells: {
+                      'teste': PlutoCell(value: 'TesteValor'),
+                    },
+                  ),
+                } else if (_controller.selectedIndex != 1) ...{
+                  PlutoRow(
+                    cells: {
+                      for (int rColTam = 0;
+                          rColTam < teste2.length;
+                          rColTam++) ...{
+                        rColTam.toString(): PlutoCell(
+                          value: teste2[rColTam],
+                        ),
+                      },
+                    },
+                  ),
+                },
+              ],
+            );
+          },
+        );
+      }
+    }
+
+    //----------- CPO------------//
+    // } catch (e) {
+    //   erroTryCatch(context, e);
+    // }
+  }
+
+  nomeTabelasArquivo() async {
     try {
-      columns = await colunasNome(conteudoArquivo, _controller);
-      controla.add(arquivoGridTabelas());
-      rows = await linhasCpoArquivo(conteudoArquivo, _controller);
+      listaTIT = await conteudoArquivo.split('TIT ');
+      int posicaoSeparador = 0;
+
+      for (int i = 0; i < listaTIT.length; i++) {
+        posicaoSeparador = listaTIT[i].indexOf('#');
+        if (posicaoSeparador != -1) {
+          nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
+        } else {
+          nomeTabelas = [];
+        }
+        setState(() {
+          listaMenu = listaMenu + nomeTabelas;
+        });
+      }
     } catch (e) {
       erroTryCatch(context, e);
     }
   }
 
-  nomeTabelasArquivos() async {
+  carregarTela() {
     try {
-      listaMenu = await nomeTabelasArquivo(_recebeCaminhoArquivo);
+      return Container(
+        child: FutureBuilder(
+          future: getValue(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return arquivoTabelas();
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.purple.shade300,
+                  backgroundColor: canvaCores,
+                ),
+              );
+            }
+          },
+        ),
+      );
     } catch (e) {
       erroTryCatch(context, e);
+    }
+  }
+
+  Future<String> getValue() async {
+    try {
+      await Future.delayed(const Duration(seconds: 5));
+      return 'Aguarde!\n Carregando tabelas!';
+    } catch (e) {
+      erroTryCatch(context, e);
+      return 'Error Delay';
     }
   }
 
@@ -174,11 +309,6 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                   "assets/images/icon_prancheta.png",
                   color: Colors.white,
                 ),
-                onTap: () {
-                  setState(() {
-                    arquivoTabelas();
-                  });
-                },
                 label: listaMenu[i],
               ),
             },
@@ -199,9 +329,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                     height: 10,
                   ),
                   arquivoBusca(),
-                  if (_controller.selectedIndex != 0) ...{
-                    arquivoTabelas(),
-                  }
+                  if (_controller.selectedIndex == 0) arquivoTabelas(),
                 ],
               );
             },
@@ -209,6 +337,51 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
         )
       ],
     );
+  }
+
+  Widget arquivoBarraPesquisa() {
+    return TextFormField(
+      decoration: styleBarraPesquisa(white),
+    );
+  }
+
+  Widget arquivoBotaoPesquisa() {
+    return ElevatedButton(
+      onPressed: () {},
+      style: estiloBotao,
+      child: const Text('Pesquisar'),
+    );
+  }
+
+  Future<void> _writeData() async {
+    if (clicked == false) {
+      final _dirPath = await _recebeCaminhoArquivo;
+      if (_recebeCaminhoArquivo != '') {
+        final _myFile = File(_dirPath);
+
+        for (int i = 0; i < gravaArquivo.length; i++) {
+          if (gravaArquivo[i] != 'inicio') {
+            await _myFile.writeAsString(gravaArquivo.toString());
+          } else {
+            Builder(
+              builder: (context) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("erro"),
+                  ),
+                );
+                return const Text('');
+              },
+            );
+          }
+        }
+      } else {
+        erroSalvarArquivo(context);
+      }
+    } else {
+      // gerar o erro correto
+      erroSalvarArquivo(context);
+    }
   }
 
   Widget arquivoTabelas() {
@@ -229,62 +402,6 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget arquivoGridTabelas() {
-    return Container(
-      height: tamanho(context),
-      child: PlutoGrid(
-        createFooter: (stateManager) {
-          return Row(
-            children: [
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 30,
-                  child: const Text("Dicionário"),
-                ),
-              ),
-            ],
-          );
-        },
-        //createHeader: (stateManager) => headerPlutoGrid(),
-
-        onLoaded: (PlutoGridOnLoadedEvent event) {
-          stateManager = event.stateManager;
-          // stateManager.setShowLoading(true);
-        },
-        //pega o valor das celulas
-        onChanged: (PlutoGridOnChangedEvent event) {
-          print(event.value);
-          if (event.oldValue != event.value) {
-            gravaArquivo.add(event.value);
-            print(event.oldValue);
-          } else {
-            gravaArquivo.add(event.oldValue);
-          }
-        },
-
-        configuration: configuracaoPlutoGrid,
-
-        columns: columns,
-        rows: rows,
-      ),
-    );
-  }
-
-  Widget arquivoBarraPesquisa() {
-    return TextFormField(
-      decoration: styleBarraPesquisa,
-    );
-  }
-
-  Widget arquivoBotaoPesquisa() {
-    return ElevatedButton(
-      onPressed: () {},
-      style: estiloBotao,
-      child: const Text('Pesquisar'),
     );
   }
 
@@ -345,7 +462,10 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                   ),
                   Flexible(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print(gravaArquivo);
+                        _writeData();
+                      },
                       style: estiloBotao,
                       child: const Text("Salvar"),
                     ),
@@ -359,6 +479,127 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget arquivoGridTabelas() {
+    return Container(
+      height: tamanho(context),
+      child: PlutoGrid(
+        createFooter: (stateManager) {
+          return Row(
+            children: [
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 30,
+                  child: const Text("Dicionário"),
+                ),
+              ),
+            ],
+          );
+        },
+        //createHeader: (stateManager) => headerPlutoGrid(),
+
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          stateManager = event.stateManager;
+          // stateManager.setShowLoading(true);
+        },
+        //pega o valor das celulas
+        onChanged: (PlutoGridOnChangedEvent event) {
+          print(event.value);
+          if (event.oldValue != event.value) {
+            gravaArquivo.add(event.value);
+            print(event.oldValue);
+          } else {
+            gravaArquivo.add(event.oldValue);
+          }
+        },
+
+        configuration: configuracaoPlutoGrid,
+
+        columns: columns,
+        rows: rows,
+      ),
+    );
+  }
+
+  Widget headerPlutoGrid() {
+    return SizedBox(
+      height: 37,
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 5,
+          ),
+          ElevatedButton(
+            style: estiloBotao,
+            onPressed: () {
+              stateManager.setShowColumnFilter(!stateManager.showColumnFilter);
+            },
+            child: const Text('Filtro'),
+          ),
+          ElevatedButton(
+            onPressed: _handleAutoSizeEqual,
+            child: const Text("Tamanhos Iguais"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _setAutoSize(PlutoAutoSizeMode mode) {
+    columnSizeConfig = columnSizeConfig.copyWith(
+      autoSizeMode: mode,
+    );
+    setState(() {
+      setConfig(columnSizeConfig);
+    });
+  }
+
+  void _handleAutoSizeEqual() {
+    _setAutoSize(PlutoAutoSizeMode.equal);
+  }
+}
+
+class _Header extends StatefulWidget {
+  const _Header({
+    required this.setConfig,
+    Key? key,
+  }) : super(key: key);
+
+  final void Function(PlutoGridColumnSizeConfig) setConfig;
+
+  @override
+  State<_Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends State<_Header> {
+  PlutoGridColumnSizeConfig columnSizeConfig =
+      const PlutoGridColumnSizeConfig();
+
+  void _setAutoSize(PlutoAutoSizeMode mode) {
+    setState(() {
+      columnSizeConfig = columnSizeConfig.copyWith(
+        autoSizeMode: mode,
+      );
+      widget.setConfig(columnSizeConfig);
+    });
+  }
+
+  void _handleAutoSizeEqual() {
+    _setAutoSize(PlutoAutoSizeMode.equal);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary:
+            columnSizeConfig.autoSizeMode.isEqual ? Colors.blue : Colors.grey,
+      ),
+      onPressed: _handleAutoSizeEqual,
+      child: const Text('AutoSize equal'),
     );
   }
 }

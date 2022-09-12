@@ -1,6 +1,7 @@
 // Bibliotecas
 
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/sidebarX.dart';
+import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
 import 'package:flutter/material.dart';
 
 class CorpoProjeto extends StatefulWidget {
@@ -26,7 +27,8 @@ class _CorpoProjetoState extends State<CorpoProjeto> {
       },
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
-        body: SideBarExpansivel(),
+        backgroundColor: white,
+        body: MenuPrincipal(),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final estiloBotao = ElevatedButton.styleFrom(
-  primary: const Color(0XFF673AB7),
+  backgroundColor: const Color(0XFF673AB7),
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(5),
   ),
@@ -9,7 +9,7 @@ final estiloBotao = ElevatedButton.styleFrom(
 
 final estiloBotao2 = ElevatedButton.styleFrom(
   elevation: 0,
-  primary: Colors.white,
+  backgroundColor: Colors.white,
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(20),
   ),

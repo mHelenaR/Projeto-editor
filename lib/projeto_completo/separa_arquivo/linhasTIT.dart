@@ -15,7 +15,7 @@ Future<List<PlutoColumn>> colunasNome(
   separarArquivo = conteudoArquivo;
 
   separaTabelasArquivo = separarArquivo.split('TIT ');
-  List<String> linhasTIT = separaTabelasArquivo[5].split('\r\n');
+  List<String> linhasTIT = separaTabelasArquivo[1].split('\r\n');
 
   int posCharacterArquivo = linhasTIT[0].indexOf('#') + 1;
   nomeColSeparada = [linhasTIT[0].substring(posCharacterArquivo)];
