@@ -3,7 +3,7 @@
 import 'package:editorconfiguracao/projeto_completo/comparar/comprar_arquivos.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/explorador_arq.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/body_table.dart';

@@ -10,7 +10,7 @@ import 'package:editorconfiguracao/projeto_completo/mensagens/snackbarWarning.da
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
@@ -259,7 +259,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
               return Center(
                 child: CircularProgressIndicator(
                   color: Colors.purple.shade300,
-                  backgroundColor: canvaCores,
+                  backgroundColor: purpleF99,
                 ),
               );
             }
@@ -595,8 +595,7 @@ class _HeaderState extends State<_Header> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary:
-            columnSizeConfig.autoSizeMode.isEqual ? Colors.blue : Colors.grey,
+        primary: columnSizeConfig.autoSizeMode.isEqual ? Colors.blue : grey,
       ),
       onPressed: _handleAutoSizeEqual,
       child: const Text('AutoSize equal'),

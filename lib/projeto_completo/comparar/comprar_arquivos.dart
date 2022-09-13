@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';

@@ -1,7 +1,8 @@
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:flutter/material.dart';
 
 final estiloBotao = ElevatedButton.styleFrom(
-  backgroundColor: const Color(0XFF673AB7),
+  backgroundColor: purpleAB7,
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(5),
   ),

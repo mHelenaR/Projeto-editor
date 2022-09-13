@@ -11,7 +11,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
@@ -209,9 +209,6 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
           'mensagem': mensagem,
           'mascara': mascara,
         };
-    
-
-       
 
         batch.insert('unidades', value);
 
@@ -233,7 +230,7 @@ class _ConexaoPostgresState extends State<ConexaoPostgres> {
       }
     }
 
-     /*
+    /*
       Utilize o Batch para realizar transações em lote, 
       nesse caso, ele faz o insert por uma certa quantidade de itens.
       para confirmar a ação, utilize batch.commit;

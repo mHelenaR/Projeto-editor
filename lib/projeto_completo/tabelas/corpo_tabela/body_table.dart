@@ -1,17 +1,22 @@
 // ignore_for_file: unrelated_type_equality_checks
 
-import 'dart:ffi';
-
-import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRadius.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/variaveis.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 class TelaTabela extends StatefulWidget {
   const TelaTabela({super.key});
@@ -20,18 +25,14 @@ class TelaTabela extends StatefulWidget {
   State<TelaTabela> createState() => _TelaTabelaState();
 }
 
-class _TelaTabelaState extends State<TelaTabela> {
-  String? opcaoEscolhida;
-
-  int cont = 1;
-  double _height = 0.0;
-
-  final TextEditingController controle = TextEditingController();
-
-  Color cor = white;
+class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
+  TabController getTabController() {
+    return TabController(length: tabs.length, vsync: this);
+  }
 
   @override
   void initState() {
+    tabController = getTabController();
     super.initState();
   }
 
@@ -41,26 +42,182 @@ class _TelaTabelaState extends State<TelaTabela> {
   }
 
   void expandeContainer() {
-    if (_height == 100) {
+    if (height == 100) {
       setState(() {
         cor = white;
-        _height = 0.0;
+        height = 0.0;
       });
     } else {
       setState(() {
-        cor = Colors.grey.shade500;
-        _height = 100;
+        cor = grey.shade500;
+        height = 100;
       });
     }
   }
 
-  String troca() {
-    String? recebe;
+  Future<void> arquivoAbrirSeparar() async {
+    try {
+      caminhoArquivo = await arquivoTabela();
+      setState(() {
+        controleArquivo.text = caminhoArquivo!;
+      });
+      if (caminhoArquivo != null) {
+        recebeCaminhoArquivo = caminhoArquivo!;
+
+        conteudoArquivo = await converteArquivo(recebeCaminhoArquivo);
+
+        setState(() {
+          conteudoArquivo;
+        });
+
+        nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
+
+        nomeTab(nomeTabelas.length);
+
+        tabs = criaTab(nomeTabelas.length);
+
+        setState(() {
+          getWidgets();
+          tabController = TabController(length: tabs.length, vsync: this);
+        });
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Tab nomeTab(int widgetNumber) {
     setState(() {
-      cont = cont + 1;
-      recebe = "troca $cont";
+      widgetNumber;
     });
-    return recebe!;
+
+    if (widgetNumber == nomeTabelas.length) {
+      widgetNumber = widgetNumber - 1;
+    }
+
+    return Tab(text: nomeTabelas[widgetNumber]);
+  }
+
+  List<Tab> criaTab(int count) {
+    tabs.clear();
+
+    for (int i = 0; i < count; i++) {
+      tabs.add(nomeTab(i));
+    }
+
+    return tabs;
+  }
+
+  List<Widget> getWidgets() {
+    criarWidgets.clear();
+
+    for (int i = 0; i < tabs.length; i++) {
+      criarWidgets.add(carregarTela(i));
+    }
+
+    return criarWidgets;
+  }
+
+  carregarTela(var controle) {
+    return FutureBuilder(
+      future: delay(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return criaTabViewTabela(controle);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Future<String> delay() async {
+    await Future.delayed(const Duration(seconds: 3));
+    return 'Aguarde!\n Carregando tabelas!';
+  }
+
+  Widget criaTabViewTabela(int widgetNumber) {
+    rows.clear();
+    columns.clear();
+    listaTIT.clear();
+    nomeColunas.clear();
+    teste4.clear();
+
+    String? recebeTabela;
+
+    separarArquivo = conteudoArquivo;
+
+    if (kDebugMode) {
+      print("Numero da tab: $widgetNumber");
+    }
+
+    for (int i = 0; i < nomeTabelas.length; i++) {
+      int contador = widgetNumber + 1;
+      String start = 'TIT ${nomeTabelas[widgetNumber]}#';
+
+      if (contador == nomeTabelas.length) {
+        contador = contador - 1;
+
+        final startIndex = separarArquivo.indexOf(start);
+
+        recebeTabela = separarArquivo.substring(
+            startIndex + start.length, separarArquivo.length);
+      } else {
+        String end = 'TIT ${nomeTabelas[contador]}#';
+
+        final startIndex = separarArquivo.indexOf(start);
+
+        final endIndex = separarArquivo.indexOf(end, startIndex + start.length);
+
+        recebeTabela =
+            separarArquivo.substring(startIndex + start.length, endIndex);
+      }
+    }
+
+    List<String> linhasTIT = recebeTabela!.split("\r\n");
+    nomeColunas = linhasTIT[0].split('|');
+
+    columns = <PlutoColumn>[
+      for (int colTam = 0; colTam < nomeColunas.length; colTam++) ...{
+        //coluna
+        PlutoColumn(
+          title: nomeColunas[colTam],
+          field: colTam.toString(),
+          type: PlutoColumnType.text(),
+        ),
+      }
+    ];
+
+    for (int i = 1; i < linhasTIT.length; i++) {
+      if (linhasTIT[i] != "") {
+        String testeP = linhasTIT[i];
+        teste4 = [testeP.split('CPO ').toString()];
+
+        for (int p = 0; p < teste4.length; p++) {
+          teste5 = teste4[p].split('^');
+
+          rows.addAll([
+            PlutoRow(
+              cells: {
+                for (int rColTam = 0; rColTam < teste5.length; rColTam++) ...{
+                  rColTam.toString(): PlutoCell(value: teste5[rColTam]),
+                },
+              },
+            ),
+          ]);
+        }
+      }
+    }
+
+    return PlutoGrid(
+      configuration: configuracaoPlutoGrid,
+      columns: columns,
+      rows: rows,
+    );
   }
 
   @override
@@ -68,6 +225,7 @@ class _TelaTabelaState extends State<TelaTabela> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
       children: [
         barraPrincipal(),
         barraFiltro(),
@@ -78,22 +236,34 @@ class _TelaTabelaState extends State<TelaTabela> {
               Flexible(
                 child: AppBar(
                   backgroundColor: white,
+                  title: TabBar(
+                    indicator: boxTopLR,
+                    unselectedLabelColor: grey,
+                    labelColor: white,
+                    splashBorderRadius: border40,
+                    isScrollable: true,
+                    tabs: tabs,
+                    controller: tabController,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        Flexible(
+        Expanded(
           child: Container(
-            height: tamanho(context),
-            //color: Colors.amber,
+            padding: const EdgeInsets.all(10),
+            child: TabBarView(
+              controller: tabController,
+              children: getWidgets(),
+            ),
           ),
         ),
       ],
     );
   }
 
-  barraPrincipal() {
+  SizedBox barraPrincipal() {
     return SizedBox(
       child: Row(
         children: [
@@ -122,6 +292,8 @@ class _TelaTabelaState extends State<TelaTabela> {
                       child: SizedBox(
                         height: 40,
                         child: TextFormField(
+                          readOnly: true,
+                          controller: controleArquivo,
                           decoration: styleBarraArquivo,
                         ),
                       ),
@@ -136,7 +308,9 @@ class _TelaTabelaState extends State<TelaTabela> {
                       child: Wrap(
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              arquivoAbrirSeparar();
+                            },
                             style: estiloBotao,
                             child: const Text("Abrir"),
                           ),
@@ -166,7 +340,7 @@ class _TelaTabelaState extends State<TelaTabela> {
   AnimatedContainer barraFiltro() {
     return AnimatedContainer(
       alignment: Alignment.centerLeft,
-      height: _height,
+      height: height,
       duration: const Duration(milliseconds: 550),
       color: white,
       child: Row(
@@ -186,7 +360,7 @@ class _TelaTabelaState extends State<TelaTabela> {
                     height: 45,
                     width: 500,
                     child: TextFormField(
-                      controller: controle,
+                      controller: controlePesquisa,
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(40),
                       ],
@@ -212,9 +386,7 @@ class _TelaTabelaState extends State<TelaTabela> {
                   ElevatedButton(
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
-                    onPressed: () {
-                      controle.text = troca();
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -231,7 +403,7 @@ class _TelaTabelaState extends State<TelaTabela> {
                   Container(
                     decoration: boxSelecao1(opcaoEscolhida),
                     child: RadioListTile(
-                      activeColor: radioSelected,
+                      activeColor: purple,
                       groupValue: opcaoEscolhida,
                       onChanged: (String? value) {
                         setState(() {
@@ -249,7 +421,7 @@ class _TelaTabelaState extends State<TelaTabela> {
                   Container(
                     decoration: boxSelecao2(opcaoEscolhida),
                     child: RadioListTile(
-                      activeColor: radioSelected,
+                      activeColor: purple,
                       groupValue: opcaoEscolhida,
                       onChanged: (String? value) {
                         setState(() {
@@ -279,7 +451,7 @@ class _TelaTabelaState extends State<TelaTabela> {
                   Container(
                     decoration: boxSelecao4(opcaoEscolhida),
                     child: RadioListTile(
-                      activeColor: radioSelected,
+                      activeColor: purple,
                       groupValue: opcaoEscolhida,
                       onChanged: (String? value) {
                         setState(() {
@@ -297,7 +469,7 @@ class _TelaTabelaState extends State<TelaTabela> {
                   Container(
                     decoration: boxSelecao3(opcaoEscolhida),
                     child: RadioListTile(
-                      activeColor: radioSelected,
+                      activeColor: purple,
                       groupValue: opcaoEscolhida,
                       onChanged: (String? value) {
                         setState(() {

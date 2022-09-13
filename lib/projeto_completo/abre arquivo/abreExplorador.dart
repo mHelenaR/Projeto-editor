@@ -5,7 +5,7 @@ import 'dart:io';
 
 // ignore: deprecated_member_use
 import 'package:data_table_2/paginated_data_table_2.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';

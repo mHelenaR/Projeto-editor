@@ -1,4 +1,5 @@
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/variaveis.dart';
 import 'package:flutter/material.dart';
 
 final decoracaoContainer = BoxDecoration(
@@ -15,7 +16,7 @@ final decoracaoContainer = BoxDecoration(
 
 final containerSideBar = BoxDecoration(
   gradient: const LinearGradient(
-    colors: [accentCanvasColor, canvaCores],
+    colors: [accentCanvasColor, purpleF99],
   ),
   border: Border.all(
     color: actionColor.withOpacity(0.37),

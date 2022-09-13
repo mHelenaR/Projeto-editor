@@ -14,7 +14,7 @@ import 'package:editorconfiguracao/projeto_completo/separa_arquivo/linhasTIT.dar
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';

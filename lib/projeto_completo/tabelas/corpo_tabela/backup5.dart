@@ -16,7 +16,7 @@ import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorado
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
@@ -289,7 +289,7 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
               return Center(
                 child: CircularProgressIndicator(
                   color: Colors.purple.shade300,
-                  backgroundColor: canvaCores,
+                  backgroundColor: purpleF99,
                 ),
               );
             }

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 
 class PaginaInicial extends StatelessWidget {

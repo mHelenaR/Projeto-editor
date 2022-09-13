@@ -41,7 +41,7 @@ class _ViewEditScreeState extends State<ViewEditScree>
   List<String> separaTabelasArquivo = [];
   List<String> nomeColSeparada = [];
   List<String> nomeColunas = [];
-  List<String> _arrayString = [''];
+  List<String> arrayString = [''];
   List<String> linhaCPO = [];
   List<String> teste1 = [];
   List<String> teste2 = [];
@@ -59,6 +59,7 @@ class _ViewEditScreeState extends State<ViewEditScree>
   final List<Widget> _generalWidgets = [];
   late TabController _tabController;
 
+  @override
   void initState() {
     _tabController = getTabController();
     super.initState();
@@ -177,7 +178,7 @@ class _ViewEditScreeState extends State<ViewEditScree>
     return Tab(text: teste1[widgetNumber]);
   }
 
-  void _updatePage() {
+  void updatePage() {
     setState(() {});
   }
 

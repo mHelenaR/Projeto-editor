@@ -3,16 +3,19 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 final configuracaoPlutoGrid = PlutoGridConfiguration(
   style: PlutoGridStyleConfig(
-    gridPopupBorderRadius: BorderRadius.circular(10), //  Popup filtro
+    gridPopupBorderRadius: BorderRadius.circular(8), //  Popup filtro
     //enableGridBorderShadow: true,
     //columnFilterHeight: 40, // altura barra filtro
     //columnContextIcon: Icons.abc, // icone coluna
-    gridBorderRadius: BorderRadius.circular(10), // borda arredondada
+    gridBorderRadius: BorderRadius.circular(8), // borda arredondada
     // cellColorInEditState: Colors.black, // cor edição celula
     // borderColor: Colors.pinkAccent, // cor de todas as bordas
     // activatedBorderColor: Colors.purpleAccent, // cor da borda da celula
     // enableCellBorderHorizontal: false, // desativa as bordas das celulas
     // activatedColor: Colors.amber, // cor da linha selecionada
+  ),
+  columnSize: const PlutoGridColumnSizeConfig(
+    resizeMode: PlutoResizeMode.normal,
   ),
   localeText: const PlutoGridLocaleText(
     unfreezeColumn: 'Desfixar',

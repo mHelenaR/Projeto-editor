@@ -1,5 +1,5 @@
 import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:flutter/material.dart';
 
 void erroSalvarArquivo(BuildContext context) {

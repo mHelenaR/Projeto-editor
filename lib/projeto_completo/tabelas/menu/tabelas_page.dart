@@ -11,7 +11,7 @@ import 'package:sidebarx/sidebarx.dart';
 import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
 import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/cores.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/table_page.dart';
