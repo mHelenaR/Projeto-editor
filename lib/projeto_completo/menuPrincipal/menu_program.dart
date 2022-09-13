@@ -68,42 +68,27 @@ class MenuPrincipalState extends State<MenuPrincipal> {
             ),
           ],
         ),
-        Flexible(
-          child: Center(
-            child: _Telas(controller: _controller),
+        Expanded(
+          child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              switch (_controller.selectedIndex) {
+                case 0:
+                  return const TelaPrincipal();
+                case 1:
+                  return const TelaTabela();
+                case 3:
+                  return const TelaConexao();
+
+                default:
+                  return const Text(
+                    'Fora do Menu',
+                  );
+              }
+            },
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Telas extends StatelessWidget {
-  const _Telas({Key? key, required this.controller}) : super(key: key);
-
-  final SidebarXController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        switch (controller.selectedIndex) {
-          case 0:
-            return const TelaPrincipal();
-          case 1:
-            return const TelaTabela();
-          case 3:
-            return const TelaConexao();
-
-          default:
-            return Text(
-              'Fora do Menu',
-              style: theme.textTheme.headline5,
-            );
-        }
-      },
     );
   }
 }

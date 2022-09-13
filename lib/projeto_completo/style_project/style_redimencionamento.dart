@@ -15,6 +15,8 @@ double tamanho(BuildContext context) {
     return screen = MediaQuery.of(context).size.height * 0.8;
   } else if ((heightScreen < 780)) {
     return screen = MediaQuery.of(context).size.height * 0.75;
+  } else if ((heightScreen < 700)) {
+    return screen = MediaQuery.of(context).size.height * 0.7;
   } else {
     return screen = MediaQuery.of(context).size.height * 0.83;
   }

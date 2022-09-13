@@ -1,5 +1,8 @@
 // ignore_for_file: unrelated_type_equality_checks
 
+import 'dart:ffi';
+
+import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,100 +68,97 @@ class _TelaTabelaState extends State<TelaTabela> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
       children: [
         barraPrincipal(),
         barraFiltro(),
-        Flexible(
-          child: SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                Flexible(
-                  child: AppBar(
-                    backgroundColor: white,
-                  ),
+        SizedBox(
+          height: 50,
+          child: Row(
+            children: [
+              Flexible(
+                child: AppBar(
+                  backgroundColor: white,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        Container(
-          height: 500,
-          color: Colors.amber,
+        Flexible(
+          child: Container(
+            height: tamanho(context),
+            //color: Colors.amber,
+          ),
         ),
       ],
     );
   }
 
-  Flexible barraPrincipal() {
-    return Flexible(
-      child: SizedBox(
-        child: Row(
-          children: [
-            Flexible(
-              child: SizedBox(
-                height: 70,
-                child: AppBar(
-                  elevation: 2,
-                  backgroundColor: white,
-                  actions: [
-                    const SizedBox(
-                      width: 20,
+  barraPrincipal() {
+    return SizedBox(
+      child: Row(
+        children: [
+          Flexible(
+            child: SizedBox(
+              height: 70,
+              child: AppBar(
+                elevation: 2,
+                backgroundColor: white,
+                actions: [
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "Edição de Tabelas",
+                        style: fontePreta,
+                      ),
                     ),
-                    Flexible(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          "Edição de Tabelas",
-                          style: fontePreta,
+                  ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: 40,
+                        child: TextFormField(
+                          decoration: styleBarraArquivo,
                         ),
                       ),
                     ),
-                    Flexible(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          height: 40,
-                          child: TextFormField(
-                            decoration: styleBarraArquivo,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: estiloBotao,
+                            child: const Text("Abrir"),
                           ),
-                        ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              expandeContainer();
+                            },
+                            style: estiloBotao,
+                            child: const Text("Pesquisar"),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Wrap(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: estiloBotao,
-                              child: const Text("Abrir"),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                expandeContainer();
-                              },
-                              style: estiloBotao,
-                              child: const Text("Pesquisar"),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
