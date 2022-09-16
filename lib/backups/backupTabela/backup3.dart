@@ -1,23 +1,22 @@
-// ignore_for_file: unused_import, prefer_const_constructors_in_immutables, unused_element, no_leading_underscores_for_local_identifiers, prefer_typing_uninitialized_variables, unused_field, unused_local_variable, await_only_futures, use_build_context_synchronously, avoid_print
+// ignore_for_file: unused_import, prefer_const_constructors_in_immutables, unused_element, no_leading_underscores_for_local_identifiers, prefer_typing_uninitialized_variables, unused_field, unused_local_variable, await_only_futures, use_build_context_synchronously, avoid_print, avoid_unnecessary_containers, deprecated_member_use
 
 import 'dart:convert';
 import 'dart:io';
-import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
-import 'package:data_table_2/paginated_data_table_2.dart';
-import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
 
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
+import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import '../../style_project/style_plutoGrid.dart';
+import 'package:editorconfiguracao/backups/abre%20arquivo/abreExplorador.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 
 class Arquivo extends StatelessWidget {
   const Arquivo({Key? key}) : super(key: key);

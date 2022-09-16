@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -18,9 +19,9 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/componentes/barra_pesquisa.dart';
+import 'package:editorconfiguracao/backups/backupTabela/componentes/barra_pesquisa.dart';
 
-import '../../style_project/style_plutoGrid.dart';
+
 
 class Arquivo extends StatelessWidget {
   const Arquivo({Key? key}) : super(key: key);

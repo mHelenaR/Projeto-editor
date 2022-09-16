@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -16,9 +17,8 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/componentes/barra_pesquisa.dart';
+import 'package:editorconfiguracao/backups/backupTabela/componentes/barra_pesquisa.dart';
 
-import '../../style_project/style_plutoGrid.dart';
 
 class Arquivo extends StatelessWidget {
   const Arquivo({Key? key}) : super(key: key);

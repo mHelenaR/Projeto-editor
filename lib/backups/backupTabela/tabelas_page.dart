@@ -8,13 +8,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
+import 'package:editorconfiguracao/backups/abre%20arquivo/abreExplorador.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/table_page.dart';
+import 'package:editorconfiguracao/backups/backupTabela/table_page.dart';
 
 class TableMenu extends StatefulWidget {
   TableMenu({Key? key}) : super(key: key);
@@ -362,7 +361,7 @@ class _TableMenuState extends State<TableMenu> {
             builder: (context, child) {
               return Column(
                 children: [
-                  const AppBarra(),
+                 
                   const SizedBox(
                     height: 20,
                   ),

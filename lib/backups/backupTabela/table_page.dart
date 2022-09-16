@@ -2,6 +2,10 @@
 
 import 'dart:io';
 
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/variaveis.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -14,9 +18,9 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_redimencionamento.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/componentes/barra_pesquisa.dart';
+import 'package:editorconfiguracao/backups/backupTabela/componentes/barra_pesquisa.dart';
 
-import '../../style_project/style_plutoGrid.dart';
+
 
 class Arquivo extends StatelessWidget {
   const Arquivo({Key? key}) : super(key: key);
@@ -68,219 +72,176 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
   }
 
   final _controller = SidebarXController(selectedIndex: 0);
+  PageController controlaPagina = PageController(initialPage: 0);
 
   Future<void> arquivoAbrirSeparar() async {
     try {
-      if (clicked == true) {
-        _recebeCaminhoArquivo = await arquivoTabela();
-        conteudoArquivo = await converteArquivo(_recebeCaminhoArquivo);
+      caminhoArquivo = await arquivoTabela();
+      setState(() {
+        controleArquivo.text = caminhoArquivo!;
+      });
+      if (caminhoArquivo != null) {
+        recebeCaminhoArquivo = caminhoArquivo!;
+
+        conteudoArquivo = await converteArquivo(recebeCaminhoArquivo);
 
         setState(() {
-          colunasTabelasArquivo();
+          conteudoArquivo;
         });
 
-        setState(() {
-          nomeTabelasArquivo();
-        });
-        // }
-      } else {
-        erroCarregarArquivo(context);
+        nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
 
         setState(() {
-          conteudoArquivo = '';
+          getWidgets();
+          controlaPagina;
+          // tabController = TabController(length: tabs.length, vsync: this);
         });
+        setState(() {});
       }
     } catch (e) {
-      print(e);
-      erroTryCatch(context, e);
-      setState(() {
-        _recebeCaminhoArquivo = '';
-      });
-    } finally {
-      limpaListas();
-      clicked = false;
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
-  String _separarArquivo = '';
-  List<String> separaTabelasArquivo = [];
-  List<String> nomeColSeparada = [];
-  List<String> nomeColunas = [];
-  List<String> _arrayString = [''];
-  List<String> linhaCPO = [];
-  List<String> teste1 = [];
-  List<String> teste2 = [];
-  List<String> teste3 = [];
-  List<String> teste4 = [];
-  List<String> teste5 = [];
-  List<String> gravaArquivo = ['inicio'];
-  List<PlutoRow> rows = [];
-  List<PlutoColumn> columns = [];
+  List<Widget> getWidgets() {
+    criarWidgets.clear();
 
-  limpaListas() {
-    nomeTabelas.clear();
-    listaMenu.clear();
-    separaTabelasArquivo.clear();
-    nomeColSeparada.clear();
-    nomeColunas.clear();
-    _arrayString.clear();
-    linhaCPO.clear();
-    teste1.clear();
-    teste2.clear();
-    teste3.clear();
-    teste4.clear();
-    teste5.clear();
-    rows.clear();
-    columns.clear();
+    for (int i = 0; i < 5; i++) {
+      criarWidgets.add(carregarTela(i));
+    }
+
+    return criarWidgets;
   }
 
-  colunasTabelasArquivo() async {
-    // try {
-    _separarArquivo = await conteudoArquivo;
-
-    separaTabelasArquivo = _separarArquivo.split('TIT ');
-    List<String> _linhasTIT = separaTabelasArquivo[1].split('\r\n');
-
-    //----------- TIT------------//
-
-    int posCharacterArquivo = _linhasTIT[0].indexOf('#') + 1;
-    nomeColSeparada = [_linhasTIT[0].substring(posCharacterArquivo)];
-
-    // retira o separador
-    nomeColunas = nomeColSeparada[0].split('|');
-
-    setState(() {
-      _arrayString = nomeColunas;
-    });
-    setState(
-      () {
-        stateManager.notifyListeners();
-        columns = <PlutoColumn>[
-          if (_controller.selectedIndex == 1) ...{
-            PlutoColumn(
-              title: 'teste carrega',
-              field: 'teste',
-              type: PlutoColumnType.text(),
-            ),
-          } else if (_controller.selectedIndex != 1) ...{
-            for (int colTam = 0; colTam < _arrayString.length; colTam++) ...{
-              //coluna
-              PlutoColumn(
-                title: '$colTam|${_arrayString[colTam]}',
-                field: colTam.toString(),
-                type: PlutoColumnType.text(),
-              ),
-            }
-          }
-        ];
+  carregarTela(var controle) {
+    return FutureBuilder(
+      future: delay(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return criaTabViewTabela(controle);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       },
     );
-
-    //----------- TIT-FIM-----------//
-
-    //----------- CPO-INICIO-----------//
-    for (int i = 1; i < _linhasTIT.length; i++) {
-      if (_linhasTIT[i] != '') {
-        String testeP = _linhasTIT[i];
-        String? testeO = testeP.split('CPO ').toString();
-        teste1 = [testeO];
-        teste3 = teste3 + teste1;
-
-        for (int p = 0; p < teste3.length; p++) {
-          teste2 = teste3[p].split('^');
-        }
-
-        setState(
-          () {
-            rows.addAll(
-              [
-                if (_controller.selectedIndex == 1) ...{
-                  PlutoRow(
-                    cells: {
-                      'teste': PlutoCell(value: 'TesteValor'),
-                    },
-                  ),
-                } else if (_controller.selectedIndex != 1) ...{
-                  PlutoRow(
-                    cells: {
-                      for (int rColTam = 0;
-                          rColTam < teste2.length;
-                          rColTam++) ...{
-                        rColTam.toString(): PlutoCell(
-                          value: teste2[rColTam],
-                        ),
-                      },
-                    },
-                  ),
-                },
-              ],
-            );
-          },
-        );
-      }
-    }
-
-    //----------- CPO------------//
-    // } catch (e) {
-    //   erroTryCatch(context, e);
-    // }
   }
 
-  nomeTabelasArquivo() async {
-    try {
-      listaTIT = await conteudoArquivo.split('TIT ');
-      int posicaoSeparador = 0;
+  Future<String> delay() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return 'Aguarde!\n Carregando tabelas!';
+  }
 
-      for (int i = 0; i < listaTIT.length; i++) {
-        posicaoSeparador = listaTIT[i].indexOf('#');
-        if (posicaoSeparador != -1) {
-          nomeTabelas = [listaTIT[i].substring(0, posicaoSeparador)];
+  Widget criaTabViewTabela(int widgetNumber) {
+    rows.clear();
+    columns.clear();
+    listaTIT.clear();
+    nomeColunas.clear();
+    teste4.clear();
+    teste5.clear();
+
+    separarArquivo = "";
+
+    String? recebeTabela;
+    if (conteudoArquivo != "" && conteudoArquivo != null) {
+      separarArquivo = conteudoArquivo;
+
+      debugPrint("Numero da tab: $widgetNumber");
+
+      for (int i = 0; i < nomeTabelas.length; i++) {
+        int contador = widgetNumber + 1;
+        String start = 'TIT ${nomeTabelas[widgetNumber]}#';
+
+        if (contador == nomeTabelas.length) {
+          contador = contador - 1;
+
+          final startIndex = separarArquivo.indexOf(start);
+
+          recebeTabela = separarArquivo.substring(
+              startIndex + start.length, separarArquivo.length);
         } else {
-          nomeTabelas = [];
+          String end = 'TIT ${nomeTabelas[contador]}#';
+
+          final startIndex = separarArquivo.indexOf(start);
+
+          final endIndex =
+              separarArquivo.indexOf(end, startIndex + start.length);
+
+          recebeTabela =
+              separarArquivo.substring(startIndex + start.length, endIndex);
         }
-        setState(() {
-          listaMenu = listaMenu + nomeTabelas;
-        });
       }
-    } catch (e) {
-      erroTryCatch(context, e);
+
+      List<String> linhasTIT = recebeTabela!.split("\r\n");
+      nomeColunas = linhasTIT[0].split('|');
+
+      columns = <PlutoColumn>[
+        for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
+          PlutoColumn(
+            textAlign: PlutoColumnTextAlign.center,
+            title: nomeColunas[contCol],
+            field: contCol.toString(),
+            type: PlutoColumnType.text(),
+          ),
+        }
+      ];
+
+      for (int i = 1; i < linhasTIT.length; i++) {
+        if (linhasTIT[i] != "") {
+          String testeP = linhasTIT[i];
+          teste4 = [testeP.split('CPO ').toString()];
+
+          for (int p = 0; p < teste4.length; p++) {
+            teste5 = teste4[p].split('^');
+
+            rows.addAll([
+              PlutoRow(
+                cells: {
+                  for (contRow = 0; contRow < teste5.length; contRow++) ...{
+                    contRow.toString(): PlutoCell(value: teste5[contRow]),
+                  },
+                },
+              ),
+            ]);
+          }
+          testeP = "";
+        }
+      }
+      contCol = 0;
+      contRow = 0;
+      linhasTIT.clear();
     }
+    return PlutoGrid(
+      configuration: configuracaoPlutoGrid,
+      columns: columns,
+      rows: rows,
+      onChanged: (PlutoGridOnChangedEvent event) {
+        debugPrint("$event");
+      },
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        event.stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
+        stateManager = event.stateManager;
+      },
+      createFooter: (stateManager) {
+        return Row(
+          children: [
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                height: 30,
+                child: Text("Dicionario"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  carregarTela() {
-    try {
-      return Container(
-        child: FutureBuilder(
-          future: getValue(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return arquivoTabelas();
-            } else {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.purple.shade300,
-                  backgroundColor: purpleF99,
-                ),
-              );
-            }
-          },
-        ),
-      );
-    } catch (e) {
-      erroTryCatch(context, e);
-    }
-  }
-
-  Future<String> getValue() async {
-    try {
-      await Future.delayed(const Duration(seconds: 5));
-      return 'Aguarde!\n Carregando tabelas!';
-    } catch (e) {
-      erroTryCatch(context, e);
-      return 'Error Delay';
-    }
-  }
-
+  navigateToPage(int index) {}
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -303,14 +264,18 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
             );
           },
           items: [
-            for (int i = 0; i < listaMenu.length; i++) ...{
+            for (int i = 0; i < nomeTabelas.length; i++) ...{
               SidebarXItem(
-                iconWidget: Image.asset(
-                  "assets/images/icon_prancheta.png",
-                  color: Colors.white,
-                ),
-                label: listaMenu[i],
-              ),
+                  iconWidget: Image.asset(
+                    "assets/images/icon_prancheta.png",
+                    color: Colors.white,
+                  ),
+                  label: nomeTabelas[i],
+                  onTap: () {
+                    setState(() {
+                      navigateToPage(_controller.selectedIndex);
+                    });
+                  }),
             },
           ],
         ),
@@ -329,7 +294,17 @@ class _ArquivoPaginaState extends State<ArquivoPagina> {
                     height: 10,
                   ),
                   arquivoBusca(),
-                  if (_controller.selectedIndex == 0) arquivoTabelas(),
+                  if (_controller.selectedIndex < 5) ...{
+                    Expanded(
+                      child: PageView(
+                        onPageChanged: (value) {
+                          navigateToPage(value);
+                        },
+                        controller: controlaPagina,
+                        children: getWidgets(),
+                      ),
+                    )
+                  }
                 ],
               );
             },

@@ -2,6 +2,7 @@ import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart'
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/body_table.dart';
+import 'package:editorconfiguracao/backups/backupTabela/table_page.dart';
 import 'package:editorconfiguracao/projeto_completo/telas/Home_Page.dart';
 
 import 'package:flutter/material.dart';
@@ -78,7 +79,11 @@ class MenuPrincipalState extends State<MenuPrincipal> {
                     case 0:
                       return const TelaPrincipal();
                     case 1:
+                      //   Navigator.push(context,
+                      //     MaterialPageRoute(builder: (context) => Arquivo()));
+                      //return const Arquivo();
                       return const TelaTabela();
+                    //break;
                     case 3:
                       return const TelaConexao();
 

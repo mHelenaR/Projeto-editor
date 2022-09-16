@@ -5,21 +5,19 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:data_table_2/paginated_data_table_2.dart';
-import 'package:editorconfiguracao/projeto_completo/abre%20arquivo/abreExplorador.dart';
+import 'package:editorconfiguracao/backups/abre%20arquivo/abreExplorador.dart';
 
-import 'package:editorconfiguracao/projeto_completo/componentes_telas/app_bar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
-
-import '../../style_project/style_plutoGrid.dart';
 
 class ArquivoPagina extends StatefulWidget {
   ArquivoPagina({Key? key}) : super(key: key);
