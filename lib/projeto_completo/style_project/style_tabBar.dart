@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 
 const boxTopLR = BoxDecoration(
   borderRadius: BorderRadius.only(

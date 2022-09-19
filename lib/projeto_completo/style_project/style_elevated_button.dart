@@ -1,4 +1,4 @@
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:flutter/material.dart';
 
 final estiloBotao = ElevatedButton.styleFrom(
@@ -11,6 +11,14 @@ final estiloBotao = ElevatedButton.styleFrom(
 final estiloBotao2 = ElevatedButton.styleFrom(
   elevation: 0,
   backgroundColor: Colors.white,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+  ),
+);
+
+final estiloBotao3 = ElevatedButton.styleFrom(
+  padding: const EdgeInsets.all(10),
+  backgroundColor: purpleAB7,
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(20),
   ),

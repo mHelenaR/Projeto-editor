@@ -1,20 +1,17 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers, avoid_print
-
 import 'dart:io';
 
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/insert_dataBase.dart';
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/update_base.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/message_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:postgres/postgres.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_dataBase.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/update_base.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/variaveis_banco.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
@@ -28,68 +25,53 @@ class TelaConexao extends StatefulWidget {
 }
 
 class _TelaConexaoState extends State<TelaConexao> {
-  //focusNode captura eventos do teclado
-  late FocusNode myFocusNode;
-  String? path;
-  bool? atualizaBanco;
+  ControllerBanco objVarBanco = ControllerBanco();
 
-  var recebeCaminhoDB;
-  var recebe;
-
-  //Variavel recebendo a função de conexão com o banco e sendo inicializada
-  var databaseConnection = PostgreSQLConnection('', 0, '');
-  var databaseFactory = databaseFactoryFfi;
-
-  //Criando os controladores de texto, para receber os dados do banco
-  final _ctUserDataBase = TextEditingController();
-  final _ctHostDataBase = TextEditingController();
-  final _ctPasswordDataBase = TextEditingController();
-  final _ctPortDataBase = TextEditingController();
-  final _ctNameDataBase = TextEditingController();
-
-  //Inicializando varivais ao abrir a tela
   @override
   void initState() {
     atualizaBanco = false;
-    myFocusNode = FocusNode();
+
     super.initState();
   }
 
-  //Liberando a memoria assim que a tela é desfocada
   @override
   void dispose() {
-    _ctUserDataBase.dispose();
-    _ctHostDataBase.dispose();
-    _ctPasswordDataBase.dispose();
-    _ctPortDataBase.dispose();
-    _ctNameDataBase.dispose();
-    myFocusNode.dispose();
+    objVarBanco.usuarioBanco.dispose();
+    objVarBanco.hostBanco.dispose();
+    objVarBanco.nomeBanco.dispose();
+    objVarBanco.portaBanco.dispose();
+    objVarBanco.senhaBanco.dispose();
+
     databaseConnection.close();
+
     super.dispose();
   }
 
   //Inicializa a conexão com o banco
-  initDatabaseConnection() async {
+  iniciaPostgresql() async {
     //Verifica se a conexão com o banco esta fechada
     if (databaseConnection.isClosed == true) {
-      // databaseConnection = PostgreSQLConnection(
-      //   "10.1.12.73",
-      //   5432,
-      //   "mariah_wrpdv",
-      //   username: "rpdv",
-      //   password: "rpdvwin1064",
-      // );
       databaseConnection = PostgreSQLConnection(
-        _ctHostDataBase.text,
-        int.parse(_ctPortDataBase.text),
-        _ctNameDataBase.text,
-        username: _ctUserDataBase.text,
-        password: _ctPasswordDataBase.text,
+        "10.1.12.73",
+        5432,
+        "mariah_wrpdv",
+        username: "rpdv",
+        password: "rpdvwin1064",
       );
-
+      // databaseConnection = PostgreSQLConnection(
+      //   objVarBanco.hostBanco.text,
+      //   int.parse(objVarBanco.portaBanco.text),
+      //   objVarBanco.nomeBanco.text,
+      //   username: objVarBanco.usuarioBanco.text,
+      //   password: objVarBanco.senhaBanco.text,
+      // );
+      debugPrint(
+        "${objVarBanco.hostBanco.text}\n${objVarBanco.portaBanco.text}\n${objVarBanco.nomeBanco.text}\n${objVarBanco.usuarioBanco.text}\n${objVarBanco.senhaBanco.text}",
+      );
       databaseConnection.open();
     } else {
-      print('ja esta aberto');
+      dialogAviso(context, objVarBanco.nomeBanco.text);
+      debugPrint('O banco já está conectado!');
     }
   }
 
@@ -100,10 +82,10 @@ class _TelaConexaoState extends State<TelaConexao> {
           dialogTitle: 'Caminho Salvar Banco',
           initialDirectory: 'C:',
         );
-        recebe = result;
+        recebe = result!;
       }
       setState(() {
-        path = '${recebe}\\Dicionario.db';
+        path = '$recebe\\Dicionario.db';
       });
 
       if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
@@ -228,9 +210,10 @@ class _TelaConexaoState extends State<TelaConexao> {
                       SizedBox(
                         height: 30,
                         width: 200,
-                        child: TextFormField(
+                        child: TextField(
+                          keyboardType: TextInputType.none,
                           textInputAction: TextInputAction.next,
-                          controller: _ctHostDataBase,
+                          controller: objVarBanco.hostBanco,
                           decoration: tFBancoConexao1,
                         ),
                       ),
@@ -258,7 +241,7 @@ class _TelaConexaoState extends State<TelaConexao> {
                         width: 200,
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _ctNameDataBase,
+                          controller: objVarBanco.nomeBanco,
                           decoration: tFBancoConexao2,
                         ),
                       ),
@@ -286,7 +269,7 @@ class _TelaConexaoState extends State<TelaConexao> {
                         width: 200,
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _ctPortDataBase,
+                          controller: objVarBanco.portaBanco,
                           decoration: tFBancoConexao3,
                         ),
                       ),
@@ -314,7 +297,7 @@ class _TelaConexaoState extends State<TelaConexao> {
                         width: 200,
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _ctUserDataBase,
+                          controller: objVarBanco.usuarioBanco,
                           decoration: tFBancoConexao4,
                         ),
                       ),
@@ -342,7 +325,7 @@ class _TelaConexaoState extends State<TelaConexao> {
                         width: 200,
                         child: TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _ctPasswordDataBase,
+                          controller: objVarBanco.senhaBanco,
                           decoration: tFBancoConexao5,
                         ),
                       ),
@@ -359,7 +342,7 @@ class _TelaConexaoState extends State<TelaConexao> {
                       children: [
                         ElevatedButton(
                           style: estiloBotao,
-                          onPressed: initDatabaseConnection,
+                          onPressed: iniciaPostgresql,
                           child: const Text('Conectar'),
                         ),
                         const SizedBox(

@@ -1,12 +1,11 @@
-import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/body_table.dart';
-import 'package:editorconfiguracao/backups/backupTabela/table_page.dart';
-import 'package:editorconfiguracao/projeto_completo/telas/Home_Page.dart';
-
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
+
+import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/body_table.dart';
+import 'package:editorconfiguracao/projeto_completo/telas/pagina_inicial.dart';
 
 class MenuPrincipal extends StatefulWidget {
   const MenuPrincipal({Key? key}) : super(key: key);
@@ -21,93 +20,91 @@ class MenuPrincipalState extends State<MenuPrincipal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: white,
-        body: Row(
-          children: [
-            SidebarX(
-              controller: _controller,
-              theme: StyleSideBar,
+      backgroundColor: white,
+      body: Row(
+        children: [
+          SidebarX(
+            controller: _controller,
+            theme: temaMenu,
 
-              // expande a barra
-              extendedTheme: StyleExpandeSideBar,
+            // Tema do menu expandido
+            extendedTheme: backgroundMenu,
 
-              // linha de divisa
-              footerDivider: dividerWhite,
+            // Linha de divisa do menu
+            footerDivider: dividerWhite,
 
-              //texto lista do cabeçalho
-              headerBuilder: (context, extended) {
-                return SizedBox(
-                  height: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset(
-                      'assets/images/icon_engrenagem _roxo.png',
-                    ),
+            // Cabeçalho do Menu
+            headerBuilder: (context, extended) {
+              return SizedBox(
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Image.asset(
+                    'assets/images/icon_engrenagem_roxo.png',
                   ),
-                );
-              },
+                ),
+              );
+            },
 
-              // opções menu
-              items: [
-                SidebarXItem(
-                  iconWidget: Image.asset("assets/images/homepage_1.png",
-                      color: Colors.white),
-                  label: "Pagina Inicial",
+            // Opções do menu
+            items: [
+              SidebarXItem(
+                label: "Página Inicial",
+                iconWidget: Image.asset(
+                  "assets/images/homepage_1.png",
+                  color: white,
                 ),
-                SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_prancheta.png",
-                      color: Colors.white),
-                  label: "Tabelas",
-                ),
-                SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_nuvem.png",
-                      color: Colors.white),
-                  label: "Comparar Tabelas",
-                ),
-                SidebarXItem(
-                  iconWidget: Image.asset("assets/images/icon_configuracao.png",
-                      color: Colors.white),
-                  label: "Configuração",
-                ),
-              ],
-            ),
-            Expanded(
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  switch (_controller.selectedIndex) {
-                    case 0:
-                      return const TelaPrincipal();
-                    case 1:
-                      //   Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => Arquivo()));
-                      //return const Arquivo();
-                      return const TelaTabela();
-                    //break;
-                    case 3:
-                      return const TelaConexao();
-
-                    default:
-                      return const Text(
-                        'Fora do Menu',
-                      );
-                  }
-                },
               ),
+              SidebarXItem(
+                label: "Edição",
+                iconWidget: Image.asset(
+                  "assets/images/icon_prancheta.png",
+                  color: white,
+                ),
+              ),
+              SidebarXItem(
+                label: "Comparação",
+                iconWidget: Image.asset(
+                  "assets/images/icon_nuvem.png",
+                  color: white,
+                ),
+              ),
+              SidebarXItem(
+                label: "Configuração",
+                iconWidget: Image.asset(
+                  "assets/images/icon_configuracao.png",
+                  color: white,
+                ),
+              ),
+            ],
+          ),
+
+          /* Opções de exibição na tela;
+           * Muda o container principal de acondo com o índice
+           * de seleção do controlador;
+           */
+          Expanded(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                switch (_controller.selectedIndex) {
+                  case 0:
+                    return const TelaInicial();
+
+                  case 1:
+                    return const TelaEdicao();
+
+                  case 3:
+                    return const TelaConexao();
+
+                  default:
+                    return const Text('Fora do Menu');
+                }
+              },
             ),
-          ],
-        ));
-  }
-}
-
-class TelaPrincipal extends StatelessWidget {
-  const TelaPrincipal({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.topCenter,
-      child: const PaginaInicial(),
+          ),
+        ],
+      ),
     );
   }
 }

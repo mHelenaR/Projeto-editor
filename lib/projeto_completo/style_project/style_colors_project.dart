@@ -7,16 +7,20 @@ const white = Colors.white;
 const grey = Colors.grey;
 const black = Colors.black;
 
+//Deep
 final deepPurple900 = Colors.deepPurple[900];
 
+// Color
 const purpleF99 = Color(0xFF532F99);
 const corContainer = Color(0xfcfcfcfc);
-const scaffoldBackgroundColor = Color(0xFF3E3E61);
+const scaffoldPurple = Color(0xFF3E3E61);
 const purpleAB7 = Color(0XFF673AB7);
 
-final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
+// Opacidade
+final itemMenuOpacity = const Color(0xFF5F5FA7).withOpacity(0.6);
 
-const accentCanvasColor = Color.fromARGB(255, 113, 70, 185);
+//RGB
+const itemMenuCor1 = Color.fromARGB(255, 113, 70, 185);
 const corContainerTeste = Color.fromARGB(251, 59, 60, 165);
 
 //--------------------------------------------------------//
@@ -37,7 +41,13 @@ final dividerPurple = Divider(
   height: 1,
 );
 
+final dividerGrey = Divider(
+  color: Colors.grey.withOpacity(0.3),
+  height: 1,
+);
+
 //--------------------------------------------------------//
 //Paginação
 
-const formtLeft30 = EdgeInsets.only(left: 30);
+const formatLeft30 = EdgeInsets.only(left: 30);
+const formatRight10 = EdgeInsets.only(right: 10);

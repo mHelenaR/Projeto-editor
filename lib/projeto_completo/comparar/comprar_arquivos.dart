@@ -5,8 +5,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/StyleSideBar.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
@@ -29,8 +29,8 @@ class CompararArquivos extends StatelessWidget {
           children: [
             SidebarX(
               controller: _controller,
-              theme: StyleSideBar,
-              extendedTheme: StyleExpandeSideBar,
+              theme: temaMenu,
+              extendedTheme: backgroundMenu,
               footerDivider: dividerWhite,
               items: [
                 SidebarXItem(

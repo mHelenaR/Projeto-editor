@@ -1,33 +1,31 @@
-// ignore_for_file: unrelated_type_equality_checks
-
 import 'dart:async';
 
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRadius.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/variaveis.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-class TelaTabela extends StatefulWidget {
-  const TelaTabela({super.key});
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRadius.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_plutoGrid.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/variaveis.dart';
+
+class TelaEdicao extends StatefulWidget {
+  const TelaEdicao({super.key});
 
   @override
-  State<TelaTabela> createState() => _TelaTabelaState();
+  State<TelaEdicao> createState() => _TelaEdicaoState();
 }
 
-class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
+class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
   TabController getTabController() {
     return TabController(length: tabs.length, vsync: this);
   }
@@ -82,7 +80,6 @@ class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
           getWidgets();
           tabController = TabController(length: tabs.length, vsync: this);
         });
-        setState(() {});
       }
     } catch (e) {
       if (kDebugMode) {
@@ -225,7 +222,6 @@ class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
       }
       contCol = 0;
       contRow = 0;
-      linhasTIT.clear();
     } catch (e) {
       debugPrint("$e");
     }
@@ -239,6 +235,7 @@ class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         sort(stateManager!);
+        pri(stateManager!);
         // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
         stateManager!.setKeepFocus(false);
         // //stateManager = event.stateManager;
@@ -255,7 +252,7 @@ class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
               child: Container(
                 alignment: Alignment.center,
                 height: 30,
-                child: const Text("Dicionario"),
+                child: const Text("Dicionário"),
               ),
             ),
           ],
@@ -343,6 +340,17 @@ class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  void pri(var state) {
+    String value = '';
+    for (var element in state!.currentSelectingPositionList) {
+      final cellValue =
+          state!.rows[element.rowIdx!].cells[element.field!]!.value.toString();
+
+      value += ' field: ${state!.columns}, value: $cellValue\n';
+    }
+    print(value);
   }
 
   @override
@@ -523,7 +531,8 @@ class _TelaTabelaState extends State<TelaTabela> with TickerProviderStateMixin {
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
                     onPressed: () {
-                      handleFocusToIndex();
+                      pri(stateManager!);
+                      //andleFocusToIndex();
                       // handleSelected();
                     },
                   ),

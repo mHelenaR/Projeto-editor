@@ -1,18 +1,16 @@
-// Bibliotecas
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
 
-class CorpoProjeto extends StatefulWidget {
-  const CorpoProjeto({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<CorpoProjeto> createState() => _CorpoProjetoState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _CorpoProjetoState extends State<CorpoProjeto> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

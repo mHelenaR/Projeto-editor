@@ -1,31 +1,30 @@
-// ignore_for_file: constant_identifier_names, non_constant_identifier_names
-
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-final StyleSideBar = SidebarXTheme(
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
+
+final temaMenu = SidebarXTheme(
   decoration: const BoxDecoration(
     color: purpleF99,
   ),
   textStyle: coresTexto,
   selectedTextStyle: coresTexto,
-  itemTextPadding: formtLeft30,
-  selectedItemTextPadding: formtLeft30,
+  itemTextPadding: formatLeft30,
+  selectedItemTextPadding: formatLeft30,
   itemDecoration: BoxDecoration(
     border: Border.all(color: purpleF99),
   ),
   selectedItemDecoration: BoxDecoration(
     borderRadius: BorderRadius.circular(5),
     border: Border.all(
-      color: actionColor.withOpacity(0.37),
+      color: itemMenuOpacity,
     ),
     gradient: const LinearGradient(
-      colors: [accentCanvasColor, purpleF99],
+      colors: [itemMenuCor1, purpleF99],
     ),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withOpacity(0.28),
+        color: black.withOpacity(0.28),
         blurRadius: 30,
       ),
     ],
@@ -36,10 +35,10 @@ final StyleSideBar = SidebarXTheme(
   ),
 );
 
-const StyleExpandeSideBar = SidebarXTheme(
+const backgroundMenu = SidebarXTheme(
   width: 200,
   decoration: BoxDecoration(
     color: purpleF99,
   ),
-  margin: EdgeInsets.only(right: 10),
+  margin: formatRight10,
 );

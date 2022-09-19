@@ -1,14 +1,22 @@
 import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:editorconfiguracao/projeto_completo/telas/corpo_programa.dart';
-
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() async {
+import 'package:editorconfiguracao/projeto_completo/telas/tela_carregamento.dart';
+
+void main() {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+
+    /* Esse plugin [bitsdojo_window] edita as configurações da tela nativa do windows;
+     * O bloco abaixo define o tamanho inicial da tela e
+     * bloqueia o redimencionamento, para evitar erros de 
+     * Range nos componentes;
+     * O método [show] inicia a tela após a leitura das configurações;
+     */
+
     doWhenWindowReady(
       () {
         final windowsScreen = appWindow;
@@ -17,16 +25,15 @@ void main() async {
         windowsScreen.size = initialSize;
         windowsScreen.alignment = Alignment.center;
         windowsScreen.title = "Editor de Configuração";
-        // windowsScreen.maximize();
         windowsScreen.show();
       },
     );
 
-    // if (Platform.isWindows) {
-    //   sqfliteFfiInit();
-    // }
+    if (Platform.isWindows) {
+      sqfliteFfiInit();
+    }
 
-    runApp(const CorpoProjeto());
+    runApp(const SplashScreen());
   } catch (e) {
     debugPrint(e.toString());
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 
 //String
 String? opcaoEscolhida;

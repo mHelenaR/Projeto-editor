@@ -1,6 +1,9 @@
-import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
+
+import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 
 void erroSalvarArquivo(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
