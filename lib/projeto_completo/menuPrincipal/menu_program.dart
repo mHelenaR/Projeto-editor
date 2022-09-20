@@ -3,7 +3,7 @@ import 'package:sidebarx/sidebarx.dart';
 
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/edicao_page.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/corpo_tabela/edicao_page.dart';
 import 'package:editorconfiguracao/projeto_completo/pages/pagina_inicial.dart';
 import 'package:editorconfiguracao/projeto_completo/pages/pg_connection.dart';
 

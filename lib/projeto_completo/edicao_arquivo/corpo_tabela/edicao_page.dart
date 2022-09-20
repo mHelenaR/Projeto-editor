@@ -16,7 +16,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/models/variaveis.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 
 class TelaEdicao extends StatefulWidget {
   const TelaEdicao({super.key});
@@ -73,7 +73,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
         nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
 
         nomeTab(nomeTabelas.length);
-
+        print(nomeTabelasArquivo(conteudoArquivo));
         tabs = criaTab(nomeTabelas.length);
 
         setState(() {
