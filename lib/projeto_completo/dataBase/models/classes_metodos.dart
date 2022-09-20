@@ -1,11 +1,19 @@
+import 'package:editorconfiguracao/projeto_completo/dataBase/controllers/variaveis.dart';
 import 'package:flutter/material.dart';
-import 'package:postgres/postgres.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+// Métodos
+reiniciaObjeto(var objeto) {
+  return objeto = null;
+}
+
+debugInfoBase() {
+  debugPrint(
+    "${objControlBase.hostBanco.text}\n${objControlBase.portaBanco.text}\n${objControlBase.nomeBanco.text}\n${objControlBase.usuarioBanco.text}\n${objControlBase.senhaBanco.text}",
+  );
+}
+
+// Classes
 class ControllerBanco {
-  //Construtor
-  ControllerBanco();
-
   final _ctUserDataBase = TextEditingController();
   final _ctHostDataBase = TextEditingController();
   final _ctPasswordDataBase = TextEditingController();
@@ -18,12 +26,3 @@ class ControllerBanco {
   TextEditingController get portaBanco => _ctPortDataBase;
   TextEditingController get nomeBanco => _ctNameDataBase;
 }
-
-String? path;
-bool? atualizaBanco;
-
-var recebeCaminhoDB = "";
-var recebe = "";
-
-var databaseConnection = PostgreSQLConnection('', 0, '');
-var databaseFactory = databaseFactoryFfi;

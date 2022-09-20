@@ -9,14 +9,11 @@ import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arq
 criaTabelas(Database dataBase, var caminho, var base, bool atualiza) async {
   List<String> listaTabelas = [];
   var batch = await dataBase.batch();
-
   try {
     listaTabelas = await nomeTabelasArquivo(await arquivoGeraBanco());
-
     for (final deletaTabelas in listaTabelas) {
       batch.execute("Drop table if exists $deletaTabelas;");
     }
-
     for (final tabelas in listaTabelas) {
       batch.execute(
         "CREATE TABLE IF NOT EXISTS $tabelas ("

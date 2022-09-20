@@ -16,9 +16,9 @@ final estiloBotao2 = ElevatedButton.styleFrom(
   ),
 );
 
-final estiloBotao3 = ElevatedButton.styleFrom(
+final botaoAviso = ElevatedButton.styleFrom(
   padding: const EdgeInsets.all(10),
-  backgroundColor: purpleAB7,
+  backgroundColor: Colors.yellow[700],
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(20),
   ),

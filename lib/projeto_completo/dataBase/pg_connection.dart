@@ -1,16 +1,8 @@
-import 'dart:io';
-
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/message_dialog.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:postgres/postgres.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_dataBase.dart';
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/update_base.dart';
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
-import 'package:editorconfiguracao/projeto_completo/dataBase/variaveis_banco.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/controllers/variaveis.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/models/classe_banco_sqlite.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/models/classe_postgresql.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
@@ -25,8 +17,6 @@ class TelaConexao extends StatefulWidget {
 }
 
 class _TelaConexaoState extends State<TelaConexao> {
-  ControllerBanco objVarBanco = ControllerBanco();
-
   @override
   void initState() {
     atualizaBanco = false;
@@ -36,107 +26,15 @@ class _TelaConexaoState extends State<TelaConexao> {
 
   @override
   void dispose() {
-    objVarBanco.usuarioBanco.dispose();
-    objVarBanco.hostBanco.dispose();
-    objVarBanco.nomeBanco.dispose();
-    objVarBanco.portaBanco.dispose();
-    objVarBanco.senhaBanco.dispose();
+    objControlBase.usuarioBanco.text = "";
+    objControlBase.hostBanco.text = "";
+    objControlBase.nomeBanco.text = "";
+    objControlBase.portaBanco.text = "";
+    objControlBase.senhaBanco.text = "";
 
     databaseConnection.close();
 
     super.dispose();
-  }
-
-  //Inicializa a conexão com o banco
-  iniciaPostgresql() async {
-    //Verifica se a conexão com o banco esta fechada
-    if (databaseConnection.isClosed == true) {
-      databaseConnection = PostgreSQLConnection(
-        "10.1.12.73",
-        5432,
-        "mariah_wrpdv",
-        username: "rpdv",
-        password: "rpdvwin1064",
-      );
-      // databaseConnection = PostgreSQLConnection(
-      //   objVarBanco.hostBanco.text,
-      //   int.parse(objVarBanco.portaBanco.text),
-      //   objVarBanco.nomeBanco.text,
-      //   username: objVarBanco.usuarioBanco.text,
-      //   password: objVarBanco.senhaBanco.text,
-      // );
-      debugPrint(
-        "${objVarBanco.hostBanco.text}\n${objVarBanco.portaBanco.text}\n${objVarBanco.nomeBanco.text}\n${objVarBanco.usuarioBanco.text}\n${objVarBanco.senhaBanco.text}",
-      );
-      databaseConnection.open();
-    } else {
-      dialogAviso(context, objVarBanco.nomeBanco.text);
-      debugPrint('O banco já está conectado!');
-    }
-  }
-
-  Future<void> initDB() async {
-    if (databaseConnection.isClosed == false) {
-      if (atualizaBanco == false) {
-        String? result = await FilePicker.platform.getDirectoryPath(
-          dialogTitle: 'Caminho Salvar Banco',
-          initialDirectory: 'C:',
-        );
-        recebe = result!;
-      }
-      setState(() {
-        path = '$recebe\\Dicionario.db';
-      });
-
-      if (FileSystemEntity.typeSync(path!) == FileSystemEntityType.notFound) {
-        var novo = await databaseFactory.openDatabase(path!);
-
-        criaTabelas(novo, path!, databaseConnection, atualizaBanco!);
-      } else {
-        caixaBancoExiste(path!);
-
-        print('O banco ja existe');
-      }
-    } else {
-      print('Fechado');
-    }
-  }
-
-  atualizar() async {
-    var novo = await databaseFactory.openDatabase(path!);
-    atualizarBanco(novo, path!, atualizaBanco!, databaseConnection);
-  }
-
-  void closeDialog(BuildContext context) {
-    Navigator.of(context).pop();
-  }
-
-  void caixaBancoExiste(String caminho) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: erroCriacao,
-          content: descricaoErroCriacao(caminho),
-          actions: <Widget>[
-            ElevatedButton(
-              child: const Text("Atualizar"),
-              onPressed: () {
-                atualizaBanco = true;
-                atualizar();
-                Navigator.pop(context);
-              },
-            ),
-            ElevatedButton(
-              child: const Text("Cancelar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -167,7 +65,7 @@ class _TelaConexaoState extends State<TelaConexao> {
 
   Widget conectarBanco() {
     return Container(
-      height: 400,
+      height: 300,
       width: 400,
       decoration: containerConfig,
       child: Column(
@@ -195,166 +93,82 @@ class _TelaConexaoState extends State<TelaConexao> {
                   const SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'Endereço do Servidor:',
-                        style: fontePreta14,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        width: 200,
-                        child: TextField(
-                          keyboardType: TextInputType.none,
-                          textInputAction: TextInputAction.next,
-                          controller: objVarBanco.hostBanco,
-                          decoration: tFBancoConexao1,
-                        ),
-                      ),
-                    ],
+                  textField(
+                    "IP do servidor",
+                    objControlBase.hostBanco,
+                    tFBancoConexao1,
                   ),
-
                   //DataBaseName
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'Nome Base de Dados:',
-                        style: fontePreta14,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        width: 200,
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          controller: objVarBanco.nomeBanco,
-                          decoration: tFBancoConexao2,
-                        ),
-                      ),
-                    ],
+                  textField(
+                    "Nome Base de Dados:",
+                    objControlBase.nomeBanco,
+                    tFBancoConexao2,
                   ),
 
                   //Port
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'Porta:',
-                        style: fontePreta14,
-                      ),
-                      const SizedBox(
-                        width: 27,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        width: 200,
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          controller: objVarBanco.portaBanco,
-                          decoration: tFBancoConexao3,
-                        ),
-                      ),
-                    ],
+                  textField(
+                    "Porta:",
+                    objControlBase.portaBanco,
+                    tFBancoConexao3,
                   ),
 
                   //User
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'Usuário:',
-                        style: fontePreta14,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        width: 200,
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          controller: objVarBanco.usuarioBanco,
-                          decoration: tFBancoConexao4,
-                        ),
-                      ),
-                    ],
+                  textField(
+                    "Usuário:",
+                    objControlBase.usuarioBanco,
+                    tFBancoConexao4,
                   ),
 
                   //Password
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text(
-                        'Senha:',
-                        style: fontePreta14,
-                      ),
-                      const SizedBox(
-                        width: 21.4,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        width: 200,
-                        child: TextFormField(
-                          textInputAction: TextInputAction.next,
-                          controller: objVarBanco.senhaBanco,
-                          decoration: tFBancoConexao5,
-                        ),
-                      ),
-                    ],
+                  textField(
+                    "Senha:",
+                    objControlBase.senhaBanco,
+                    tFBancoConexao5,
                   ),
 
                   //Button conection
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Wrap(
-                      children: [
-                        ElevatedButton(
-                          style: estiloBotao,
-                          onPressed: iniciaPostgresql,
-                          child: const Text('Conectar'),
-                        ),
-                        const SizedBox(
-                          width: 30,
-                        ),
-                        ElevatedButton(
-                          style: estiloBotao,
-                          onPressed: initDB,
-                          child: const Text('Gerar .DB'),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: estiloBotao,
+                        onPressed: () {
+                          var objPostConnect = PostgresConnect(
+                            context: context,
+                          );
+                          objPostConnect.iniciaPostgresql();
+                        },
+                        child: const Text('Conectar'),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      ElevatedButton(
+                        style: estiloBotao,
+                        onPressed: () {
+                          var objPostConnect = CriaArquivoDB(
+                            context: context,
+                          );
+                          objPostConnect.initDB();
+                        },
+                        child: const Text('Gerar .DB'),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -365,8 +179,39 @@ class _TelaConexaoState extends State<TelaConexao> {
     );
   }
 
+  Widget textField(var label, var controller, var decoration) {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 15,
+        ),
+        Expanded(
+          child: Text(
+            label,
+            style: fontePreta14,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          height: 30,
+          width: 200,
+          child: TextField(
+            textInputAction: TextInputAction.next,
+            controller: controller,
+            decoration: decoration,
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        )
+      ],
+    );
+  }
+
   Widget appBarConfig() {
-    return Container(
+    return SizedBox(
       height: 70,
       child: AppBar(
         automaticallyImplyLeading: false,
@@ -375,13 +220,12 @@ class _TelaConexaoState extends State<TelaConexao> {
           const SizedBox(
             width: 10,
           ),
-          Container(
-            alignment: Alignment.center,
-            child: const Text('Configurações do sistema', style: fontePreta),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: const Text('Configurações do sistema', style: fontePreta),
+            ),
           ),
-          const Expanded(
-            child: SizedBox(),
-          )
         ],
       ),
     );
