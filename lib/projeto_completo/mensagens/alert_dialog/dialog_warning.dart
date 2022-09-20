@@ -1,8 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 
@@ -28,7 +27,7 @@ class CaixaAviso {
           ),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: dlgSuccess,
+          title: dlgWarning,
           content: SizedBox(
             width: 300,
             child: Text(

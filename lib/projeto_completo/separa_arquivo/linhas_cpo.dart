@@ -11,10 +11,8 @@ Future<List<PlutoRow>> linhasCpoArquivo(
   List<String> teste3 = [];
   String separarArquivo = '';
   List<String> separaTabelasArquivo = [];
-//teste
-  final Completer<List<PlutoRow>> completer = Completer();
 
-  final List<PlutoRow> _rows = [];
+  final Completer<List<PlutoRow>> completer = Completer();
 
   int count = 0;
 
@@ -23,7 +21,6 @@ Future<List<PlutoRow>> linhasCpoArquivo(
   const chunkSize = 100;
 
   const totalRows = chunkSize * max;
-//teste
 
   List<PlutoRow> rows = [];
 
@@ -42,21 +39,6 @@ Future<List<PlutoRow>> linhasCpoArquivo(
       for (int p = 0; p < teste3.length; p++) {
         teste2 = teste3[p].split('^');
       }
-
-      // rows.addAll(
-      //   [
-      //     PlutoRow(
-      //       cells: {
-      //         for (int rColTam = 0; rColTam < teste2.length; rColTam++) ...{
-      //           rColTam.toString(): PlutoCell(
-      //             value: teste2[rColTam],
-      //           ),
-      //         },
-      //       },
-      //     ),
-      //   ],
-      // );
-//teste
 
       Timer.periodic(const Duration(milliseconds: 1), (timer) {
         if (count == max) {
@@ -80,13 +62,12 @@ Future<List<PlutoRow>> linhasCpoArquivo(
           );
         });
 
-        if (_rows.length == totalRows) {
-          completer.complete(_rows);
+        if (rows.length == totalRows) {
+          completer.complete(rows);
 
           timer.cancel();
         }
       });
-      //teste
     }
   }
   return rows;

@@ -11,7 +11,6 @@ Future<String> arquivoGeraBanco() async {
   );
   if (caminhoArquivo != null) {
     recebe = caminhoArquivo.files.single.path!;
-    print(recebe);
     return recebe;
   } else {
     return "erro";

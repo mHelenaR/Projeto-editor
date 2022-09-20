@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/projeto_completo/mensagens/status_prog.dart';
@@ -73,7 +71,7 @@ void erroTryCatch(BuildContext context, var erroName) {
           const SizedBox(width: 10),
           Flexible(
             child: Text(
-                'Error Program: ${erroName}\nVerifique a integridade dos dados do arquivo!'),
+                'Error Program: $erroName\nVerifique a integridade dos dados do arquivo!'),
           ),
         ],
       ),

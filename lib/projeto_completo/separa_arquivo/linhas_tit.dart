@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, file_names
-
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -24,7 +22,7 @@ Future<List<PlutoColumn>> colunasNome(
 
   arrayString = nomeColunas;
 
-  return columns = <PlutoColumn>[
+  columns = <PlutoColumn>[
     for (int colTam = 0; colTam < arrayString.length; colTam++) ...{
       PlutoColumn(
         title: '$colTam|${arrayString[colTam]}',
@@ -33,4 +31,6 @@ Future<List<PlutoColumn>> colunasNome(
       ),
     }
   ];
+
+  return columns;
 }

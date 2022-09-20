@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
 
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/message_dialog.dart';
+import 'package:editorconfiguracao/projeto_completo/mensagens/alert_dialog/dialog_warning.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/controllers/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/models/classes_metodos.dart';
 
@@ -38,8 +38,9 @@ class PostgresConnect {
       databaseConnection.open();
     } else {
       criaObjeto = CaixaAviso(
-          contexto: context,
-          texto: "O banco ${objControlBase.nomeBanco.text} já está conectado!");
+        contexto: context,
+        texto: "O banco ${objControlBase.nomeBanco.text} já está conectado!",
+      );
 
       criaObjeto.aviso();
 

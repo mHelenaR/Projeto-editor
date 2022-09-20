@@ -243,20 +243,18 @@ class _TabelasCompararState extends State<TabelasComparar> {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            Container(
-              child: Expanded(
-                child: SizedBox(
-                  height: 30,
-                  width: 300,
-                  child: TextFormField(
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.archive),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      labelText: "Primeiro Arquivo",
+            Expanded(
+              child: SizedBox(
+                height: 30,
+                width: 300,
+                child: TextFormField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.archive),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
                     ),
+                    labelText: "Primeiro Arquivo",
                   ),
                 ),
               ),

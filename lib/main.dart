@@ -4,7 +4,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:editorconfiguracao/projeto_completo/telas/tela_carregamento.dart';
+import 'package:editorconfiguracao/projeto_completo/pages/tela_carregamento.dart';
 
 void main() {
   try {

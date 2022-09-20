@@ -1,11 +1,13 @@
- - Arrumar as mensagens de erro de todas as telas e widgets;
- - Arrumar a conexao com sqlite;
- - Arrumar a conexao com postgres;
- - Avisos de conexao;
- - Avisos de arquivo;
- - Verificação de arquivo .bd existe ao iniciar o projeto;
- - Criar fundo tela inicial
- - Criar fundo configurações
- - Ajustar layout das configurações;
- - Corrigir todos os problemas
- - comentar o codigo
+    - Arrumar as mensagens de erro de todas as telas e widgets;
+ ok - Arrumar a conexao com sqlite;
+ ok - Arrumar a conexao com postgres;
+    - Avisos de conexao;
+    - Avisos de arquivo;
+    - Verificação de arquivo .bd existe ao iniciar o projeto;
+    - Criar fundo tela inicial
+    - Criar fundo configurações
+    - Ajustar layout das configurações;
+    - Corrigir todos os problemas
+    - comentar o codigo
+    - conectar tabela dicionario no grid
+    - salvar o arquivo

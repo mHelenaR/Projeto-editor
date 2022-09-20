@@ -1,6 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 enum StatusProgram {
   // erros
   errorLoading(message: 'Erro no arquivo: '),

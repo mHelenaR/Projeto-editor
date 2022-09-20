@@ -1,10 +1,10 @@
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 
-Future<List<String>> nomeTabelasArquivo(String teste) async {
+Future<List<String>> nomeTabelasArquivo(String caminho) async {
   List<String> nomeTabelas = [];
   List<String> listaMenu = [];
 
-  String diretorio = await converteArquivo(teste);
+  String diretorio = await converteArquivo(caminho);
   var listaTIT = diretorio.split('TIT ');
   listaMenu.clear();
 

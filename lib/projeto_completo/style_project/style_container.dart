@@ -1,6 +1,6 @@
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/variaveis.dart';
 import 'package:flutter/material.dart';
+
+import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 
 final decoracaoContainer = BoxDecoration(
   color: corContainer,
