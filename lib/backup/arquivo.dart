@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/tabs_create.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
@@ -14,6 +15,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRa
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 
@@ -87,9 +89,236 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
     }
   }
 
+  carregarTela(var controle) {
+    return FutureBuilder(
+      future: delay(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return criaTabViewTabela(controle);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Future<String> delay() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return 'Aguarde!\n Carregando tabelas!';
+  }
+
   Future<String> delay2() async {
     await Future.delayed(const Duration(seconds: 3));
     return 'Aguarde!\n Carregando tabelas!';
+  }
+
+  Widget criaTabViewTabela(int widgetNumber) {
+    rows.clear();
+    columns.clear();
+    listaTIT.clear();
+    teste4.clear();
+    teste5.clear();
+
+    separarArquivo = "";
+    try {
+      String? recebeTabela;
+
+      separarArquivo = conteudoArquivo;
+
+      debugPrint("Numero da tab: $widgetNumber");
+
+      for (int i = 0; i < nomeTabelas.length; i++) {
+        int contador = widgetNumber + 1;
+        String start = 'TIT ${nomeTabelas[widgetNumber]}#';
+
+        if (contador == nomeTabelas.length) {
+          contador = contador - 1;
+
+          final startIndex = separarArquivo.indexOf(start);
+
+          recebeTabela = separarArquivo.substring(
+              startIndex + start.length, separarArquivo.length);
+        } else {
+          String end = 'TIT ${nomeTabelas[contador]}#';
+
+          final startIndex = separarArquivo.indexOf(start);
+
+          final endIndex =
+              separarArquivo.indexOf(end, startIndex + start.length);
+
+          recebeTabela =
+              separarArquivo.substring(startIndex + start.length, endIndex);
+        }
+      }
+
+      List<String> linhasTIT = recebeTabela!.split("\r\n");
+      nomeColunas = linhasTIT[0].split('|');
+
+      columns = <PlutoColumn>[
+        for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
+          PlutoColumn(
+            textAlign: PlutoColumnTextAlign.center,
+            title: nomeColunas[contCol],
+            field: contCol.toString(),
+            type: PlutoColumnType.text(),
+          ),
+        }
+      ];
+
+      for (int i = 1; i < linhasTIT.length; i++) {
+        if (linhasTIT[i] != "") {
+          String testeP = linhasTIT[i];
+          teste4 = [testeP.split('CPO ').toString()];
+
+          for (int p = 0; p < teste4.length; p++) {
+            teste5 = teste4[p].split('^');
+
+            rows.addAll([
+              PlutoRow(
+                cells: {
+                  for (contRow = 0; contRow < teste5.length; contRow++) ...{
+                    contRow.toString(): PlutoCell(value: teste5[contRow]),
+                  },
+                },
+              ),
+            ]);
+          }
+          testeP = "";
+        }
+      }
+      contCol = 0;
+      contRow = 0;
+    } catch (e) {
+      debugPrint("$e");
+    }
+    return PlutoGrid(
+      configuration: configuracaoPlutoGrid,
+      columns: columns,
+      rows: rows,
+      onChanged: (PlutoGridOnChangedEvent event) {
+        debugPrint("$event");
+      },
+      onLoaded: (PlutoGridOnLoadedEvent event) {
+        stateManager = event.stateManager;
+        sort(stateManager!);
+        pri(stateManager!);
+        // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
+        stateManager!.setKeepFocus(false);
+        // //stateManager = event.stateManager;
+        // stateManager?.clearCurrentSelecting();
+        // //stateManager?.updateVisibilityLayout();
+
+        // stateManager?.clearCurrentCell();
+        // stateManager?.notifyListeners();
+      },
+      createFooter: (stateManager) {
+        return Row(
+          children: [
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                height: 30,
+                child: const Text("Dicionário"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void sort(PlutoGridStateManager manager) {
+    List<String> cont = [];
+    cont.clear();
+    for (int i = 0; i < teste5.length; i++) {
+      cont = cont + [i.toString()];
+    }
+
+    var p = Map.fromEntries(
+      cont.asMap().entries.map<MapEntry<String, int>>(
+          (entry) => MapEntry(entry.value, entry.key)),
+    );
+    debugPrint("${cont.length}");
+    manager.refColumns.sort((a, b) {
+      if (p.containsKey(a.field) && p.containsKey(b.field)) {
+        return p[a.field]!.compareTo(p[b.field]!);
+      }
+      return 0;
+    });
+
+    manager.updateVisibilityLayout();
+    manager.clearCurrentCell();
+    manager.notifyListeners();
+  }
+
+//isso aqui da pra usar no filtro
+  void handleFocusToIndex() {
+    int rowIdx = 2;
+
+    int cellIdx = 0;
+
+    PlutoCell cell =
+        stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
+    stateManager!.setCurrentCell(cell, rowIdx);
+    stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
+    stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
+    rowIdx = rowIdx + rowIdx;
+  }
+
+// isso pega o valor da celul
+  void handleSelected() async {
+    String value = '';
+
+    for (var element in stateManager!.currentSelectingPositionList) {
+      final cellValue = stateManager!
+          .rows[element.rowIdx!].cells[element.field!]!.value
+          .toString();
+
+      value += ' field: ${stateManager!.columns}, value: $cellValue\n';
+    }
+
+    if (value.isEmpty) {
+      value = 'No cells are selected.';
+    }
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext ctx) {
+        return Dialog(
+          child: LayoutBuilder(
+            builder: (ctx, size) {
+              return Container(
+                padding: const EdgeInsets.all(15),
+                width: 400,
+                height: 500,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(value),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void pri(var state) {
+    String value = '';
+    for (var element in state!.currentSelectingPositionList) {
+      final cellValue =
+          state!.rows[element.rowIdx!].cells[element.field!]!.value.toString();
+
+      value += ' field: ${state!.columns}, value: $cellValue\n';
+    }
+    debugPrint(value);
   }
 
   @override
@@ -269,7 +498,11 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                   ElevatedButton(
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
-                    onPressed: () {},
+                    onPressed: () {
+                      pri(stateManager!);
+                      //andleFocusToIndex();
+                      // handleSelected();
+                    },
                   ),
                 ],
               ),

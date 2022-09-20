@@ -27,11 +27,7 @@ Future<String> arquivoTabela() async {
     dialogTitle: 'Escolha o arquivo de configuração',
     withData: true,
   );
-  if (caminhoArquivo != null) {
-    recebe = caminhoArquivo.files.single.path!;
 
-    return recebe;
-  } else {
-    return "erro";
-  }
+  recebe = caminhoArquivo!.files.single.path!;
+  return recebe;
 }

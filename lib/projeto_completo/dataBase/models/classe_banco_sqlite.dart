@@ -4,7 +4,7 @@ import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_dataBase.dart';
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/create_data_base.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/update_base.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/description_dialogs.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/controllers/variaveis.dart';

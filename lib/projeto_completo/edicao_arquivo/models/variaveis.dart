@@ -9,7 +9,7 @@ String? opcaoEscolhida;
 String recebeCaminhoArquivo = '';
 String conteudoArquivo = '';
 String separarArquivo = '';
-String? caminhoArquivo;
+String? caminhoArq;
 
 //double
 double height = 0.0;

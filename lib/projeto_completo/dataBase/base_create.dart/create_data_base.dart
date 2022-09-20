@@ -1,16 +1,17 @@
-// ignore_for_file: file_names, await_only_futures
-
-import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/insert_dataBase.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/insert_dataBase.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 
 criaTabelas(Database dataBase, var caminho, var base, bool atualiza) async {
   List<String> listaTabelas = [];
-  var batch = await dataBase.batch();
+  var batch = dataBase.batch();
   try {
-    listaTabelas = await nomeTabelasArquivo(await arquivoGeraBanco());
+    listaTabelas = await nomeTabelasArquivo(
+        await converteArquivo(await arquivoGeraBanco()));
+
     for (final deletaTabelas in listaTabelas) {
       batch.execute("Drop table if exists $deletaTabelas;");
     }
@@ -28,6 +29,7 @@ criaTabelas(Database dataBase, var caminho, var base, bool atualiza) async {
     }
   } finally {
     batch.commit();
+
     insertTabelas(base, caminho, dataBase, listaTabelas);
   }
 }
