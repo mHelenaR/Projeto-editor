@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import 'package:editorconfiguracao/projeto_completo/dataBase/pg_connection.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/body_table.dart';
-import 'package:editorconfiguracao/projeto_completo/telas/pagina_inicial.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
+import 'package:editorconfiguracao/projeto_completo/tabelas/corpo_tabela/edicao_page.dart';
+import 'package:editorconfiguracao/projeto_completo/pages/pagina_inicial.dart';
+import 'package:editorconfiguracao/projeto_completo/pages/pg_connection.dart';
 
 class MenuPrincipal extends StatefulWidget {
   const MenuPrincipal({Key? key}) : super(key: key);
