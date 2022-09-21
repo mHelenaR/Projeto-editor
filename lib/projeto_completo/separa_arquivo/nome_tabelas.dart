@@ -1,3 +1,5 @@
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+
 Future<List<String>> nomeTabelasArquivo(String caminho) async {
   List<String> nomeTabelas = [];
   List<String> listaMenu = [];
@@ -15,6 +17,9 @@ Future<List<String>> nomeTabelasArquivo(String caminho) async {
 
     listaMenu = listaMenu + nomeTabelas;
   }
+
+  // Passando a lista de tabelas para a gravação
+  objArquivoGravacao.setTabelasConfigGR = listaMenu;
 
   return listaMenu;
 }

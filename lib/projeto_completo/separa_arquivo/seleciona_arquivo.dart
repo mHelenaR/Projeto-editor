@@ -1,3 +1,4 @@
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:file_picker/file_picker.dart';
 
 Future<String> arquivoGeraBanco() async {
@@ -29,5 +30,9 @@ Future<String> arquivoTabela() async {
   );
 
   recebe = caminhoArquivo!.files.single.path!;
+
+  //Passando o caminho para o objeto de gravação
+  objArquivoGravacao.setCaminhoArquivoGR = recebe;
+
   return recebe;
 }

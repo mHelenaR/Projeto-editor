@@ -1,6 +1,7 @@
-import 'package:editorconfiguracao/projeto_completo/dataBase/models/classes_metodos.dart';
 import 'package:postgres/postgres.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'package:editorconfiguracao/projeto_completo/dataBase/models/classes_metodos.dart';
 
 // String
 String? path;

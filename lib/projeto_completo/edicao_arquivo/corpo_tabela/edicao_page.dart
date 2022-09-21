@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/salvar_arquivo.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/tabs_create.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/criacao_tabs/tabs_create.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/projeto_completo/filtro/filtro_principal.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
@@ -40,7 +42,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void expandeContainer() {
+  expandeContainer() {
     if (height == 100) {
       setState(() {
         cor = white;
@@ -68,6 +70,9 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
         });
 
         conteudoArquivo = await converteArquivo(recebeCaminhoArquivo);
+
+        // Passando o arquivo para o objeto de gravação
+        objArquivoGravacao.setArquivoGR = conteudoArquivo;
 
         nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
 
@@ -146,80 +151,6 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
     );
   }
 
-  SizedBox barraPrincipal() {
-    return SizedBox(
-      child: Row(
-        children: [
-          Flexible(
-            child: SizedBox(
-              height: 70,
-              child: AppBar(
-                elevation: 2,
-                backgroundColor: white,
-                actions: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Flexible(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "Edição de Tabelas",
-                        style: fontePreta,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                        height: 40,
-                        child: TextFormField(
-                          readOnly: true,
-                          controller: controleArquivo,
-                          decoration: styleBarraArquivo,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Wrap(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              arquivoAbrirSeparar();
-                            },
-                            style: estiloBotao,
-                            child: const Text("Abrir"),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              expandeContainer();
-                            },
-                            style: estiloBotao,
-                            child: const Text("Pesquisar"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   AnimatedContainer barraFiltro() {
     return AnimatedContainer(
       alignment: Alignment.centerLeft,
@@ -280,6 +211,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
           ),
           Flexible(
             child: Container(
+              width: 200,
               alignment: Alignment.centerLeft,
               child: ListView(
                 children: [
@@ -375,12 +307,88 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
       ),
     );
   }
-}
 
-enum FiltroOpcao {
-  subTitulo,
-  conteudo,
-  tituloDicionario,
-  estacao,
-  descicaoDicionario;
+  SizedBox barraPrincipal() {
+    return SizedBox(
+      child: Row(
+        children: [
+          Flexible(
+            child: SizedBox(
+              height: 70,
+              child: AppBar(
+                elevation: 2,
+                backgroundColor: white,
+                actions: [
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "Edição de Tabelas",
+                        style: fontePreta,
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: 40,
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: controleArquivo,
+                          decoration: styleBarraArquivo,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              arquivoAbrirSeparar();
+                            },
+                            style: estiloBotao,
+                            child: const Text("Abrir"),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              gravarArquivo();
+                            },
+                            style: estiloBotao,
+                            child: const Text("Salvar"),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              expandeContainer();
+                            },
+                            style: estiloBotao,
+                            child: const Text("Pesquisar"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

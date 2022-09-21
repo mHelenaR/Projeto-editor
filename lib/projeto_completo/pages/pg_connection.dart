@@ -63,7 +63,7 @@ class _TelaConexaoState extends State<TelaConexao> {
     );
   }
 
-  Widget conectarBanco() {
+  Container conectarBanco() {
     return Container(
       height: 300,
       width: 400,
@@ -179,7 +179,7 @@ class _TelaConexaoState extends State<TelaConexao> {
     );
   }
 
-  Widget textField(var label, var controller, var decoration) {
+  Row textField(var label, var controller, var decoration) {
     return Row(
       children: [
         const SizedBox(
@@ -210,7 +210,7 @@ class _TelaConexaoState extends State<TelaConexao> {
     );
   }
 
-  Widget appBarConfig() {
+  SizedBox appBarConfig() {
     return SizedBox(
       height: 70,
       child: AppBar(

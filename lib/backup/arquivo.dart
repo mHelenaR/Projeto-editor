@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/tabs_create.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/criacao_tabs/tabs_create.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
