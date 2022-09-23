@@ -1,15 +1,25 @@
-import 'package:flutter/foundation.dart';
+// ignore_for_file: avoid_print, unused_local_variable
+
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 
 gravarArquivo() {
   String arquivo = objArquivoGravacao.arquivoGR;
   //String caminho = objArquivoGravacao.caminhoArquivoGR;
+  String caminho = "C:\\Users\\Maria\\Documents\\testeConfig.txt";
   List<String> tabelas = objArquivoGravacao.tabelasConfigGR;
   String recebeTabela = '';
-  List<String> colunasBanco = [];
-  List<String> teste1 = [];
+  List<String> listaChave = [];
+  String gravaArquivoCFG = "";
+  String montaArquivo = '';
+  List<String> linhasTIT = [];
+  List<String> gravaLinhasTIT = [];
   Map<String, String> mapConfig = {};
+  String testew = '';
+  List<String> colunaTit = [];
+  List<String> col = [];
 
   for (int i = 0; i < tabelas.length; i++) {
     int contador = i + 1;
@@ -20,30 +30,63 @@ gravarArquivo() {
 
       final startIndex = arquivo.indexOf(start);
 
-      recebeTabela =
-          arquivo.substring(startIndex + start.length, arquivo.length);
-      mapConfig.addAll({tabelas[contador]: recebeTabela});
+      recebeTabela = arquivo.substring(
+        startIndex + start.length,
+        arquivo.length,
+      );
+
+      gravaLinhasTIT = [recebeTabela];
     } else {
       String end = "TIT ${tabelas[contador]}#";
 
       final startIndex = arquivo.indexOf(start);
       final endIndex = arquivo.indexOf(end, startIndex + start.length);
 
-      recebeTabela = arquivo.substring(startIndex + start.length, endIndex);
-      mapConfig.addAll({tabelas[i]: recebeTabela});
+      recebeTabela = arquivo.substring(
+        startIndex + start.length,
+        endIndex,
+      );
+      gravaLinhasTIT = [recebeTabela];
     }
-    colunasBanco = colunasBanco + [recebeTabela];
-  }
-  for (final teste in mapConfig.entries) {
-    teste1 = teste1 + [teste.key];
+    final myFile = File(caminho);
 
-    if (kDebugMode) {
-      print(teste.key);
-    }
+    colunaTit = gravaLinhasTIT[0].split("\r\n");
+    col = colunaTit[0].split('|');
+    print(col);
+    myFile.writeAsString(
+        mode: FileMode.write,
+        encoding: const Latin1Codec(allowInvalid: false),
+        col.toString());
+    // String testeG = '';
+    // for (int k = 0; k <= col.length; k++) {
+    //   int cont = col.length - 1;
+
+    //   if (k < col.length && k < cont) {
+    //     if (k != 0) {
+    //       testeG = "$testeG${col[k]}|";
+    //     } else {
+    //       testeG = "TIT ${tabelas[i]}#${col[k]}|";
+    //     }
+    //   }
+    //   if (k == col.length) {
+    //     testeG = "$testeG\r\n";
+    //   }
+
+    // }
+    // print(testeG);
   }
-  if (kDebugMode) {
-    print(teste1);
-  }
+
+  // myFile.writeAsString(testeG);
+
+  // print(gravaLinhasTIT);
+}
+
+Future<void> writeData(var arquivo, var caminho) async {
+  var textoArquivo = arquivo;
+
+  final myFile = File(caminho);
+
+  await myFile.writeAsString(textoArquivo);
 }
 
 conteudowArquivo(var teste) {
