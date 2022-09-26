@@ -53,10 +53,7 @@ gravarArquivo() {
     colunaTit = gravaLinhasTIT[0].split("\r\n");
     col = colunaTit[0].split('|');
     print(col);
-    myFile.writeAsString(
-        mode: FileMode.write,
-        encoding: const Latin1Codec(allowInvalid: false),
-        col.toString());
+    myFile.writeAsString(col.toString());
     // String testeG = '';
     // for (int k = 0; k <= col.length; k++) {
     //   int cont = col.length - 1;
@@ -87,6 +84,12 @@ Future<void> writeData(var arquivo, var caminho) async {
   final myFile = File(caminho);
 
   await myFile.writeAsString(textoArquivo);
+
+  myFile.writeAsString(
+    mode: FileMode.write,
+    encoding: const Latin1Codec(allowInvalid: false),
+    textoArquivo,
+  );
 }
 
 conteudowArquivo(var teste) {

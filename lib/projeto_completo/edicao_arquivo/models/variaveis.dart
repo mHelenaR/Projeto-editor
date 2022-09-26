@@ -16,8 +16,6 @@ String? caminhoArq;
 double height = 0.0;
 
 //int
-int contRow = 0;
-int contCol = 0;
 
 //booleana
 bool clicked = false;
@@ -31,7 +29,7 @@ List<String> teste5 = [];
 List<PlutoRow> rows = [];
 List<PlutoColumn> columns = [];
 List<Tab> tabs = [];
-final List<Widget> criarWidgets = [];
+List<Widget> criarWidgets = [];
 
 //controle
 final TextEditingController controleArquivo = TextEditingController();

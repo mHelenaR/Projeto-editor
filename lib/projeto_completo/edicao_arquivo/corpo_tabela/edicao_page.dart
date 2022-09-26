@@ -1,21 +1,24 @@
 import 'dart:async';
 
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/salvar_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/corpo_tabela/teste.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/criacao_tabs/tabs_create.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/criacao_tabs/tabs_create.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/filtro/filtro_principal.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/salvar_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRadius.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 
@@ -82,7 +85,8 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
 
         setState(() {
           getWidgets();
-          tabController = TabController(length: tabs.length, vsync: this);
+          tabController =
+              TabController(length: tabs.length, vsync: this, initialIndex: 0);
         });
       }
     } catch (e) {
@@ -90,6 +94,26 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
         print(e);
       }
     }
+  }
+
+  List<Widget> getWidgets() {
+    criarWidgets.clear();
+
+    for (int h = 0; h < tabs.length; h++) {
+      criarWidgets.addAll([
+        TesteTabela(
+          caminho: caminhoArq,
+          contador: h,
+        )
+      ]);
+    }
+
+    return criarWidgets;
+  }
+
+  Future<String> delay() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return 'Aguarde!\n Carregando tabelas!';
   }
 
   Future<String> delay2() async {
@@ -128,23 +152,28 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
           ),
         ),
         Expanded(
-          child: Container(
+          child: Padding(
             padding: const EdgeInsets.all(10),
-            child: FutureBuilder(
-              future: delay2(),
-              builder: (BuildContext context, snapshot) {
-                if (snapshot.hasData) {
-                  return TabBarView(
-                    controller: tabController,
-                    children: getWidgets(),
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+            child: TabBarView(
+              controller: tabController,
+              children: getWidgets(),
             ),
+
+            // FutureBuilder(
+            //   future: delay2(),
+            //   builder: (BuildContext context, snapshot) {
+            //     if (snapshot.hasData) {
+            //       return TabBarView(
+            //         controller: tabController,
+            //         children: getWidgets(),
+            //       );
+            //     } else {
+            //       return const Center(
+            //         child: CircularProgressIndicator(),
+            //       );
+            //     }
+            //   },
+            // ),
           ),
         )
       ],

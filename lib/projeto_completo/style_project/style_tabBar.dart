@@ -6,6 +6,8 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_p
 
 const boxTopLR = BoxDecoration(
   borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+    topLeft: Radius.circular(10),
+    topRight: Radius.circular(10),
+  ),
   color: purpleAB7,
 );

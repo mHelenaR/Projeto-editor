@@ -178,7 +178,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
             rows.addAll([
               PlutoRow(
                 cells: {
-                  for (contRow = 0; contRow < teste5.length; contRow++) ...{
+                  for (int contRow = 0; contRow < teste5.length; contRow++) ...{
                     contRow.toString(): PlutoCell(value: teste5[contRow]),
                   },
                 },
@@ -188,8 +188,6 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
           testeP = "";
         }
       }
-      contCol = 0;
-      contRow = 0;
     } catch (e) {
       debugPrint("$e");
     }

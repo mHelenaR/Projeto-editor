@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -119,7 +120,7 @@ Widget criaTabViewTabela(int widgetNumber) {
           rows.addAll([
             PlutoRow(
               cells: {
-                for (contRow = 0; contRow < teste5.length; contRow++) ...{
+                for (int contRow = 0; contRow < teste5.length; contRow++) ...{
                   contRow.toString(): PlutoCell(value: teste5[contRow]),
                 },
               },
@@ -129,8 +130,8 @@ Widget criaTabViewTabela(int widgetNumber) {
         testeP = "";
       }
     }
-    contCol = 0;
-    contRow = 0;
+
+    linhasTIT.clear();
   } catch (e) {
     debugPrint("$e");
   }
@@ -139,14 +140,23 @@ Widget criaTabViewTabela(int widgetNumber) {
     columns: columns,
     rows: rows,
     onChanged: (PlutoGridOnChangedEvent event) {
-      debugPrint("$event");
+      //debugPrint("$event");
+      if (kDebugMode) {
+        print("Valor célula editada: ${event.value}");
+        print("Valor célula anterior: ${event.oldValue}");
+        print("Nome Coluna: ${event.column!.title}");
+        print("Posição célula editada: ${event.rowIdx}");
+        print("\n=======================================\n");
+      }
     },
     onLoaded: (PlutoGridOnLoadedEvent event) {
       stateManager = event.stateManager;
+      stateManager!.setAutoEditing(true);
+      // event.stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
       // sort(stateManager!);
       // pri(stateManager!);
       // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
-      stateManager!.setKeepFocus(false);
+
       // //stateManager = event.stateManager;
       // stateManager?.clearCurrentSelecting();
       // //stateManager?.updateVisibilityLayout();
