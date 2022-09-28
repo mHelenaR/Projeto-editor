@@ -53,8 +53,128 @@ carregarTela(var controle) {
 }
 
 Future<String> delay() async {
-  await Future.delayed(const Duration(seconds: 1));
+  await Future.delayed(const Duration(milliseconds: 200));
   return 'Aguarde!\n Carregando tabelas!';
+}
+
+retornaColuna(int widgetNumber) {
+  rows.clear();
+  columns.clear();
+  listaTIT.clear();
+  teste4.clear();
+  teste5.clear();
+
+  separarArquivo = "";
+
+  String? recebeTabela;
+
+  separarArquivo = conteudoArquivo;
+
+  debugPrint("Numero da tab: $widgetNumber");
+
+  for (int i = 0; i < nomeTabelas.length; i++) {
+    int contador = widgetNumber + 1;
+    String start = 'TIT ${nomeTabelas[widgetNumber]}#';
+
+    if (contador == nomeTabelas.length) {
+      contador = contador - 1;
+
+      final startIndex = separarArquivo.indexOf(start);
+
+      recebeTabela = separarArquivo.substring(
+          startIndex + start.length, separarArquivo.length);
+    } else {
+      String end = 'TIT ${nomeTabelas[contador]}#';
+
+      final startIndex = separarArquivo.indexOf(start);
+
+      final endIndex = separarArquivo.indexOf(end, startIndex + start.length);
+
+      recebeTabela =
+          separarArquivo.substring(startIndex + start.length, endIndex);
+    }
+  }
+
+  List<String> linhasTIT = recebeTabela!.split("\r\n");
+  nomeColunas = linhasTIT[0].split('|');
+
+  columns = <PlutoColumn>[
+    for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
+      PlutoColumn(
+        textAlign: PlutoColumnTextAlign.center,
+        title: nomeColunas[contCol],
+        field: contCol.toString(),
+        type: PlutoColumnType.text(),
+      ),
+    }
+  ];
+
+  return columns;
+}
+
+retornaLinha(int widgetNumber) {
+  rows.clear();
+  columns.clear();
+  listaTIT.clear();
+  teste4.clear();
+  teste5.clear();
+
+  separarArquivo = "";
+
+  String? recebeTabela;
+
+  separarArquivo = conteudoArquivo;
+
+  debugPrint("Numero da tab: $widgetNumber");
+
+  for (int i = 0; i < nomeTabelas.length; i++) {
+    int contador = widgetNumber + 1;
+    String start = 'TIT ${nomeTabelas[widgetNumber]}#';
+
+    if (contador == nomeTabelas.length) {
+      contador = contador - 1;
+
+      final startIndex = separarArquivo.indexOf(start);
+
+      recebeTabela = separarArquivo.substring(
+          startIndex + start.length, separarArquivo.length);
+    } else {
+      String end = 'TIT ${nomeTabelas[contador]}#';
+
+      final startIndex = separarArquivo.indexOf(start);
+
+      final endIndex = separarArquivo.indexOf(end, startIndex + start.length);
+
+      recebeTabela =
+          separarArquivo.substring(startIndex + start.length, endIndex);
+    }
+  }
+
+  List<String> linhasTIT = recebeTabela!.split("\r\n");
+  nomeColunas = linhasTIT[0].split('|');
+
+  for (int i = 1; i < linhasTIT.length; i++) {
+    if (linhasTIT[i] != "") {
+      String testeP = linhasTIT[i];
+      teste4 = [testeP.split('CPO ').toString()];
+
+      for (int p = 0; p < teste4.length; p++) {
+        teste5 = teste4[p].split('^');
+
+        rows.addAll([
+          PlutoRow(
+            cells: {
+              for (int contRow = 0; contRow < teste5.length; contRow++) ...{
+                contRow.toString(): PlutoCell(value: teste5[contRow]),
+              },
+            },
+          ),
+        ]);
+      }
+      testeP = "";
+    }
+  }
+  return rows;
 }
 
 Widget criaTabViewTabela(int widgetNumber) {
@@ -140,7 +260,6 @@ Widget criaTabViewTabela(int widgetNumber) {
     columns: columns,
     rows: rows,
     onChanged: (PlutoGridOnChangedEvent event) {
-      //debugPrint("$event");
       if (kDebugMode) {
         print("Valor célula editada: ${event.value}");
         print("Valor célula anterior: ${event.oldValue}");

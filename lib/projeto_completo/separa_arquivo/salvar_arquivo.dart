@@ -100,6 +100,8 @@ class RecebeValor {
   dynamic _tabelasConfigGR;
   dynamic _arquivoGR;
   dynamic _caminhoArquivoGR;
+  dynamic _colunasTeste;
+  dynamic _linhasTeste;
 
   get tabelasConfigGR => _tabelasConfigGR;
   set setTabelasConfigGR(var tabelasConfig) {
@@ -114,5 +116,15 @@ class RecebeValor {
   get caminhoArquivoGR => _caminhoArquivoGR;
   set setCaminhoArquivoGR(var caminhoArquivoGR) {
     _caminhoArquivoGR = caminhoArquivoGR;
+  }
+
+  get colunasTeste => _colunasTeste;
+  set setColunasTeste(var colunasTeste) {
+    _colunasTeste = colunasTeste;
+  }
+
+  get linhasTeste => _linhasTeste;
+  set setLinhasTeste(var linhasTeste) {
+    _linhasTeste = linhasTeste;
   }
 }

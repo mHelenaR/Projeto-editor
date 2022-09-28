@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:editorconfiguracao/projeto_completo/separa_arquivo/salvar_arquivo.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,6 @@ import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variav
 import 'package:editorconfiguracao/projeto_completo/filtro/filtro_principal.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/salvar_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRadius.dart';

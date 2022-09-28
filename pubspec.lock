@@ -148,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.6.1"
+  filepicker_windows:
+    dependency: "direct main"
+    description:
+      name: filepicker_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   fluent_ui:
     dependency: "direct main"
     description:
@@ -307,7 +314,7 @@ packages:
       name: pluto_grid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.1"
+    version: "5.1.2"
   postgres:
     dependency: "direct main"
     description:
@@ -328,7 +335,7 @@ packages:
       name: recase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.1.0"
   rxdart:
     dependency: transitive
     description:
