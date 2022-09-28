@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/salvar_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 
 //String

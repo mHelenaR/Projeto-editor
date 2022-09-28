@@ -21,6 +21,12 @@ gravarArquivo() {
   List<String> colunaTit = [];
   List<String> col = [];
 
+  List<String> listaComparar = [
+    'tributacao',
+    'estac',
+    'finalizadora',
+  ];
+
   for (int i = 0; i < tabelas.length; i++) {
     int contador = i + 1;
     String start = "TIT ${tabelas[i]}#";
@@ -48,31 +54,21 @@ gravarArquivo() {
       );
       gravaLinhasTIT = [recebeTabela];
     }
-    final myFile = File(caminho);
 
     colunaTit = gravaLinhasTIT[0].split("\r\n");
     col = colunaTit[0].split('|');
-    print(col);
-    myFile.writeAsString(col.toString());
-    // String testeG = '';
-    // for (int k = 0; k <= col.length; k++) {
-    //   int cont = col.length - 1;
 
-    //   if (k < col.length && k < cont) {
-    //     if (k != 0) {
-    //       testeG = "$testeG${col[k]}|";
-    //     } else {
-    //       testeG = "TIT ${tabelas[i]}#${col[k]}|";
-    //     }
-    //   }
-    //   if (k == col.length) {
-    //     testeG = "$testeG\r\n";
-    //   }
-
-    // }
+    for (int k = 0; k < col.length; k++) {
+      if (col[k] == 'tdo_teclado01') {
+        print(col[k]);
+      }
+    }
     // print(testeG);
   }
 
+  final myFile = File(caminho);
+  //print(col);
+  //myFile.writeAsString(col.toString());
   // myFile.writeAsString(testeG);
 
   // print(gravaLinhasTIT);

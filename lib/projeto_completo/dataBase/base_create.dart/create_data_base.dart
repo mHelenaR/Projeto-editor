@@ -1,9 +1,9 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_create.dart/insert_dataBase.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/converte_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/nome_tabelas.dart';
-import 'package:editorconfiguracao/projeto_completo/separa_arquivo/seleciona_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/converte_arquivo.dart';
+import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/nome_tabelas.dart';
+import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/seleciona_arquivo.dart';
 
 criaTabelas(Database dataBase, var caminho, var base, bool atualiza) async {
   List<String> listaTabelas = [];
