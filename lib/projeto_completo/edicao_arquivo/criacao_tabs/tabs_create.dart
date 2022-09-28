@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, unrelated_type_equality_checks
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -255,18 +257,26 @@ Widget criaTabViewTabela(int widgetNumber) {
   } catch (e) {
     debugPrint("$e");
   }
+  var mapa = Map();
   return PlutoGrid(
     configuration: configuracaoPlutoGrid,
     columns: columns,
     rows: rows,
     onChanged: (PlutoGridOnChangedEvent event) {
-      if (kDebugMode) {
-        print("Valor célula editada: ${event.value}");
-        print("Valor célula anterior: ${event.oldValue}");
-        print("Nome Coluna: ${event.column!.title}");
-        print("Posição célula editada: ${event.rowIdx}");
-        print("\n=======================================\n");
-      }
+      mapa = {
+        nomeTabelas[tabController.index]: {
+          event.column!.title: {event.rowIdx: event.value}
+        }
+      };
+
+      print(mapa);
+      // if (kDebugMode) {
+      //   print("Valor célula editada: ${event.value}");
+      //   print("Valor célula anterior: ${event.oldValue}");
+      //   print("Nome Coluna: ${event.column!.title}");
+      //   print("Posição célula editada: ${event.rowIdx}");
+      //   print("\n=======================================\n");
+      // }
     },
     onLoaded: (PlutoGridOnLoadedEvent event) {
       stateManager = event.stateManager;

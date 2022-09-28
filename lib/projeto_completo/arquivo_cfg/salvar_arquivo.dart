@@ -98,6 +98,7 @@ class RecebeValor {
   dynamic _caminhoArquivoGR;
   dynamic _colunasTeste;
   dynamic _linhasTeste;
+  dynamic _mapaGR;
 
   get tabelasConfigGR => _tabelasConfigGR;
   set setTabelasConfigGR(var tabelasConfig) {
@@ -122,5 +123,10 @@ class RecebeValor {
   get linhasTeste => _linhasTeste;
   set setLinhasTeste(var linhasTeste) {
     _linhasTeste = linhasTeste;
+  }
+
+  get mapaGR => _mapaGR;
+  set setmapaGR(var mapaGR) {
+    _mapaGR = mapaGR;
   }
 }

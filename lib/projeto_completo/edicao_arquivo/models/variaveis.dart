@@ -30,6 +30,7 @@ List<PlutoRow> rows = [];
 List<PlutoColumn> columns = [];
 List<Tab> tabs = [];
 List<Widget> criarWidgets = [];
+List<dynamic> recebeMpa = [];
 
 //controle
 final TextEditingController controleArquivo = TextEditingController();
