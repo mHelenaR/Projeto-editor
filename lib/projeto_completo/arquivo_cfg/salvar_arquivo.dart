@@ -56,7 +56,7 @@ gravarArquivo() {
 
           for (int m = 0; m < celulacpo.length; m++) {
             // if (map['coluna'] == m) {
-            print(celulacpo[map['coluna']]);
+            print(celulacpo[map['colunaIndex']]);
             // }
           }
         }
