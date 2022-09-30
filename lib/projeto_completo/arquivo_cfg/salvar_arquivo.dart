@@ -20,68 +20,86 @@ gravarArquivo() {
   String testew = '';
   List<String> colunaTit = [];
   List<String> col = [];
-
-  List<String> listaComparar = [
-    'tributacao',
-    'estac',
-    'finalizadora',
-  ];
-  print(arquivo);
+  List<String> linhacpo = [];
   var map = {};
-
+  List<List<String>> matrix = [];
   for (int i = 0; i < recebeMapa.length; i++) {
     map = recebeMapa[i];
 
-    if (map['tabela'] == 'tributacao') {
-      print(map);
+    String start = "TIT ${map['tabelaInicial']}#";
+    String end = "TIT ${map['tabelaFinal']}#";
+    final startIndex = arquivo.indexOf(start);
+    final endIndex = arquivo.indexOf(end, startIndex + start.length);
+
+    // última tabela
+    if (map['tabelaInicial'] == map['tabelaFinal']) {
+      recebeTabela = arquivo.substring(
+        startIndex + start.length,
+        arquivo.length,
+      );
+    } else {
+      recebeTabela = arquivo.substring(
+        startIndex + start.length,
+        endIndex,
+      );
     }
+    colunaTit = recebeTabela.split("\r\n");
+    col = colunaTit[0].split('|');
+
+    for (int k = 0; k < col.length; k++) {
+      int contador = col.length - 2;
+      if (k <= contador) {
+        if (col[k] == map['coluna']) {
+          linhacpo = colunaTit[map['linha']].split('CPO ');
+
+          List<String> celulacpo = linhacpo[1].split("^");
+
+          for (int m = 0; m < celulacpo.length; m++) {
+            // if (map['coluna'] == m) {
+            print(celulacpo[map['coluna']]);
+            // }
+          }
+        }
+      }
+
+      //   if (col[k] == map['coluna'] && col[k] != "") {
+
+      //     for (int j = 1; j < colunaTit.length; j++) {
+      //       linhacpo = colunaTit[j].split('CPO ');
+
+      //       for (int n = 0; n < linhacpo.length; n++) {
+      //         if (linhacpo[n] != "") {
+      //           List<String> celulacpo = linhacpo[n].split("^");
+      //           for (int m = 0; m < celulacpo.length; m++) {
+      //             if (n == 1) {
+      //               print(celulacpo[1]);
+      //             }
+      //           }
+      //           //   }
+      //           // }
+      //           // for (int m = 0; m < linhacpo.length; m++) {
+      //           //   List<String> celulacpo = linhacpo[m].split("^");
+
+      //           //   for (int n = 0; n < celulacpo.length; n++) {
+      //           //     if (m == 1 && n == 1) {
+      //           //       print(celulacpo);
+      //           //       //   print(map['valor']);
+      //           //     }
+      //         }
+      //       }
+      //       //for (int contRow = 0; contRow < teste5.length; contRow++) {}
+
+      //     }
+
+      // }
+    }
+
+    print(
+        '===============================  //  =====================================');
+    //  print(colunaTit);
   }
 
-  // for (int i = 0; i < tabelas.length; i++) {
-  //   int contador = i + 1;
-  //   String start = "TIT ${tabelas[i]}#";
-
-  //   if (contador == tabelas.length) {
-  //     contador = contador - 1;
-
-  //     final startIndex = arquivo.indexOf(start);
-
-  //     recebeTabela = arquivo.substring(
-  //       startIndex + start.length,
-  //       arquivo.length,
-  //     );
-
-  //     gravaLinhasTIT = [recebeTabela];
-  //   } else {
-  //     String end = "TIT ${tabelas[contador]}#";
-
-  //     final startIndex = arquivo.indexOf(start);
-  //     final endIndex = arquivo.indexOf(end, startIndex + start.length);
-
-  //     recebeTabela = arquivo.substring(
-  //       startIndex + start.length,
-  //       endIndex,
-  //     );
-  //     gravaLinhasTIT = [recebeTabela];
-  //   }
-
-  //   colunaTit = gravaLinhasTIT[0].split("\r\n");
-  //   col = colunaTit[0].split('|');
-
-  //   for (int k = 0; k < col.length; k++) {
-  //     if (col[k] == 'tdo_teclado01') {
-  //       print(col[k]);
-  //     }
-  //   }
-  //   // print(testeG);
-  // }
-
   final myFile = File(caminho);
-  //print(col);
-  //myFile.writeAsString(col.toString());
-  // myFile.writeAsString(testeG);
-
-  // print(gravaLinhasTIT);
 }
 
 Future<void> writeData(var arquivo, var caminho) async {

@@ -289,15 +289,14 @@ Widget criaTabViewTabela(int widgetNumber) {
     columns: columns,
     rows: rows,
     onChanged: (PlutoGridOnChangedEvent event) {
-      String indice1 = event.columnIdx.toString();
-      int indice = int.parse(indice1);
+      int rowIndex = event.rowIdx! + 1;
       mapa = {
-        'tabela': nomeTabelas[tabController.index],
-        'coluna': nomeColunas[event.columnIdx!],
-        'proxTabela':
+        'tabelaInicial': nomeTabelas[tabController.index],
+        'tabelaFinal':
             nomeTabelas[metodoContador(tabController.index, nomeTabelas)],
+        'coluna': nomeColunas[event.columnIdx!],
         'colunaIndex': event.columnIdx,
-        'linha': event.rowIdx,
+        'linha': rowIndex,
         'valor': event.value,
       };
 
