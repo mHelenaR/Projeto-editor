@@ -12,6 +12,9 @@ String conteudoArquivo = '';
 String separarArquivo = '';
 String? caminhoArq;
 
+//mapas
+List<dynamic> recebeMapa = [];
+
 //double
 double height = 0.0;
 

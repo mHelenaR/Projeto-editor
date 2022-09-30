@@ -26,45 +26,55 @@ gravarArquivo() {
     'estac',
     'finalizadora',
   ];
+  print(arquivo);
+  var map = {};
 
-  for (int i = 0; i < tabelas.length; i++) {
-    int contador = i + 1;
-    String start = "TIT ${tabelas[i]}#";
+  for (int i = 0; i < recebeMapa.length; i++) {
+    map = recebeMapa[i];
 
-    if (contador == tabelas.length) {
-      contador = contador - 1;
-
-      final startIndex = arquivo.indexOf(start);
-
-      recebeTabela = arquivo.substring(
-        startIndex + start.length,
-        arquivo.length,
-      );
-
-      gravaLinhasTIT = [recebeTabela];
-    } else {
-      String end = "TIT ${tabelas[contador]}#";
-
-      final startIndex = arquivo.indexOf(start);
-      final endIndex = arquivo.indexOf(end, startIndex + start.length);
-
-      recebeTabela = arquivo.substring(
-        startIndex + start.length,
-        endIndex,
-      );
-      gravaLinhasTIT = [recebeTabela];
+    if (map['tabela'] == 'tributacao') {
+      print(map);
     }
-
-    colunaTit = gravaLinhasTIT[0].split("\r\n");
-    col = colunaTit[0].split('|');
-
-    for (int k = 0; k < col.length; k++) {
-      if (col[k] == 'tdo_teclado01') {
-        print(col[k]);
-      }
-    }
-    // print(testeG);
   }
+
+  // for (int i = 0; i < tabelas.length; i++) {
+  //   int contador = i + 1;
+  //   String start = "TIT ${tabelas[i]}#";
+
+  //   if (contador == tabelas.length) {
+  //     contador = contador - 1;
+
+  //     final startIndex = arquivo.indexOf(start);
+
+  //     recebeTabela = arquivo.substring(
+  //       startIndex + start.length,
+  //       arquivo.length,
+  //     );
+
+  //     gravaLinhasTIT = [recebeTabela];
+  //   } else {
+  //     String end = "TIT ${tabelas[contador]}#";
+
+  //     final startIndex = arquivo.indexOf(start);
+  //     final endIndex = arquivo.indexOf(end, startIndex + start.length);
+
+  //     recebeTabela = arquivo.substring(
+  //       startIndex + start.length,
+  //       endIndex,
+  //     );
+  //     gravaLinhasTIT = [recebeTabela];
+  //   }
+
+  //   colunaTit = gravaLinhasTIT[0].split("\r\n");
+  //   col = colunaTit[0].split('|');
+
+  //   for (int k = 0; k < col.length; k++) {
+  //     if (col[k] == 'tdo_teclado01') {
+  //       print(col[k]);
+  //     }
+  //   }
+  //   // print(testeG);
+  // }
 
   final myFile = File(caminho);
   //print(col);
