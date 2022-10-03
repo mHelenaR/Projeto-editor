@@ -297,7 +297,7 @@ Widget criaTabViewTabela(int widgetNumber) {
         'coluna': nomeColunas[event.columnIdx!],
         'colunaIndex': event.columnIdx,
         'linha': rowIndex,
-        'valor': event.value,
+        'novoValor': event.value,
       };
 
       recebeMapa.addAll([mapa]);

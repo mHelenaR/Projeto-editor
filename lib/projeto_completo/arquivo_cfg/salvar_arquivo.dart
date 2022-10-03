@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_local_variable
+// ignore_for_file: avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 import 'dart:io';
@@ -22,6 +22,7 @@ gravarArquivo() {
   List<String> col = [];
   List<String> linhacpo = [];
   var map = {};
+  String recebe = '';
   List<List<String>> matrix = [];
   for (int i = 0; i < recebeMapa.length; i++) {
     map = recebeMapa[i];
@@ -55,50 +56,25 @@ gravarArquivo() {
           List<String> celulacpo = linhacpo[1].split("^");
 
           for (int m = 0; m < celulacpo.length; m++) {
-            // if (map['coluna'] == m) {
-            print(celulacpo[map['colunaIndex']]);
-            // }
+            int tam = celulacpo.length - 1;
+            if (map['colunaIndex'] == m) {
+              recebe = recebe + map['novoValor'] + '^';
+            } else if (m < tam) {
+              recebe = recebe + celulacpo[m] + '^';
+            } else {
+              recebe = recebe + '\r\n';
+            }
           }
+          print(recebe);
         }
       }
-
-      //   if (col[k] == map['coluna'] && col[k] != "") {
-
-      //     for (int j = 1; j < colunaTit.length; j++) {
-      //       linhacpo = colunaTit[j].split('CPO ');
-
-      //       for (int n = 0; n < linhacpo.length; n++) {
-      //         if (linhacpo[n] != "") {
-      //           List<String> celulacpo = linhacpo[n].split("^");
-      //           for (int m = 0; m < celulacpo.length; m++) {
-      //             if (n == 1) {
-      //               print(celulacpo[1]);
-      //             }
-      //           }
-      //           //   }
-      //           // }
-      //           // for (int m = 0; m < linhacpo.length; m++) {
-      //           //   List<String> celulacpo = linhacpo[m].split("^");
-
-      //           //   for (int n = 0; n < celulacpo.length; n++) {
-      //           //     if (m == 1 && n == 1) {
-      //           //       print(celulacpo);
-      //           //       //   print(map['valor']);
-      //           //     }
-      //         }
-      //       }
-      //       //for (int contRow = 0; contRow < teste5.length; contRow++) {}
-
-      //     }
-
-      // }
     }
 
     print(
         '===============================  //  =====================================');
     //  print(colunaTit);
   }
-
+  //writeData(recebe, caminho);
   final myFile = File(caminho);
 }
 
@@ -110,8 +86,8 @@ Future<void> writeData(var arquivo, var caminho) async {
   await myFile.writeAsString(textoArquivo);
 
   myFile.writeAsString(
-    mode: FileMode.write,
-    encoding: const Latin1Codec(allowInvalid: false),
+    //mode: FileMode.write,
+    // encoding: latin1,
     textoArquivo,
   );
 }
