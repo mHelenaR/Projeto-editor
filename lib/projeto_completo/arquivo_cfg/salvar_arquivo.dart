@@ -1,6 +1,3 @@
-// ignore_for_file: avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings, unused_import
-
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
@@ -9,15 +6,7 @@ gravarArquivo() {
   String arquivo = objArquivoGravacao.arquivoGR;
   //String caminho = objArquivoGravacao.caminhoArquivoGR;
   String caminho = "C:\\Users\\Maria\\Documents\\testeConfig.txt";
-  List<String> tabelas = objArquivoGravacao.tabelasConfigGR;
   String recebeTabela = '';
-  List<String> listaChave = [];
-  String gravaArquivoCFG = "";
-  String montaArquivo = '';
-  List<String> linhasTIT = [];
-  List<String> gravaLinhasTIT = [];
-  Map<String, String> mapConfig = {};
-  String testew = '';
   List<String> colunaTit = [];
   List<String> col = [];
   List<String> linhacpo = [];
@@ -25,9 +14,7 @@ gravarArquivo() {
   String recebe = '';
   String montaTabela = '';
   String finalArquivo = '';
-  String novoArquivo = '';
   String inicioArquivo = '';
-  List<List<String>> matrix = [];
 
   for (int i = 0; i < recebeMapa.length; i++) {
     map = recebeMapa[i];
@@ -73,9 +60,9 @@ gravarArquivo() {
           for (int m = 0; m < celulacpo.length; m++) {
             int tam = celulacpo.length - 1;
             if (map['colunaIndex'] == m) {
-              recebe = recebe + map['novoValor'] + '^';
+              recebe = '$recebe${map['novoValor']}^';
             } else if (m < tam) {
-              recebe = recebe + celulacpo[m] + '^';
+              recebe = '$recebe${celulacpo[m]}^';
             }
           }
         }
@@ -84,17 +71,13 @@ gravarArquivo() {
     for (int n = 0; n < colunaTit.length; n++) {
       int tam = colunaTit.length - 1;
       if (map['linhaIndex'] == n) {
-        montaTabela = montaTabela + 'CPO ' + recebe + '\r\n';
+        montaTabela = '${montaTabela}CPO $recebe\r\n';
       } else if (n < tam && n > 0) {
-        montaTabela = montaTabela + colunaTit[n] + '\r\n';
+        montaTabela = '$montaTabela${colunaTit[n]}\r\n';
       } else if (n == 0) {
-        montaTabela =
-            'TIT ' + map['tabelaInicial'] + '#' + colunaTit[n] + '\r\n';
+        montaTabela = 'TIT ${map['tabelaInicial']}#${colunaTit[n]}\r\n';
       }
-      // print(montaTabela);
     }
-
-    print('============================  //  ===============================');
 
     if (map['tabelaInicial'] == map['tabelaFinal']) {
       arquivo = inicioArquivo + montaTabela;
@@ -119,8 +102,6 @@ Future<void> writeData(var arquivo, var caminho) async {
   await myFile.writeAsString(textoArquivo);
 
   myFile.writeAsString(
-    //mode: FileMode.write,
-    // encoding: latin1,
     textoArquivo,
   );
 }
