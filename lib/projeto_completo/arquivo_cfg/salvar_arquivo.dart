@@ -88,13 +88,13 @@ gravarArquivo() {
   }
 
   if (map['tabelaInicial'] == map['tabelaFinal']) {
-    writeData(inicioArquivo + montaTabela, caminho);
+    gravarDados(inicioArquivo + montaTabela, caminho);
   } else {
-    writeData(inicioArquivo + montaTabela + finalArquivo, caminho);
+    gravarDados(inicioArquivo + montaTabela + finalArquivo, caminho);
   }
 }
 
-Future<void> writeData(var arquivo, var caminho) async {
+Future<void> gravarDados(var arquivo, var caminho) async {
   var textoArquivo = arquivo;
 
   final myFile = File(caminho);
@@ -104,10 +104,6 @@ Future<void> writeData(var arquivo, var caminho) async {
   myFile.writeAsString(
     textoArquivo,
   );
-}
-
-conteudowArquivo(var teste) {
-  return teste;
 }
 
 class RecebeValor {

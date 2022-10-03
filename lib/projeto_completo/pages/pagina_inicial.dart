@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class TelaInicial extends StatelessWidget {
   const TelaInicial({Key? key}) : super(key: key);
@@ -29,6 +31,15 @@ class TelaInicial extends StatelessWidget {
                   ),
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () async {
+                    var novo = await databaseFactoryFfi
+                        .openDatabase('C:\\baseDados flutter\\Dicionario.db');
+
+                    var result = await novo.query('estac', columns: ['campo']);
+                    print(result);
+                  },
+                  child: Text('banco teste'))
             ],
           ),
         ),
