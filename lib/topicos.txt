@@ -7,7 +7,7 @@
     - Criar fundo tela inicial
     - Criar fundo configurações
     - Ajustar layout das configurações;
-    - Corrigir todos os problemas
+ ok - Corrigir todos os problemas
     - comentar o codigo
     - conectar tabela dicionario no grid
-    - salvar o arquivo
+ ok - salvar o arquivo
