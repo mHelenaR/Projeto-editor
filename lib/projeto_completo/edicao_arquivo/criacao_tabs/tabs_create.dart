@@ -296,12 +296,12 @@ Widget criaTabViewTabela(int widgetNumber) {
             nomeTabelas[metodoContador(tabController.index, nomeTabelas)],
         'coluna': nomeColunas[event.columnIdx!],
         'colunaIndex': event.columnIdx,
-        'linha': rowIndex,
+        'linhaIndex': rowIndex,
         'novoValor': event.value,
       };
 
       recebeMapa.addAll([mapa]);
-      print(mapa);
+      //print(mapa);
     },
     onLoaded: (PlutoGridOnLoadedEvent event) {
       stateManager = event.stateManager;

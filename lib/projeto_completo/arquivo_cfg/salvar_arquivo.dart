@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings
+// ignore_for_file: avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings, unused_import
 
 import 'dart:convert';
 import 'dart:io';
@@ -23,6 +23,9 @@ gravarArquivo() {
   List<String> linhacpo = [];
   var map = {};
   String recebe = '';
+  String montaTabela = '';
+  String finalArquivo = '';
+  String inicioArquivo = '';
   List<List<String>> matrix = [];
   for (int i = 0; i < recebeMapa.length; i++) {
     map = recebeMapa[i];
@@ -31,6 +34,7 @@ gravarArquivo() {
     String end = "TIT ${map['tabelaFinal']}#";
     final startIndex = arquivo.indexOf(start);
     final endIndex = arquivo.indexOf(end, startIndex + start.length);
+    inicioArquivo = arquivo.substring(0, startIndex);
 
     // última tabela
     if (map['tabelaInicial'] == map['tabelaFinal']) {
@@ -38,12 +42,23 @@ gravarArquivo() {
         startIndex + start.length,
         arquivo.length,
       );
+
+      finalArquivo = end + arquivo.substring(arquivo.length);
     } else {
       recebeTabela = arquivo.substring(
         startIndex + start.length,
         endIndex,
       );
+
+      finalArquivo = end +
+          arquivo.substring(
+            endIndex + end.length,
+            arquivo.length,
+          );
+
+      print(inicioArquivo);
     }
+
     colunaTit = recebeTabela.split("\r\n");
     col = colunaTit[0].split('|');
 
@@ -51,7 +66,7 @@ gravarArquivo() {
       int contador = col.length - 2;
       if (k <= contador) {
         if (col[k] == map['coluna']) {
-          linhacpo = colunaTit[map['linha']].split('CPO ');
+          linhacpo = colunaTit[map['linhaIndex']].split('CPO ');
 
           List<String> celulacpo = linhacpo[1].split("^");
 
@@ -61,20 +76,35 @@ gravarArquivo() {
               recebe = recebe + map['novoValor'] + '^';
             } else if (m < tam) {
               recebe = recebe + celulacpo[m] + '^';
-            } else {
-              recebe = recebe + '\r\n';
             }
           }
-          print(recebe);
         }
       }
     }
+    for (int n = 0; n < colunaTit.length; n++) {
+      int tam = colunaTit.length - 1;
+      if (map['linhaIndex'] == n) {
+        montaTabela = montaTabela + 'CPO ' + recebe + '\r\n';
+      } else if (n < tam && n > 0) {
+        montaTabela = montaTabela + colunaTit[n] + '\r\n';
+      } else if (n == 0) {
+        montaTabela =
+            'TIT ' + map['tabelaInicial'] + '#' + colunaTit[n] + '\r\n';
+      }
+      // print(montaTabela);
+    }
 
-    print(
-        '===============================  //  =====================================');
-    //  print(colunaTit);
+    print('============================  //  ===============================');
   }
-  //writeData(recebe, caminho);
+
+  if (map['tabelaInicial'] == map['tabelaFinal']) {
+    print(inicioArquivo + montaTabela);
+    writeData(inicioArquivo + montaTabela, caminho);
+  } else {
+    print(inicioArquivo + montaTabela + finalArquivo);
+    writeData(inicioArquivo + montaTabela + finalArquivo, caminho);
+  }
+
   final myFile = File(caminho);
 }
 
