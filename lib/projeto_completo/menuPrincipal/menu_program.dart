@@ -84,23 +84,28 @@ class MenuPrincipalState extends State<MenuPrincipal> {
            * de seleção do controlador;
            */
           Expanded(
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                switch (_controller.selectedIndex) {
-                  case 0:
-                    return const TelaInicial();
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  switch (_controller.selectedIndex) {
+                    case 0:
+                      return const TelaInicial();
 
-                  case 1:
-                    return const TelaEdicao();
+                    case 1:
+                      return const TelaEdicao();
 
-                  case 3:
-                    return const TelaConexao();
+                    case 3:
+                      return const TelaConexao();
 
-                  default:
-                    return const Text('Fora do Menu');
-                }
-              },
+                    default:
+                      return const Text('Fora do Menu');
+                  }
+                },
+              ),
             ),
           ),
         ],

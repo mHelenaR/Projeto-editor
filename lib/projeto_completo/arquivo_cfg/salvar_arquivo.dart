@@ -25,8 +25,10 @@ gravarArquivo() {
   String recebe = '';
   String montaTabela = '';
   String finalArquivo = '';
+  String novoArquivo = '';
   String inicioArquivo = '';
   List<List<String>> matrix = [];
+
   for (int i = 0; i < recebeMapa.length; i++) {
     map = recebeMapa[i];
 
@@ -55,8 +57,6 @@ gravarArquivo() {
             endIndex + end.length,
             arquivo.length,
           );
-
-      print(inicioArquivo);
     }
 
     colunaTit = recebeTabela.split("\r\n");
@@ -95,17 +95,20 @@ gravarArquivo() {
     }
 
     print('============================  //  ===============================');
+
+    if (map['tabelaInicial'] == map['tabelaFinal']) {
+      arquivo = inicioArquivo + montaTabela;
+    } else {
+      arquivo = inicioArquivo + montaTabela + finalArquivo;
+    }
+    recebe = '';
   }
 
   if (map['tabelaInicial'] == map['tabelaFinal']) {
-    print(inicioArquivo + montaTabela);
     writeData(inicioArquivo + montaTabela, caminho);
   } else {
-    print(inicioArquivo + montaTabela + finalArquivo);
     writeData(inicioArquivo + montaTabela + finalArquivo, caminho);
   }
-
-  final myFile = File(caminho);
 }
 
 Future<void> writeData(var arquivo, var caminho) async {
