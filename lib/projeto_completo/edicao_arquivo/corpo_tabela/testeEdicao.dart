@@ -1,6 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pluto_grid/pluto_grid.dart';
+
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/nome_tabelas.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
@@ -15,10 +21,6 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 
 class TelaEdicao1 extends StatefulWidget {
   const TelaEdicao1({super.key});
@@ -182,65 +184,14 @@ class _TelaEdicao1State extends State<TelaEdicao1>
     return lista;
   }
 
-  // teste(int contador, var lista) async {
-  //   List<String> listaNomes = transformaString(lista);
-  //   List<String> listaCompara = [];
-
-  //   var map = {};
-  //   int cont = listaNomes.length - 2;
-
-  //   List<Map<String, Object?>> result = await novo.query(nomeTabelas[contador]);
-
-  //   for (var j = 0; j < result.length; j++) {
-  //     map = result[j];
-  //     var novow = {
-  //       nomeTabelas[contador]: {
-  //         'campo': map['campo'],
-  //         'titulo': map['titulo'],
-  //         'mensagem': map['mensagem'],
-  //       }
-  //     };
-  //     for (var element in novow.entries) {
-  //       for (var i = 0; i < listaNomes.length; i++) {
-  //         if (i <= cont) {
-  //           if (element.value['campo'] == listaNomes[i]) {
-  //             listaCompara = listaCompara + [element.value['titulo']];
-  //           }
-  //         }
-  //         // else {
-  //         //   listaCompara = listaCompara + [''];
-  //         // }
-  //       }
-  //     }
-  //   }
-
-  //   objArquivoGravacao.setlistasGR = listaCompara;
-
-  //   menuSubtitulo = listaCompara;
-  //   print('\n');
-  //   print('============================================');
-  //   print('\n');
-  //   contador = 0;
-  //   return listaCompara;
-  // }
-
-  // Future<List<Map<String, Object?>>> banco(int widgetNumber) async {
-  //   List<Map<String, Object?>> resultado =
-  //       await novo.query(nomeTabelas[widgetNumber]);
-
-  //   return resultado;
-  // }
-
   criaTabViewTabela(int widgetNumber) {
     rows.clear();
     columns.clear();
     listaTIT.clear();
     teste4.clear();
     teste5.clear();
-    int cell = teste5.length - 1;
     separarArquivo = "";
 
-    List<String> novoTeste = [];
     try {
       String? recebeTabela;
 
@@ -273,12 +224,23 @@ class _TelaEdicao1State extends State<TelaEdicao1>
       }
 
       List<String> linhasTIT = recebeTabela!.split("\r\n");
-      objArquivoGravacao.setlinhasTITs = linhasTIT;
-      //menuSubtitulo =
 
-      nomeColunas = linhasTIT[0].split('|');
-      //nomeColunas = objArquivoGravacao.listasGR;
+      //nomeColunas = linhasTIT[0].split('|');
+      nomeColunas = transformaString(linhasTIT);
 
+      List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
+      for (var i = 0; i < map.length; i++) {
+        Map mapas = map[i];
+
+        for (var element in mapas.entries) {
+          for (var j = 0; j < nomeColunas.length; j++) {
+            if (element.value['campo'] == nomeColunas[j]) {
+              nomeColunas[j] = element.value['titulo'];
+            }
+          }
+        }
+      }
+      print(nomeColunas);
       columns = <PlutoColumn>[
         for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
           PlutoColumn(
@@ -312,17 +274,9 @@ class _TelaEdicao1State extends State<TelaEdicao1>
           testeP = "";
         }
       }
-
-      // linhasTIT.clear();
     } catch (e) {
       debugPrint("$e");
     }
-
-    //teste(widgetNumber, objArquivoGravacao.linhasTITs);
-
-    var novow = objArquivoGravacao.listasGR;
-    objArquivoGravacao.setlistasGR = '';
-    print(novow);
 
     var mapa = {};
     return PlutoGrid(
@@ -363,16 +317,6 @@ class _TelaEdicao1State extends State<TelaEdicao1>
         stateManager = event.stateManager;
         stateManager!.setAutoEditing(true);
         event.stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
-        // sort(stateManager!);
-        // pri(stateManager!);
-        // stateManager!.setSelectingMode(PlutoGridSelectingMode.none);
-
-        // //stateManager = event.stateManager;
-        // stateManager?.clearCurrentSelecting();
-        // //stateManager?.updateVisibilityLayout();
-
-        // stateManager?.clearCurrentCell();
-        // stateManager?.notifyListeners();
       },
       createFooter: (stateManager) {
         return Row(
