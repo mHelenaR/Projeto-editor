@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import 'package:editorconfiguracao/connection_sqflite.dart';
 import 'package:editorconfiguracao/projeto_completo/pages/tela_carregamento.dart';
 
-void main() {
+Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -31,6 +33,7 @@ void main() {
 
     if (Platform.isWindows) {
       sqfliteFfiInit();
+      await connectSqlite();
     }
 
     runApp(const SplashScreen());

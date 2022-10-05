@@ -1,13 +1,14 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, unrelated_type_equality_checks, prefer_is_empty, unused_element, valid_regexps, prefer_collection_literals, unnecessary_import
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, unused_local_variable, unrelated_type_equality_checks, prefer_is_empty, unused_element, valid_regexps, prefer_collection_literals, unnecessary_import, unused_import
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 Tab nomeTab(int widgetNumber) {
   // setState(() {
@@ -79,7 +80,69 @@ leitura(var lista, var contador) {
   }
 }
 
-Widget criaTabViewTabela(int widgetNumber) {
+List<String> transformaString(List<String> listaColunasARQ) {
+  List<String> lista = [];
+  List<String> cols = listaColunasARQ[0].split('|');
+
+  int cont = cols.length - 2;
+
+  for (var i = 0; i < cols.length; i++) {
+    if (i <= cont) {
+      String neww = cols[i];
+      String valor = neww.substring(0, neww.length - 2);
+
+      String upper = valor.toUpperCase();
+      lista = lista + [upper];
+    }
+    // else {
+    //   lista = lista + [''];
+    // }
+  }
+  // print('Coluna tamanho: ${cols.length}');
+  // print('Lista tamanho: ${lista.length}');
+  return lista;
+}
+
+// teste(int contador, var lista) async {
+//   List<String> listaNomes = transformaString(lista);
+//   List<String> listaCompara = [];
+
+//   var map = Map();
+//   int cont = listaNomes.length - 2;
+
+//   List<Map<String, Object?>> result = await novo.query(nomeTabelas[contador]);
+//   for (var j = 0; j < result.length; j++) {
+//     map = result[j];
+//     var novow = {
+//       nomeTabelas[contador]: {
+//         'campo': map['campo'],
+//         'titulo': map['titulo'],
+//         'mensagem': map['mensagem'],
+//       }
+//     };
+//     for (var element in novow.entries) {
+//       for (var i = 0; i < listaNomes.length; i++) {
+//         if (i <= cont) {
+//           if (element.value['campo'] == listaNomes[i]) {
+//             listaCompara = listaCompara + [element.value['titulo']];
+//           }
+//         }
+//         // else {
+//         //   listaCompara = listaCompara + [''];
+//         // }
+//       }
+//     }
+//   }
+//objArquivoGravacao.setlistasGR = listaCompara;
+
+//   menuSubtitulo = listaCompara;
+//   print('\n');
+//   print('============================================');
+//   print('\n');
+//   return listaCompara;
+// }
+
+criaTabViewTabela(int widgetNumber) {
   rows.clear();
   columns.clear();
   listaTIT.clear();
@@ -87,6 +150,8 @@ Widget criaTabViewTabela(int widgetNumber) {
   teste5.clear();
   int cell = teste5.length - 1;
   separarArquivo = "";
+
+  List<String> novoTeste = [];
   try {
     String? recebeTabela;
 
@@ -118,7 +183,13 @@ Widget criaTabViewTabela(int widgetNumber) {
     }
 
     List<String> linhasTIT = recebeTabela!.split("\r\n");
+
+    //menuSubtitulo =
+    //teste(widgetNumber, linhasTIT);
+    print(menuSubtitulo);
+
     nomeColunas = linhasTIT[0].split('|');
+    //nomeColunas = objArquivoGravacao.listasGR;
 
     columns = <PlutoColumn>[
       for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
@@ -154,15 +225,32 @@ Widget criaTabViewTabela(int widgetNumber) {
       }
     }
 
-    linhasTIT.clear();
+    // linhasTIT.clear();
   } catch (e) {
     debugPrint("$e");
   }
+
   var mapa = Map();
   return PlutoGrid(
     configuration: configuracaoPlutoGrid,
     columns: columns,
     rows: rows,
+    // createHeader: (stateManager) {
+    //   return DropdownSearch<String>(
+    //     popupProps: const PopupProps.menu(
+    //       showSelectedItems: true,
+    //       showSearchBox: true,
+    //     ),
+    //     items: menuSubtitulo,
+    //     dropdownDecoratorProps: const DropDownDecoratorProps(
+    //       dropdownSearchDecoration: InputDecoration(
+    //         labelText: "Menu mode",
+    //         hintText: "country in menu mode",
+    //       ),
+    //     ),
+    //     onChanged: print,
+    //   );
+    // },
     onChanged: (PlutoGridOnChangedEvent event) {
       int rowIndex = event.rowIdx! + 1;
       mapa = {

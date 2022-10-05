@@ -113,6 +113,8 @@ class RecebeValor {
   dynamic _colunasTeste;
   dynamic _linhasTeste;
   dynamic _mapaGR;
+  dynamic _listas;
+  dynamic _linhasTIT;
 
   get tabelasConfigGR => _tabelasConfigGR;
   set setTabelasConfigGR(var tabelasConfig) {
@@ -142,5 +144,15 @@ class RecebeValor {
   get mapaGR => _mapaGR;
   set setmapaGR(var mapaGR) {
     _mapaGR = mapaGR;
+  }
+
+  get listasGR => _listas;
+  set setlistasGR(var listasGR) {
+    _listas = listasGR;
+  }
+
+  get linhasTITs => _linhasTIT;
+  set setlinhasTITs(var linhasTIT) {
+    _linhasTIT = linhasTIT;
   }
 }

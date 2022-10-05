@@ -34,6 +34,9 @@ List<PlutoColumn> columns = [];
 List<Tab> tabs = [];
 List<Widget> criarWidgets = [];
 List<dynamic> recebeMpa = [];
+List<String> menuSubtitulo = [];
+
+//banco
 
 //controle
 final TextEditingController controleArquivo = TextEditingController();
