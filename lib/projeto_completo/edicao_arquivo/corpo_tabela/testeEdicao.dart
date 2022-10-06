@@ -3,6 +3,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -225,25 +226,30 @@ class _TelaEdicao1State extends State<TelaEdicao1>
 
       List<String> linhasTIT = recebeTabela!.split("\r\n");
 
-      //nomeColunas = linhasTIT[0].split('|');
-      nomeColunas = transformaString(linhasTIT);
-
+      nomeColunas = linhasTIT[0].split('|');
+      nomeColunasDicionario = transformaString(linhasTIT);
+      nomeSubtituloDicionario = transformaString(linhasTIT);
       List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
       for (var i = 0; i < map.length; i++) {
         Map mapas = map[i];
-
         for (var element in mapas.entries) {
-          for (var j = 0; j < nomeColunas.length; j++) {
-            if (element.value['campo'] == nomeColunas[j]) {
-              nomeColunas[j] = element.value['titulo'];
+          for (var j = 0; j < nomeColunasDicionario.length; j++) {
+            if (element.value['campo'] == nomeColunasDicionario[j]) {
+              nomeColunasDicionario[j] = element.value['mensagem'];
+              nomeSubtituloDicionario[j] = element.value['titulo'];
             }
           }
         }
       }
-      print(nomeColunas);
+      //print(nomeColunas);
       columns = <PlutoColumn>[
         for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
           PlutoColumn(
+            titleSpan: TextSpan(
+              text: nomeColunas[contCol],
+              recognizer: TapGestureRecognizer()..onTap = () => print(contCol),
+            ),
+            titleTextAlign: PlutoColumnTextAlign.center,
             readOnly: leitura(nomeColunas, contCol),
             textAlign: PlutoColumnTextAlign.center,
             title: nomeColunas[contCol],
@@ -262,13 +268,11 @@ class _TelaEdicao1State extends State<TelaEdicao1>
             teste5 = teste4[p].split('^');
 
             rows.addAll([
-              PlutoRow(
-                cells: {
-                  for (int contRow = 0; contRow < teste5.length; contRow++) ...{
-                    contRow.toString(): PlutoCell(value: teste5[contRow]),
-                  },
+              PlutoRow(cells: {
+                for (int contRow = 0; contRow < teste5.length; contRow++) ...{
+                  contRow.toString(): PlutoCell(value: teste5[contRow]),
                 },
-              ),
+              }),
             ]);
           }
           testeP = "";
@@ -280,23 +284,60 @@ class _TelaEdicao1State extends State<TelaEdicao1>
 
     var mapa = {};
     return PlutoGrid(
+      mode: PlutoGridMode.normal,
       configuration: configuracaoPlutoGrid,
       columns: columns,
       rows: rows,
       createHeader: (stateManager) {
-        return DropdownSearch<String>(
-          popupProps: const PopupProps.menu(
-            showSelectedItems: true,
-            showSearchBox: true,
-          ),
-          //items: objArquivoGravacao.listasGR,
-          dropdownDecoratorProps: const DropDownDecoratorProps(
-            dropdownSearchDecoration: InputDecoration(
-              labelText: "Menu mode",
-              hintText: "country in menu mode",
+        return Row(
+          children: [
+            SizedBox(
+              height: 60,
+              width: 200,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: DropdownSearch<String>(
+                  popupProps: const PopupProps.menu(
+                    showSelectedItems: true,
+                    showSearchBox: true,
+                  ),
+                  items: nomeSubtituloDicionario,
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      labelText: "Subtítulo",
+                      hintText: "Subtítulo do campo",
+                    ),
+                  ),
+                  onChanged: print,
+                ),
+              ),
             ),
-          ),
-          onChanged: print,
+            SizedBox(
+              height: 60,
+              width: 400,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: DropdownSearch<String>(
+                  popupProps: const PopupProps.menu(
+                    showSelectedItems: true,
+                    showSearchBox: true,
+                  ),
+                  items: nomeColunasDicionario,
+                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                    dropdownSearchDecoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      labelText: "Descrição",
+                      hintText: "Descrição do campo",
+                    ),
+                  ),
+                  onChanged: print,
+                ),
+              ),
+            ),
+          ],
         );
       },
       onChanged: (PlutoGridOnChangedEvent event) {
@@ -316,20 +357,22 @@ class _TelaEdicao1State extends State<TelaEdicao1>
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;
         stateManager!.setAutoEditing(true);
+
         event.stateManager.setSelectingMode(PlutoGridSelectingMode.cell);
-      },
-      createFooter: (stateManager) {
-        return Row(
-          children: [
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                height: 30,
-                child: const Text("Dicionário"),
-              ),
-            ),
-          ],
-        );
+        // setState(() {
+        //   print(event.stateManager.currentCell);
+        //   print(event.stateManager.currentRow);
+        //   print(event.stateManager.currentSelectingRows);
+        //   print(event.stateManager.currentCellPosition);
+
+        // });
+
+        stateManager!.notifyListeners();
+        // stateManager!.keyManager!.subject.listen((PlutoKeyManagerEvent value) {
+        //   // if (value.isKeyDownEvent && value.isEnter) {
+        //   print(stateManager!.currentColumn!.field);
+        //   // }
+        // });
       },
     );
   }
