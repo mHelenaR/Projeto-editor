@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:dropdown_plus/dropdown_plus.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:flutter/foundation.dart';
@@ -245,10 +246,10 @@ class _TelaEdicao1State extends State<TelaEdicao1>
       columns = <PlutoColumn>[
         for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
           PlutoColumn(
-            titleSpan: TextSpan(
-              text: nomeColunas[contCol],
-              recognizer: TapGestureRecognizer()..onTap = () => print(contCol),
-            ),
+            // titleSpan: TextSpan(
+            //   text: nomeColunas[contCol],
+            //   recognizer: TapGestureRecognizer()..onTap = () => print(contCol),
+            // ),
             titleTextAlign: PlutoColumnTextAlign.center,
             readOnly: leitura(nomeColunas, contCol),
             textAlign: PlutoColumnTextAlign.center,
@@ -291,26 +292,18 @@ class _TelaEdicao1State extends State<TelaEdicao1>
       createHeader: (stateManager) {
         return Row(
           children: [
-            SizedBox(
-              height: 60,
-              width: 200,
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: DropdownSearch<String>(
-                  popupProps: const PopupProps.menu(
-                    showSelectedItems: true,
-                    showSearchBox: true,
+            Flexible(
+              child: SizedBox(
+                width: 200,
+                height: 60,
+                child: TextDropdownFormField(
+                  options: nomeColunasDicionario,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    labelText: "Gender",
                   ),
-                  items: nomeSubtituloDicionario,
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      labelText: "Subtítulo",
-                      hintText: "Subtítulo do campo",
-                    ),
-                  ),
-                  onChanged: print,
+                  //dropdownHeight: 120,
                 ),
               ),
             ),
@@ -328,12 +321,17 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                   dropdownDecoratorProps: const DropDownDecoratorProps(
                     dropdownSearchDecoration: InputDecoration(
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                       labelText: "Descrição",
                       hintText: "Descrição do campo",
                     ),
                   ),
-                  onChanged: print,
+                  onChanged: (value) {
+                    handleFocusToIndex(value);
+                  },
                 ),
               ),
             ),
@@ -375,6 +373,23 @@ class _TelaEdicao1State extends State<TelaEdicao1>
         // });
       },
     );
+  }
+
+  void handleFocusToIndex(var position) {
+    int rowIdx = 0;
+
+    int cellIdx = 0;
+    for (int i = 0; i < nomeColunasDicionario.length; i++) {
+      if (position == nomeColunasDicionario[i]) {
+        cellIdx = i;
+      }
+    }
+    PlutoCell cell =
+        stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
+    stateManager!.setCurrentCell(cell, rowIdx);
+    stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
+    stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
+    stateManager!.notifyListeners();
   }
 
   Future<String> delay2() async {
@@ -485,7 +500,9 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                   ElevatedButton(
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
-                    onPressed: () {},
+                    onPressed: () {
+                      tabController.index = int.parse(controlePesquisa.text);
+                    },
                   ),
                 ],
               ),
