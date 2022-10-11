@@ -19,6 +19,7 @@ List<dynamic> recebeMapa = [];
 
 //double
 double height = 0.0;
+double width = 0.0;
 
 //int
 late StreamSubscription removeKeyboardListener;

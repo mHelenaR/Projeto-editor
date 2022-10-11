@@ -1,8 +1,7 @@
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/corpo_tabela/testeEdicao.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/corpo_tabela/edicao_page.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/corpo_tabela/testeEdicao.dart';
 import 'package:editorconfiguracao/projeto_completo/pages/pagina_inicial.dart';
 import 'package:editorconfiguracao/projeto_completo/pages/pg_connection.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';

@@ -4,6 +4,7 @@ import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_
 
 connectSqlite() async {
   List<Map> tabelasCompletas = [];
+  List<String> tabelasDcn = [];
 
   var novo = await databaseFactoryFfi
       .openDatabase('C:\\baseDados flutter\\Dicionario.db');
@@ -22,6 +23,8 @@ connectSqlite() async {
     String tabelasSqflite = mapaSqflite['name'];
 
     if (tabelasSqflite != 'sqlite_sequence') {
+      tabelasDcn.addAll([tabelasSqflite]);
+
       var valor = await novo
           .query(tabelasSqflite, columns: ['campo', 'titulo', 'mensagem']);
 
@@ -41,13 +44,18 @@ connectSqlite() async {
     }
   }
 
+  objSqlite.setnomeColunasDcn = tabelasDcn;
   objSqlite.setTabelasCompletas = tabelasCompletas;
 }
 
 class TabelasSqflite {
   late List<dynamic> _tabelasCompletas;
+  late List<dynamic> _nomeColunasDcn;
 
   // Encapsulamento
   get tabelasCompletas => _tabelasCompletas;
   set setTabelasCompletas(value) => _tabelasCompletas = value;
+
+  get nomeColunasDcn => _nomeColunasDcn;
+  set setnomeColunasDcn(value) => _nomeColunasDcn = value;
 }

@@ -4,7 +4,7 @@ import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variav
 
 gravarArquivo() {
   String arquivo = objArquivoGravacao.arquivoGR;
-  //String caminho = objArquivoGravacao.caminhoArquivoGR;
+  // String caminho = objArquivoGravacao.caminhoArquivoGR;
   String caminho = "C:\\Users\\Maria\\Documents\\testeConfig.txt";
   String recebeTabela = '';
   List<String> colunaTit = [];

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/converte_arquivo.dart';
@@ -33,6 +34,8 @@ class TelaEdicao1 extends StatefulWidget {
 
 class _TelaEdicao1State extends State<TelaEdicao1>
     with TickerProviderStateMixin {
+  OpcaoFiltro escolha = OpcaoFiltro();
+
   TabController getTabController() {
     return TabController(length: tabs.length, vsync: this);
   }
@@ -242,7 +245,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
           }
         }
       }
-      //print(nomeColunas);
+
       columns = <PlutoColumn>[
         for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
           PlutoColumn(
@@ -292,21 +295,6 @@ class _TelaEdicao1State extends State<TelaEdicao1>
       createHeader: (stateManager) {
         return Row(
           children: [
-            Flexible(
-              child: SizedBox(
-                width: 200,
-                height: 60,
-                child: TextDropdownFormField(
-                  options: nomeColunasDicionario,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.arrow_drop_down),
-                    labelText: "Gender",
-                  ),
-                  //dropdownHeight: 120,
-                ),
-              ),
-            ),
             SizedBox(
               height: 60,
               width: 400,
@@ -451,6 +439,84 @@ class _TelaEdicao1State extends State<TelaEdicao1>
     );
   }
 
+  retornaCombo(String opcao) {
+    List<String> retorno = [];
+    Map listaa = {};
+    List<Map<dynamic, dynamic>> lista = objSqlite.tabelasCompletas;
+    // List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
+    for (var i = 0; i < lista.length; i++) {
+      listaa = lista[i];
+
+      for (var element in listaa.entries) {
+        retorno.addAll([element.value[opcao]]);
+      }
+    }
+
+    return retorno;
+  }
+
+  Future<List<String>> retornaCombo1(String opcao) async {
+    List<String> retorno = [];
+    Map listaa = {};
+    List<Map<dynamic, dynamic>> lista = objSqlite.tabelasCompletas;
+    // List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
+    for (var i = 0; i < lista.length; i++) {
+      listaa = lista[i];
+
+      for (var element in listaa.entries) {
+        retorno.addAll([element.value[opcao]]);
+      }
+    }
+
+    return retorno;
+  }
+
+  List<Widget> wa() {
+    List<Widget> t = [
+      Container(
+        child: Text('contaienr 1'),
+      ),
+      Container(
+        child: Text('contaienr 2'),
+      )
+    ];
+    return t;
+  }
+
+  Future<List<Map<String, dynamic>>> testee(var opcao) async {
+    List<Map<String, dynamic>> t = [];
+    List<String> retorno = [];
+    Map listaa = {};
+    List<Map<dynamic, dynamic>> lista = objSqlite.tabelasCompletas;
+    // List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
+    for (var i = 0; i < lista.length; i++) {
+      listaa = lista[i];
+
+      for (var element in listaa.entries) {
+        t.addAll([
+          {
+            "filtro": element.value[opcao],
+            "subDesc": element.value['campo'],
+            "tabela": element.key,
+          },
+        ]);
+      }
+    }
+
+    // nomeColunasDicionario = retornaCombo('titulo');
+
+    //   for (var i = 0; i < 5; i++) {
+    //     t.addAll([
+    //       {
+    //         "opcao": nomeColunasDicionario[i],
+    //         "tabela": 'nomeColunasDicionario[0]',
+    //       },
+    //     ]);
+    //   }
+
+    return t;
+  }
+
   AnimatedContainer barraFiltro() {
     return AnimatedContainer(
       alignment: Alignment.centerLeft,
@@ -470,17 +536,130 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                   const SizedBox(
                     height: 28,
                   ),
+                  // SizedBox(
+                  //   height: 30,
+                  //   width: 100,
+                  //   child: DropdownFormField<Map<String, dynamic>>(
+                  //     decoration: InputDecoration(
+                  //       border: const OutlineInputBorder(),
+                  //       hintText: "Escolha um filtro",
+                  //       suffixIcon: const Icon(Icons.arrow_drop_down),
+                  //       labelText: escolha.escolha,
+                  //     ),
+                  //     onSaved: (dynamic str) {},
+                  //     onChanged: (dynamic str) {},
+                  //     displayItemFn: (dynamic item) => Text(
+                  //       (item ?? {})['opcao'] ?? '',
+                  //       style: const TextStyle(fontSize: 16),
+                  //     ),
+                  //     findFn: (dynamic str) async => testee('mensagem'),
+                  //     selectedFn: (dynamic item1, dynamic item2) {
+                  //       if (item1 != null && item2 != null) {
+                  //         return item1['filtro'] == item2['filtro'];
+                  //       }
+                  //       return false;
+                  //     },
+                  //     filterFn: (dynamic item, str) =>
+                  //         item['filtro']
+                  //             .toLowerCase()
+                  //             .indexOf(str.toLowerCase()) >=
+                  //         0,
+                  //     dropdownItemFn: (
+                  //       dynamic item,
+                  //       int position,
+                  //       bool focused,
+                  //       bool selected,
+                  //       Function() onTap,
+                  //     ) =>
+                  //         ListTile(
+                  //       title: Text(
+                  //         item['filtro'],
+                  //       ),
+                  //       subtitle: Text(
+                  //         item['tabela'] + ' / ' + item['subDesc'] ?? '',
+                  //       ),
+                  //       tileColor:
+                  //           focused ? Colors.purple[300] : Colors.transparent,
+                  //       onTap: onTap,
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
-                    height: 40,
-                    width: 500,
-                    child: TextFormField(
-                      controller: controlePesquisa,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(40),
-                      ],
-                      decoration: styleBarraPesquisa(cor),
+                    width: 400,
+                    height: 60,
+                    child: DropdownSearch<String>(
+                      asyncItems: (String? filter) => retornaCombo1('titulo'),
+                      popupProps: PopupPropsMultiSelection.menu(
+                        showSelectedItems: true,
+                        itemBuilder: (
+                          BuildContext context,
+                          String item,
+                          bool isSelected,
+                        ) {
+                          return Column(
+                            children: [
+                              Text('data'),
+                              ElevatedButton(
+                                  onPressed: () {}, child: Text('SEFSE'))
+                            ],
+                          );
+                        },
+                        showSearchBox: true,
+                      ),
+                      compareFn: (item, sItem) => item == sItem,
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          labelText: 'User *',
+                          filled: true,
+                          fillColor:
+                              Theme.of(context).inputDecorationTheme.fillColor,
+                        ),
+                      ),
                     ),
                   ),
+
+                  // SizedBox(
+                  //     height: 60,
+                  //     width: 400,
+                  //     child: DropdownSearch<String>(
+                  //       popupProps: PopupProps.menu(
+                  //         emptyBuilder: (context, searchEntry) {
+                  //           return const Text('Sem dados');
+                  //         },
+                  //         errorBuilder: (context, searchEntry, exception) {
+                  //           return const Text('nao foi possivel carregar');
+                  //         },
+                  //         showSelectedItems: true,
+                  //         showSearchBox: true,
+                  //       ),
+                  //       items: nomeColunasDicionario,
+                  //       dropdownDecoratorProps: DropDownDecoratorProps(
+                  //         dropdownSearchDecoration: InputDecoration(
+                  //           labelText: escolha.escolha,
+                  //           border: const OutlineInputBorder(
+                  //             borderRadius: BorderRadius.all(
+                  //               Radius.circular(10),
+                  //             ),
+                  //           ),
+                  //           hintText: 'Escolha um filtro',
+                  //         ),
+                  //       ),
+                  //       onChanged: (value) {
+                  //         handleFocusToIndex(value);
+                  //       },
+                  //     )),
+                  //),
+                  // SizedBox(
+                  //   height: 40,
+                  //   width: 500,
+                  //   child: TextFormField(
+                  //     controller: controlePesquisa,
+                  //     inputFormatters: [
+                  //       LengthLimitingTextInputFormatter(40),
+                  //     ],
+                  //     decoration: styleBarraPesquisa(cor),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -501,7 +680,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
                     onPressed: () {
-                      tabController.index = int.parse(controlePesquisa.text);
+                      // tabController.index = int.parse(controlePesquisa.text);
                     },
                   ),
                 ],
@@ -525,6 +704,9 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                       onChanged: (String? value) {
                         setState(() {
                           opcaoEscolhida = value;
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Estação';
+                          nomeColunasDicionario = ['teste Estacao'];
 
                           if (kDebugMode) {
                             print("Filtro escolhido: $opcaoEscolhida");
@@ -543,7 +725,9 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                       onChanged: (String? value) {
                         setState(() {
                           opcaoEscolhida = value;
-
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Conteúdo';
+                          nomeColunasDicionario = ['teste Conteúdo'];
                           if (kDebugMode) {
                             print("Filtro escolhido: $opcaoEscolhida");
                           }
@@ -573,7 +757,11 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                       onChanged: (String? value) {
                         setState(() {
                           opcaoEscolhida = value;
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Descrição';
 
+                          // nomeColunasDicionario = retornaCombo('mensagem');
+                          // nomeSubtituloDicionario = retornaCombo('campo');
                           if (kDebugMode) {
                             print("Filtro escolhido: $opcaoEscolhida");
                           }
@@ -591,7 +779,10 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                       onChanged: (String? value) {
                         setState(() {
                           opcaoEscolhida = value;
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Subtítulo';
 
+                          nomeColunasDicionario = retornaCombo('titulo');
                           if (kDebugMode) {
                             print("Filtro escolhido: $opcaoEscolhida");
                           }
@@ -679,7 +870,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                               expandeContainer();
                             },
                             style: estiloBotao,
-                            child: const Text("Pesquisar"),
+                            child: const Text("Filtrar"),
                           ),
                         ],
                       ),
@@ -692,5 +883,18 @@ class _TelaEdicao1State extends State<TelaEdicao1>
         ],
       ),
     );
+  }
+}
+
+class OpcaoFiltro {
+  // dynamic _estacao;
+  // dynamic _descricao;
+  // dynamic _subtitulo;
+  // dynamic _conteudo;
+  dynamic _escolha;
+
+  get escolha => _escolha;
+  set setEscolha(var escolha) {
+    _escolha = escolha;
   }
 }

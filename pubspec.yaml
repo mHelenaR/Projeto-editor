@@ -54,6 +54,7 @@ dependencies:
   filepicker_windows: ^2.0.2
   dropdown_search: ^5.0.3
   dropdown_plus: ^0.0.9
+  flutter_slider_drawer: ^2.1.1
 
 
 dev_dependencies:
