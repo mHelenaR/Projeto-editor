@@ -278,7 +278,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                           }
                         });
                       },
-                      value: FiltroOpcao.descicaoDicionario.name,
+                      value: FiltroOpcao.mensagem.name,
                       title: const Text('Descrição Tabela Dicionário'),
                     ),
                   ),

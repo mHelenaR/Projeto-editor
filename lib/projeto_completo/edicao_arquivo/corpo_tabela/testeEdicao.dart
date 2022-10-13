@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print
 
 import 'package:dropdown_plus/dropdown_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:editorconfiguracao/models/filter_model.dart';
+import 'package:editorconfiguracao/models/table_model.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -35,6 +38,9 @@ class TelaEdicao1 extends StatefulWidget {
 class _TelaEdicao1State extends State<TelaEdicao1>
     with TickerProviderStateMixin {
   OpcaoFiltro escolha = OpcaoFiltro();
+  TableModel objFiltro = TableModel();
+
+  List<String> tabelasDicionario = objSqlite.nomeColunasDcn;
 
   TabController getTabController() {
     return TabController(length: tabs.length, vsync: this);
@@ -239,7 +245,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
         for (var element in mapas.entries) {
           for (var j = 0; j < nomeColunasDicionario.length; j++) {
             if (element.value['campo'] == nomeColunasDicionario[j]) {
-              nomeColunasDicionario[j] = element.value['mensagem'];
+              nomeColunasDicionario[j] = element.value['campo'];
               nomeSubtituloDicionario[j] = element.value['titulo'];
             }
           }
@@ -365,6 +371,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
 
   void handleFocusToIndex(var position) {
     int rowIdx = 0;
+    print(position);
 
     int cellIdx = 0;
     for (int i = 0; i < nomeColunasDicionario.length; i++) {
@@ -471,21 +478,8 @@ class _TelaEdicao1State extends State<TelaEdicao1>
     return retorno;
   }
 
-  List<Widget> wa() {
-    List<Widget> t = [
-      Container(
-        child: Text('contaienr 1'),
-      ),
-      Container(
-        child: Text('contaienr 2'),
-      )
-    ];
-    return t;
-  }
-
-  Future<List<Map<String, dynamic>>> testee(var opcao) async {
+  Future<List<Map<String, dynamic>>> testee() async {
     List<Map<String, dynamic>> t = [];
-    List<String> retorno = [];
     Map listaa = {};
     List<Map<dynamic, dynamic>> lista = objSqlite.tabelasCompletas;
     // List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
@@ -495,26 +489,53 @@ class _TelaEdicao1State extends State<TelaEdicao1>
       for (var element in listaa.entries) {
         t.addAll([
           {
-            "filtro": element.value[opcao],
-            "subDesc": element.value['campo'],
             "tabela": element.key,
+            "coluna": element.value["campo"],
+            "titulo": element.value['titulo'],
+            "mensagem": element.value['mensagem'],
           },
         ]);
       }
     }
 
-    // nomeColunasDicionario = retornaCombo('titulo');
-
-    //   for (var i = 0; i < 5; i++) {
-    //     t.addAll([
-    //       {
-    //         "opcao": nomeColunasDicionario[i],
-    //         "tabela": 'nomeColunasDicionario[0]',
-    //       },
-    //     ]);
-    //   }
-
     return t;
+  }
+
+  Future<List<FilterModel>> getData(filter) async {
+    // var response = await Dio().get(
+    //   "https://5d85ccfb1e61af001471bf60.mockapi.io/user",
+    //   queryParameters: {"filter": filter},
+    // );
+
+    // final data = response.data;
+    // if (data != null) {
+    var response = await testee();
+    return FilterModel.fromJsonList(response);
+    // }
+
+    // return [];
+  }
+
+  Widget _customPopupItemBuilderExample2(
+    BuildContext context,
+    FilterModel? item,
+    bool isSelected,
+  ) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: !isSelected
+          ? null
+          : BoxDecoration(
+              border: Border.all(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+            ),
+      child: ListTile(
+        selected: isSelected,
+        title: Text(item?.titulo ?? ''),
+        subtitle: Text(item?.mensagem ?? ''),
+      ),
+    );
   }
 
   AnimatedContainer barraFiltro() {
@@ -536,133 +557,54 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                   const SizedBox(
                     height: 28,
                   ),
-                  // SizedBox(
-                  //   height: 30,
-                  //   width: 100,
-                  //   child: DropdownFormField<Map<String, dynamic>>(
-                  //     decoration: InputDecoration(
-                  //       border: const OutlineInputBorder(),
-                  //       hintText: "Escolha um filtro",
-                  //       suffixIcon: const Icon(Icons.arrow_drop_down),
-                  //       labelText: escolha.escolha,
-                  //     ),
-                  //     onSaved: (dynamic str) {},
-                  //     onChanged: (dynamic str) {},
-                  //     displayItemFn: (dynamic item) => Text(
-                  //       (item ?? {})['opcao'] ?? '',
-                  //       style: const TextStyle(fontSize: 16),
-                  //     ),
-                  //     findFn: (dynamic str) async => testee('mensagem'),
-                  //     selectedFn: (dynamic item1, dynamic item2) {
-                  //       if (item1 != null && item2 != null) {
-                  //         return item1['filtro'] == item2['filtro'];
-                  //       }
-                  //       return false;
-                  //     },
-                  //     filterFn: (dynamic item, str) =>
-                  //         item['filtro']
-                  //             .toLowerCase()
-                  //             .indexOf(str.toLowerCase()) >=
-                  //         0,
-                  //     dropdownItemFn: (
-                  //       dynamic item,
-                  //       int position,
-                  //       bool focused,
-                  //       bool selected,
-                  //       Function() onTap,
-                  //     ) =>
-                  //         ListTile(
-                  //       title: Text(
-                  //         item['filtro'],
-                  //       ),
-                  //       subtitle: Text(
-                  //         item['tabela'] + ' / ' + item['subDesc'] ?? '',
-                  //       ),
-                  //       tileColor:
-                  //           focused ? Colors.purple[300] : Colors.transparent,
-                  //       onTap: onTap,
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     width: 400,
                     height: 60,
-                    child: DropdownSearch<String>(
-                      asyncItems: (String? filter) => retornaCombo1('titulo'),
+                    child: DropdownSearch<Map<String, dynamic>>(
+                      onChanged: (value) async {
+                        print(value!['tabela']);
+                        print(value['coluna']);
+                        objFiltro.setTabelasConfig = value;
+                      },
+                      asyncItems: (String? filter) => testee(),
+                      itemAsString: (item) => item['titulo'] ?? '',
                       popupProps: PopupPropsMultiSelection.menu(
                         showSelectedItems: true,
-                        itemBuilder: (
-                          BuildContext context,
-                          String item,
-                          bool isSelected,
-                        ) {
-                          return Column(
-                            children: [
-                              Text('data'),
-                              ElevatedButton(
-                                  onPressed: () {}, child: Text('SEFSE'))
-                            ],
+                        itemBuilder: (context, item, isSelected) {
+                          return ListTile(
+                            title: Text(item['titulo']),
+                            subtitle: Text(item['mensagem'] ?? ''),
                           );
                         },
                         showSearchBox: true,
                       ),
-                      compareFn: (item, sItem) => item == sItem,
+                      compareFn: (item, selectedItem) =>
+                          item['coluna'] == selectedItem['coluna'],
                       dropdownDecoratorProps: DropDownDecoratorProps(
                         dropdownSearchDecoration: InputDecoration(
-                          labelText: 'User *',
-                          filled: true,
-                          fillColor:
-                              Theme.of(context).inputDecorationTheme.fillColor,
+                          border: const OutlineInputBorder(),
+                          hintText: "Escolha um filtro",
+                          suffixIcon: const Icon(Icons.arrow_drop_down),
+                          labelText: escolha.escolha,
                         ),
                       ),
                     ),
-                  ),
-
-                  // SizedBox(
-                  //     height: 60,
-                  //     width: 400,
-                  //     child: DropdownSearch<String>(
-                  //       popupProps: PopupProps.menu(
-                  //         emptyBuilder: (context, searchEntry) {
-                  //           return const Text('Sem dados');
-                  //         },
-                  //         errorBuilder: (context, searchEntry, exception) {
-                  //           return const Text('nao foi possivel carregar');
-                  //         },
-                  //         showSelectedItems: true,
-                  //         showSearchBox: true,
-                  //       ),
-                  //       items: nomeColunasDicionario,
-                  //       dropdownDecoratorProps: DropDownDecoratorProps(
-                  //         dropdownSearchDecoration: InputDecoration(
-                  //           labelText: escolha.escolha,
-                  //           border: const OutlineInputBorder(
-                  //             borderRadius: BorderRadius.all(
-                  //               Radius.circular(10),
-                  //             ),
-                  //           ),
-                  //           hintText: 'Escolha um filtro',
-                  //         ),
-                  //       ),
-                  //       onChanged: (value) {
-                  //         handleFocusToIndex(value);
-                  //       },
-                  //     )),
-                  //),
-                  // SizedBox(
-                  //   height: 40,
-                  //   width: 500,
-                  //   child: TextFormField(
-                  //     controller: controlePesquisa,
-                  //     inputFormatters: [
-                  //       LengthLimitingTextInputFormatter(40),
-                  //     ],
-                  //     decoration: styleBarraPesquisa(cor),
-                  //   ),
-                  // ),
+                  )
                 ],
               ),
             ),
+
+            // SizedBox(
+            //   height: 40,
+            //   width: 500,
+            //   child: TextFormField(
+            //     controller: controlePesquisa,
+            //     inputFormatters: [
+            //       LengthLimitingTextInputFormatter(40),
+            //     ],
+            //     decoration: styleBarraPesquisa(cor),
+            //   ),
+            // ),
           ),
           const SizedBox(
             width: 10,
@@ -680,6 +622,14 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
                     onPressed: () {
+                      Map<String, dynamic> recebe = objFiltro.tabelasConfig;
+                      for (var i = 0; i < tabelasDicionario.length; i++) {
+                        if (recebe['tabela'] == tabelasDicionario[i]) {
+                          tabController.index = i;
+
+                          handleFocusToIndex(recebe['coluna']);
+                        }
+                      }
                       // tabController.index = int.parse(controlePesquisa.text);
                     },
                   ),
@@ -758,7 +708,8 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                         setState(() {
                           opcaoEscolhida = value;
                           escolha.setEscolha = '';
-                          escolha.setEscolha = 'Descrição';
+                          escolha.setEscolha = 'mensagem';
+                          escolha.setDescricao = 'mensagem';
 
                           // nomeColunasDicionario = retornaCombo('mensagem');
                           // nomeSubtituloDicionario = retornaCombo('campo');
@@ -767,7 +718,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                           }
                         });
                       },
-                      value: FiltroOpcao.descicaoDicionario.name,
+                      value: FiltroOpcao.mensagem.name,
                       title: const Text('Descrição Tabela Dicionário'),
                     ),
                   ),
@@ -780,7 +731,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                         setState(() {
                           opcaoEscolhida = value;
                           escolha.setEscolha = '';
-                          escolha.setEscolha = 'Subtítulo';
+                          escolha.setEscolha = 'titulo';
 
                           nomeColunasDicionario = retornaCombo('titulo');
                           if (kDebugMode) {
@@ -788,7 +739,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                           }
                         });
                       },
-                      value: FiltroOpcao.subTitulo.name,
+                      value: FiltroOpcao.titulo.name,
                       title: const Text('SubTítulo'),
                     ),
                   ),
@@ -888,7 +839,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
 
 class OpcaoFiltro {
   // dynamic _estacao;
-  // dynamic _descricao;
+  dynamic _descricao;
   // dynamic _subtitulo;
   // dynamic _conteudo;
   dynamic _escolha;
@@ -896,5 +847,10 @@ class OpcaoFiltro {
   get escolha => _escolha;
   set setEscolha(var escolha) {
     _escolha = escolha;
+  }
+
+  get descricao => _descricao;
+  set setDescricao(var descricao) {
+    _descricao = descricao;
   }
 }

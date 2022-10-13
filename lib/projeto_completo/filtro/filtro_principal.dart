@@ -144,7 +144,7 @@ class _BarraFiltroState extends State<BarraFiltro> {
                           }
                         });
                       },
-                      value: FiltroOpcao.descicaoDicionario.name,
+                      value: FiltroOpcao.mensagem.name,
                       title: const Text('Descrição Tabela Dicionário'),
                     ),
                   ),
@@ -179,7 +179,7 @@ class _BarraFiltroState extends State<BarraFiltro> {
 enum FiltroOpcao {
   subTitulo,
   conteudo,
-  tituloDicionario,
+  titulo,
   estacao,
-  descicaoDicionario;
+  mensagem;
 }
