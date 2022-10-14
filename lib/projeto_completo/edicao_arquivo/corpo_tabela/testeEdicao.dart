@@ -478,64 +478,32 @@ class _TelaEdicao1State extends State<TelaEdicao1>
     return retorno;
   }
 
-  Future<List<Map<String, dynamic>>> testee() async {
-    List<Map<String, dynamic>> t = [];
-    Map listaa = {};
-    List<Map<dynamic, dynamic>> lista = objSqlite.tabelasCompletas;
-    // List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
-    for (var i = 0; i < lista.length; i++) {
-      listaa = lista[i];
+  Future<List<Map<String, dynamic>>> mapaFiltro(var escolha) async {
+    List<Map<String, dynamic>> listaMapaFiltro = [];
+    Map mapasFiltro = {};
+    List<Map<dynamic, dynamic>> recebeListaMapa = objSqlite.tabelasCompletas;
+    if (escolha != null) {
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
 
-      for (var element in listaa.entries) {
-        t.addAll([
-          {
-            "tabela": element.key,
-            "coluna": element.value["campo"],
-            "titulo": element.value['titulo'],
-            "mensagem": element.value['mensagem'],
-          },
-        ]);
+        for (var element in mapasFiltro.entries) {
+          listaMapaFiltro.addAll(
+            [
+              {
+                "tabela": element.key,
+                "coluna": element.value["campo"],
+                "titulo": element.value['titulo'],
+                "mensagem": element.value['mensagem'],
+              },
+            ],
+          );
+        }
       }
+
+      return listaMapaFiltro;
+    } else {
+      return [];
     }
-
-    return t;
-  }
-
-  Future<List<FilterModel>> getData(filter) async {
-    // var response = await Dio().get(
-    //   "https://5d85ccfb1e61af001471bf60.mockapi.io/user",
-    //   queryParameters: {"filter": filter},
-    // );
-
-    // final data = response.data;
-    // if (data != null) {
-    var response = await testee();
-    return FilterModel.fromJsonList(response);
-    // }
-
-    // return [];
-  }
-
-  Widget _customPopupItemBuilderExample2(
-    BuildContext context,
-    FilterModel? item,
-    bool isSelected,
-  ) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8),
-      decoration: !isSelected
-          ? null
-          : BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor),
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
-            ),
-      child: ListTile(
-        selected: isSelected,
-        title: Text(item?.titulo ?? ''),
-        subtitle: Text(item?.mensagem ?? ''),
-      ),
-    );
   }
 
   AnimatedContainer barraFiltro() {
@@ -560,35 +528,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                   SizedBox(
                     width: 400,
                     height: 60,
-                    child: DropdownSearch<Map<String, dynamic>>(
-                      onChanged: (value) async {
-                        print(value!['tabela']);
-                        print(value['coluna']);
-                        objFiltro.setTabelasConfig = value;
-                      },
-                      asyncItems: (String? filter) => testee(),
-                      itemAsString: (item) => item['titulo'] ?? '',
-                      popupProps: PopupPropsMultiSelection.menu(
-                        showSelectedItems: true,
-                        itemBuilder: (context, item, isSelected) {
-                          return ListTile(
-                            title: Text(item['titulo']),
-                            subtitle: Text(item['mensagem'] ?? ''),
-                          );
-                        },
-                        showSearchBox: true,
-                      ),
-                      compareFn: (item, selectedItem) =>
-                          item['coluna'] == selectedItem['coluna'],
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintText: "Escolha um filtro",
-                          suffixIcon: const Icon(Icons.arrow_drop_down),
-                          labelText: escolha.escolha,
-                        ),
-                      ),
-                    ),
+                    child: dropFiltro(escolha.tipoFiltro, escolha.escolha),
                   )
                 ],
               ),
@@ -708,9 +648,9 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                         setState(() {
                           opcaoEscolhida = value;
                           escolha.setEscolha = '';
-                          escolha.setEscolha = 'mensagem';
-                          escolha.setDescricao = 'mensagem';
+                          escolha.setEscolha = 'Descrição';
 
+                          escolha.settipoFiltro = 'mensagem';
                           // nomeColunasDicionario = retornaCombo('mensagem');
                           // nomeSubtituloDicionario = retornaCombo('campo');
                           if (kDebugMode) {
@@ -732,6 +672,7 @@ class _TelaEdicao1State extends State<TelaEdicao1>
                           opcaoEscolhida = value;
                           escolha.setEscolha = '';
                           escolha.setEscolha = 'titulo';
+                          escolha.settipoFiltro = 'titulo';
 
                           nomeColunasDicionario = retornaCombo('titulo');
                           if (kDebugMode) {
@@ -748,6 +689,58 @@ class _TelaEdicao1State extends State<TelaEdicao1>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget dropFiltro(var escolha, var tipoEscolha) {
+    return DropdownSearch<Map<String, dynamic>>(
+      onChanged: (value) async {
+        objFiltro.setTabelasConfig = value;
+      },
+      asyncItems: (String? filter) => mapaFiltro(escolha),
+      itemAsString: (item) => item['$escolha'] ?? '',
+      popupProps: PopupPropsMultiSelection.menu(
+        emptyBuilder: (context, searchEntry) {
+          return Column(
+            children: const [
+              SizedBox(
+                height: 10,
+              ),
+              Center(
+                child: Text("Nenhum dado encontrado!"),
+              ),
+            ],
+          );
+        },
+        showSelectedItems: true,
+        itemBuilder: (context, item, isSelected) {
+          String? subTitulo;
+
+          if (escolha != null) {
+            if (escolha == 'mensagem') {
+              subTitulo = 'titulo';
+            } else {
+              subTitulo = 'mensagem';
+            }
+          }
+
+          return ListTile(
+            title: Text(item['$escolha'] ?? ""),
+            subtitle: Text(item[subTitulo] ?? ""),
+          );
+        },
+        showSearchBox: true,
+      ),
+      compareFn: (item, selectedItem) =>
+          item['coluna'] == selectedItem['coluna'],
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          hintText: "Escolha um filtro",
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+          labelText: tipoEscolha,
+        ),
       ),
     );
   }
@@ -834,23 +827,5 @@ class _TelaEdicao1State extends State<TelaEdicao1>
         ],
       ),
     );
-  }
-}
-
-class OpcaoFiltro {
-  // dynamic _estacao;
-  dynamic _descricao;
-  // dynamic _subtitulo;
-  // dynamic _conteudo;
-  dynamic _escolha;
-
-  get escolha => _escolha;
-  set setEscolha(var escolha) {
-    _escolha = escolha;
-  }
-
-  get descricao => _descricao;
-  set setDescricao(var descricao) {
-    _descricao = descricao;
   }
 }
