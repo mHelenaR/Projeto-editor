@@ -20,7 +20,7 @@ class FilterModel {
   }
 }
 
-class OpcaoFiltro {
+class OpcaoFiltroModel {
   dynamic _escolha;
   dynamic _tipoFiltro;
 
@@ -33,4 +33,12 @@ class OpcaoFiltro {
   set settipoFiltro(var tipoFiltro) {
     _tipoFiltro = tipoFiltro;
   }
+}
+
+enum FiltroOpcao {
+  subTitulo,
+  conteudo,
+  titulo,
+  estacao,
+  mensagem;
 }

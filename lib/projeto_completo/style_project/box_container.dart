@@ -26,7 +26,7 @@ BoxDecoration? boxSelecao3(var opcao) {
 }
 
 BoxDecoration? boxSelecao4(var opcao) {
-  if (opcao == "descicaoDicionario") {
+  if (opcao == "mensagem") {
     return containerOpSelecionada;
   } else {
     return containerOp;

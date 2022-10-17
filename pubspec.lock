@@ -21,7 +21,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.1"
+    version: "3.3.2"
   async:
     dependency: transitive
     description:
@@ -98,7 +98,7 @@ packages:
       name: collapsible_sidebar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2+3"
+    version: "2.0.3"
   collection:
     dependency: transitive
     description:
@@ -251,7 +251,7 @@ packages:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "4.0.2"
   intl:
     dependency: transitive
     description:
@@ -349,7 +349,7 @@ packages:
       name: pluto_grid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.1.2"
+    version: "5.2.0"
   postgres:
     dependency: "direct main"
     description:

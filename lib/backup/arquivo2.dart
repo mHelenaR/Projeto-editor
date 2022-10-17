@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/criacao_tabs/tabs_create.dart';
+import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -58,42 +58,42 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> arquivoAbrirSeparar() async {
-    try {
-      caminhoArq = await arquivoTabela();
+  // Future<void> arquivoAbrirSeparar() async {
+  //   try {
+  //     caminhoArq = await arquivoTabela();
 
-      setState(() {
-        controleArquivo.text = caminhoArq!;
-      });
+  //     setState(() {
+  //       controleArquivo.text = caminhoArq!;
+  //     });
 
-      if (caminhoArq != null) {
-        setState(() {
-          recebeCaminhoArquivo = caminhoArq!;
-        });
+  //     if (caminhoArq != null) {
+  //       setState(() {
+  //         recebeCaminhoArquivo = caminhoArq!;
+  //       });
 
-        conteudoArquivo = await converteArquivo(recebeCaminhoArquivo);
+  //       conteudoArquivo = await converteArquivo(recebeCaminhoArquivo);
 
-        // Passando o arquivo para o objeto de gravação
-        objArquivoGravacao.setArquivoGR = conteudoArquivo;
+  //       // Passando o arquivo para o objeto de gravação
+  //       objArquivoGravacao.setArquivoGR = conteudoArquivo;
 
-        nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
+  //       nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
 
-        nomeTab(nomeTabelas.length);
+  //       nomeTab(nomeTabelas.length);
 
-        tabs = criaTab(nomeTabelas.length);
+  //       tabs = criaTab(nomeTabelas.length);
 
-        setState(() {
-          getWidgets();
-          tabController =
-              TabController(length: tabs.length, vsync: this, initialIndex: 0);
-        });
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-  }
+  //       setState(() {
+  //         getWidgets();
+  //         tabController =
+  //             TabController(length: tabs.length, vsync: this, initialIndex: 0);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     if (kDebugMode) {
+  //       print(e);
+  //     }
+  //   }
+  // }
 
   Future<String> delay() async {
     await Future.delayed(const Duration(seconds: 1));
@@ -586,7 +586,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              arquivoAbrirSeparar();
+                              // arquivoAbrirSeparar();
                             },
                             style: estiloBotao,
                             child: const Text("Abrir"),

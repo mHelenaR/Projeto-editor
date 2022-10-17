@@ -1,24 +1,31 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
-import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
+import 'package:editorconfiguracao/controllers/filtro_controller.dart';
+import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
+import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
+import 'package:editorconfiguracao/widgets/drop_down_widget.dart';
 
-class BarraFiltro extends StatefulWidget {
-  const BarraFiltro({Key? key}) : super(key: key);
-
+class RadioWidget extends StatefulWidget {
+  late String opcao;
+  RadioWidget({
+    Key? key,
+    required this.opcao,
+  }) : super(key: key);
   @override
-  State<BarraFiltro> createState() => _BarraFiltroState();
+  State<RadioWidget> createState() => _RadioWidgetState();
 }
 
-class _BarraFiltroState extends State<BarraFiltro> {
+class _RadioWidgetState extends State<RadioWidget> {
+  List<String> tabelasDicionario = objSqlite.nomeColunasDcn;
+  final FiltroController _controllerFilter = FiltroController();
+  OpcaoFiltroModel escolha = OpcaoFiltroModel();
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -40,14 +47,11 @@ class _BarraFiltroState extends State<BarraFiltro> {
                     height: 28,
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 60,
                     width: 500,
-                    child: TextFormField(
-                      controller: controlePesquisa,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(40),
-                      ],
-                      decoration: styleBarraPesquisa(cor),
+                    child: DropDownWidget(
+                      escolha: escolha.escolha,
+                      tipoEscolha: escolha.tipoFiltro,
                     ),
                   ),
                 ],
@@ -57,6 +61,9 @@ class _BarraFiltroState extends State<BarraFiltro> {
           const SizedBox(
             width: 10,
           ),
+
+          // Botão / Dropdown / TextField
+
           Flexible(
             child: Container(
               width: 100,
@@ -69,7 +76,17 @@ class _BarraFiltroState extends State<BarraFiltro> {
                   ElevatedButton(
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
-                    onPressed: () {},
+                    onPressed: () {
+                      Map<String, dynamic> recebe = objFiltro.tabelasConfig;
+                      for (var i = 0; i < tabelasDicionario.length; i++) {
+                        if (recebe['tabela'] == tabelasDicionario[i]) {
+                          tabController.index = i;
+
+                          _controllerFilter
+                              .handleFocusToIndex(recebe['coluna']);
+                        }
+                      }
+                    },
                   ),
                 ],
               ),
@@ -78,22 +95,30 @@ class _BarraFiltroState extends State<BarraFiltro> {
           const SizedBox(
             width: 20,
           ),
+
           Flexible(
             child: Container(
+              width: 200,
               alignment: Alignment.centerLeft,
               child: ListView(
                 children: [
+                  // Radio Estação
+
                   Container(
-                    decoration: boxSelecao1(opcaoEscolhida),
+                    decoration: boxSelecao1(widget.opcao),
                     child: RadioListTile(
+                      tileColor: Colors.amber,
                       activeColor: purple,
-                      groupValue: opcaoEscolhida,
+                      groupValue: widget.opcao,
                       onChanged: (String? value) {
                         setState(() {
-                          opcaoEscolhida = value;
+                          widget.opcao = value!;
+
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Estação';
 
                           if (kDebugMode) {
-                            print("Filtro escolhido: $opcaoEscolhida");
+                            print("Filtro escolhido: ${widget.opcao}");
                           }
                         });
                       },
@@ -101,17 +126,21 @@ class _BarraFiltroState extends State<BarraFiltro> {
                       title: const Text('Estação'),
                     ),
                   ),
+
+                  // Radio Conteudo
+
                   Container(
-                    decoration: boxSelecao2(opcaoEscolhida),
+                    decoration: boxSelecao2(widget.opcao),
                     child: RadioListTile(
                       activeColor: purple,
-                      groupValue: opcaoEscolhida,
+                      groupValue: widget.opcao,
                       onChanged: (String? value) {
                         setState(() {
-                          opcaoEscolhida = value;
-
+                          widget.opcao = value!;
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Conteúdo';
                           if (kDebugMode) {
-                            print("Filtro escolhido: $opcaoEscolhida");
+                            print("Filtro escolhido: ${widget.opcao}");
                           }
                         });
                       },
@@ -132,16 +161,20 @@ class _BarraFiltroState extends State<BarraFiltro> {
               child: ListView(
                 children: [
                   Container(
-                    decoration: boxSelecao4(opcaoEscolhida),
+                    decoration: boxSelecao4(widget.opcao),
                     child: RadioListTile(
                       activeColor: purple,
-                      groupValue: opcaoEscolhida,
+                      groupValue: widget.opcao,
                       onChanged: (String? value) {
                         setState(() {
-                          opcaoEscolhida = value;
+                          widget.opcao = value!;
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'Descrição';
+
+                          escolha.settipoFiltro = 'mensagem';
 
                           if (kDebugMode) {
-                            print("Filtro escolhido: $opcaoEscolhida");
+                            print("Filtro escolhido: ${widget.opcao}");
                           }
                         });
                       },
@@ -150,16 +183,18 @@ class _BarraFiltroState extends State<BarraFiltro> {
                     ),
                   ),
                   Container(
-                    decoration: boxSelecao3(opcaoEscolhida),
+                    decoration: boxSelecao3(widget.opcao),
                     child: RadioListTile(
                       activeColor: purple,
-                      groupValue: opcaoEscolhida,
+                      groupValue: widget.opcao,
                       onChanged: (String? value) {
                         setState(() {
-                          opcaoEscolhida = value;
-
+                          widget.opcao = value!;
+                          escolha.setEscolha = '';
+                          escolha.setEscolha = 'SubTitulo';
+                          escolha.settipoFiltro = 'titulo';
                           if (kDebugMode) {
-                            print("Filtro escolhido: $opcaoEscolhida");
+                            print("Filtro escolhido: ${widget.opcao}");
                           }
                         });
                       },

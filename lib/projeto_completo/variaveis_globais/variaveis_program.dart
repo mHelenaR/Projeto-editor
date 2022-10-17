@@ -1,4 +1,6 @@
-import 'package:editorconfiguracao/connection_sqflite.dart';
+import 'package:editorconfiguracao/models/sqflite_model.dart';
+import 'package:editorconfiguracao/models/table_model.dart';
 
 // Objetos Globais
-TabelasSqflite objSqlite = TabelasSqflite();
+SqfliteModel objSqlite = SqfliteModel();
+TableModel objFiltro = TableModel();

@@ -9,5 +9,5 @@
     - Ajustar layout das configurações;
  ok - Corrigir todos os problemas
     - comentar o codigo
-    - conectar tabela dicionario no grid
+ ok - conectar tabela dicionario no grid
  ok - salvar o arquivo
