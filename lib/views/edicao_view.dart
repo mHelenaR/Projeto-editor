@@ -16,6 +16,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:editorconfiguracao/widgets/radio_widget.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 class TelaEdicao extends StatefulWidget {
   const TelaEdicao({super.key});
@@ -200,6 +201,30 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                 style: estiloBotao,
                                 child: const Text("Filtrar"),
                               ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    final filter = stateManager!.configuration
+                                        .columnFilter.filters.first;
+
+                                    final rows = <PlutoRow>[
+                                      PlutoRow(
+                                        cells: {
+                                          FilterHelper.filterFieldColumn:
+                                              PlutoCell(value: '0'),
+                                          FilterHelper.filterFieldType:
+                                              PlutoCell(value: filter),
+                                          FilterHelper.filterFieldValue:
+                                              PlutoCell(value: '039'),
+                                        },
+                                      ),
+                                    ];
+
+                                    stateManager!.setFilterWithFilterRows(rows);
+                                    // stateManager!.filterRowsByField('0');
+                                    // print(stateManager!.filterRowsByField('0'));
+                                    //stateManager!.removeRows(stateManager!.refRows.originalList);
+                                  },
+                                  child: const Text('data'))
                             ],
                           ),
                         ),

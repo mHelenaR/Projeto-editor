@@ -4,7 +4,6 @@ import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_
 import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/controllers/filtro_controller.dart';
-import 'package:editorconfiguracao/models/table_model.dart';
 
 class DropDownWidget extends StatefulWidget {
   late dynamic escolha;

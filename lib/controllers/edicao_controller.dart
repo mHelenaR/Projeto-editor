@@ -1,13 +1,17 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
+import 'package:pluto_grid/pluto_grid.dart';
+
 import 'package:editorconfiguracao/controllers/filtro_controller.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
-import 'package:flutter/material.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 
 class EdicaoController {
   final FiltroController _filtroController = FiltroController();
+
+  // Método que monta o grid
+
   criaTabViewTabela(int widgetNumber) {
     rows.clear();
     columns.clear();

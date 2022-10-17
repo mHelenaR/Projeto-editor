@@ -7,11 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
-import 'package:editorconfiguracao/projeto_completo/filtro/filtro_principal.dart';
-import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/converte_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/nome_tabelas.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/seleciona_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_borderRadius.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
