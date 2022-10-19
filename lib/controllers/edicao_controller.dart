@@ -1,14 +1,23 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
-import 'package:editorconfiguracao/controllers/filtro_controller.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class EdicaoController {
-  final FiltroController _filtroController = FiltroController();
+  List<String> numerosEstacao = [];
+  Map testem = {};
+  List<dynamic> listaTeste = [];
+  List<dynamic> lista1 = [];
+  List<dynamic> lista2 = [];
+  String estacCodigo = '';
+  String estacConfig = '';
+  String estacTrib = '';
+  String estacEvento = '';
+  String estacTeclado = '';
+  String estacUnidade = '';
+  // final FiltroController _filtroController = FiltroController();
 
   // Método que monta o grid
 
@@ -16,8 +25,8 @@ class EdicaoController {
     rows.clear();
     columns.clear();
     listaTIT.clear();
-    teste4.clear();
-    teste5.clear();
+    recebeCPO.clear();
+    celulaCPO.clear();
     separarArquivo = "";
 
     try {
@@ -88,26 +97,54 @@ class EdicaoController {
 
       for (int i = 1; i < linhasTIT.length; i++) {
         if (linhasTIT[i] != "") {
-          String testeP = linhasTIT[i];
-          teste4 = testeP.split('CPO ');
+          String recebeLinhas = linhasTIT[i];
+          recebeCPO = recebeLinhas.split('CPO ');
 
-          for (int p = 1; p < teste4.length; p++) {
-            teste5 = teste4[p].split('^');
+          for (int p = 1; p < recebeCPO.length; p++) {
+            celulaCPO = recebeCPO[p].split('^');
 
             rows.addAll([
               PlutoRow(cells: {
-                for (int contRow = 0; contRow < teste5.length; contRow++) ...{
-                  contRow.toString(): PlutoCell(value: teste5[contRow]),
+                for (int contRow = 0;
+                    contRow < celulaCPO.length;
+                    contRow++) ...{
+                  contRow.toString(): PlutoCell(value: celulaCPO[contRow]),
                 },
               }),
             ]);
+
+            for (int k = 0; k < celulaCPO.length; k++) {
+              if (nomeColunas[k] == 'est_codigo01') {
+                estacCodigo = celulaCPO[k];
+
+                numerosEstacao.addAll([celulaCPO[k]]);
+              } else if (nomeColunas[k] == 'est_config37') {
+                estacConfig = celulaCPO[k];
+              } else if (nomeColunas[k] == 'est_unidade01') {
+                lista1.addAll([
+                  {
+                    'estacao': estacCodigo,
+                    'config': estacConfig,
+                    'unidade': celulaCPO[k],
+                  }
+                ]);
+              }
+              // else if (nomeColunas[k] == 'est_cod_evento37') {
+              // } else if (nomeColunas[k] == 'est_teclado37') {
+              // } else if (nomeColunas[k] == 'est_trib37') {}
+            }
           }
-          testeP = "";
+          recebeLinhas = "";
         }
       }
     } catch (e) {
       debugPrint("$e");
     }
+
+    objFiltroModel.setMapaEstacao = lista1;
+
+    lista1 = [];
+    objFiltroModel.setEstacaoOpcao = numerosEstacao;
 
     var mapa = {};
     return PlutoGrid(
@@ -115,40 +152,6 @@ class EdicaoController {
       configuration: configuracaoPlutoGrid,
       columns: columns,
       rows: rows,
-      createHeader: (stateManager) {
-        return Row(
-          children: [
-            SizedBox(
-              height: 60,
-              width: 400,
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: DropdownSearch<String>(
-                  popupProps: const PopupProps.menu(
-                    showSelectedItems: true,
-                    showSearchBox: true,
-                  ),
-                  items: nomeColunasDicionario,
-                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                    dropdownSearchDecoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      labelText: "Descrição",
-                      hintText: "Descrição do campo",
-                    ),
-                  ),
-                  onChanged: (value) {
-                    _filtroController.handleFocusToIndex(value);
-                  },
-                ),
-              ),
-            ),
-          ],
-        );
-      },
       onChanged: (PlutoGridOnChangedEvent event) {
         int rowIndex = event.rowIdx! + 1;
         mapa = {
@@ -211,6 +214,7 @@ class EdicaoController {
     List<String> lista = [];
     List<String> cols = listaColunasARQ[0].split('|');
 
+    //retira o espaço em branco no final da linha
     int cont = cols.length - 2;
 
     for (var i = 0; i < cols.length; i++) {

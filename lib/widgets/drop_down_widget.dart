@@ -1,15 +1,16 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/controllers/filtro_controller.dart';
+import 'package:editorconfiguracao/models/filtro_model.dart';
+import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class DropDownWidget extends StatefulWidget {
-  late dynamic escolha;
-  late dynamic tipoEscolha;
+  final dynamic escolha;
+  final dynamic tipoEscolha;
 
-  DropDownWidget({
+  const DropDownWidget({
     Key? key,
     required this.escolha,
     required this.tipoEscolha,
@@ -21,13 +22,40 @@ class DropDownWidget extends StatefulWidget {
 
 class _DropDownWidgetState extends State<DropDownWidget> {
   final FiltroController _controllerFiltro = FiltroController();
-  @override
-  Widget build(BuildContext context) {
-    return DropdownSearch<Map<String, dynamic>>(
+
+  opcaoDropDown() {
+    if (widget.escolha == 'Estação') {
+      return dropEstacao();
+    } else if (widget.escolha == 'Conteúdo') {
+      return dropEstacao();
+    } else {
+      return dropDicionario();
+    }
+  }
+
+  dropEstacao() {
+    return DropdownSearch<dynamic>(
+      onChanged: (value) => objFiltroModel.setEstacaoNumero = value,
+      items: objFiltroModel.estacaoOpcao ?? [],
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          hintText: "Escolha um filtro",
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+          labelText: widget.escolha,
+        ),
+      ),
+    );
+  }
+
+  dropDicionario() {
+    return DropdownSearch<FilterModel>(
       onChanged: (value) => objFiltro.setTabelasConfig = value,
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaDicionario(widget.escolha),
-      itemAsString: (item) => item['${widget.tipoEscolha}'] ?? '',
+          _controllerFiltro.mapaDicionario1(widget.escolha),
+      itemAsString: (item) => widget.tipoEscolha == 'mensagem'
+          ? item.mensagem ?? ''
+          : item.titulo ?? '',
       popupProps: PopupPropsMultiSelection.menu(
         emptyBuilder: (context, searchEntry) {
           return Column(
@@ -43,25 +71,18 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         },
         showSelectedItems: true,
         itemBuilder: (context, item, isSelected) {
-          String? subTitulo;
-
-          if (widget.tipoEscolha != null) {
-            if (widget.tipoEscolha == 'mensagem') {
-              subTitulo = 'titulo';
-            } else {
-              subTitulo = 'mensagem';
-            }
-          }
-
           return ListTile(
-            title: Text(item['${widget.tipoEscolha}'] ?? ""),
-            subtitle: Text('${item['tabela']} / ${item['mensagem']}'),
+            title: Text(
+              widget.tipoEscolha == 'mensagem'
+                  ? item.mensagem ?? ''
+                  : item.titulo ?? '',
+            ),
+            subtitle: Text('${item.tabela} / ${item.coluna}'),
           );
         },
         showSearchBox: true,
       ),
-      compareFn: (item, selectedItem) =>
-          item['coluna'] == selectedItem['coluna'],
+      compareFn: (item, selectedItem) => item.coluna == selectedItem.coluna,
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
           border: const OutlineInputBorder(),
@@ -71,5 +92,10 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return opcaoDropDown();
   }
 }

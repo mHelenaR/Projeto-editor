@@ -2,8 +2,8 @@ import 'package:editorconfiguracao/views/edicao_view.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import 'package:editorconfiguracao/projeto_completo/pages/pagina_inicial.dart';
-import 'package:editorconfiguracao/projeto_completo/pages/pg_connection.dart';
+import 'package:editorconfiguracao/views/pagina_inicial_view.dart';
+import 'package:editorconfiguracao/views/data_base_view.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
 

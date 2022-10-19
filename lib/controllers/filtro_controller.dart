@@ -1,3 +1,4 @@
+import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
@@ -46,6 +47,34 @@ class FiltroController {
       }
 
       return listaMapaFiltro;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<FilterModel>> mapaDicionario1(var escolha) async {
+    List<Map<String, dynamic>> listaMapaFiltro = [];
+    Map mapasFiltro = {};
+    List<Map<dynamic, dynamic>> recebeListaMapa = objSqlite.tabelasCompletas;
+    if (escolha != null) {
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
+
+        for (var element in mapasFiltro.entries) {
+          listaMapaFiltro.addAll(
+            [
+              {
+                "tabela": element.key,
+                "coluna": element.value["campo"],
+                "titulo": element.value['titulo'],
+                "mensagem": element.value['mensagem'],
+              },
+            ],
+          );
+        }
+      }
+
+      return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
     }

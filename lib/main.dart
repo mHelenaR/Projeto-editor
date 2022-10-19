@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:editorconfiguracao/controllers/sqflite_controller.dart';
-import 'package:editorconfiguracao/projeto_completo/pages/tela_carregamento.dart';
+import 'package:editorconfiguracao/views/tela_carregamento_view.dart';
 
 Future<void> main() async {
   try {

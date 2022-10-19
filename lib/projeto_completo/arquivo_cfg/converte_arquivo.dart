@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-Future<String> converteArquivo(String teste) async {
-  final dadosArquivo = File(teste)
-      .readAsStringSync(encoding: const Latin1Codec(allowInvalid: true));
+Future<String> converteArquivo(String arquivo) async {
+  final dadosArquivo =
+      File(arquivo).readAsStringSync(encoding: const Utf8Codec());
 
   return dadosArquivo;
 }

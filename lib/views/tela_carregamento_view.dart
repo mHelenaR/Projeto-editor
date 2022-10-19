@@ -1,7 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
+import 'package:editorconfiguracao/widgets/menu_principal_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

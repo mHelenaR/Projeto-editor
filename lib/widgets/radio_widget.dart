@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -77,13 +76,12 @@ class _RadioWidgetState extends State<RadioWidget> {
                     style: estiloBotao,
                     child: const Text("Pesquisar"),
                     onPressed: () {
-                      Map<String, dynamic> recebe = objFiltro.tabelasConfig;
+                      FilterModel recebe = objFiltro.tabelasConfig;
                       for (var i = 0; i < tabelasDicionario.length; i++) {
-                        if (recebe['tabela'] == tabelasDicionario[i]) {
+                        if (recebe.tabela == tabelasDicionario[i]) {
                           tabController.index = i;
 
-                          _controllerFilter
-                              .handleFocusToIndex(recebe['coluna']);
+                          _controllerFilter.handleFocusToIndex(recebe.coluna);
                         }
                       }
                     },
@@ -116,7 +114,7 @@ class _RadioWidgetState extends State<RadioWidget> {
 
                           escolha.setEscolha = '';
                           escolha.setEscolha = 'Estação';
-
+                          escolha.settipoFiltro = 'estacao';
                           if (kDebugMode) {
                             print("Filtro escolhido: ${widget.opcao}");
                           }
@@ -160,6 +158,8 @@ class _RadioWidgetState extends State<RadioWidget> {
               width: 280,
               child: ListView(
                 children: [
+                  // Radio Descrição
+
                   Container(
                     decoration: boxSelecao4(widget.opcao),
                     child: RadioListTile(
@@ -182,6 +182,9 @@ class _RadioWidgetState extends State<RadioWidget> {
                       title: const Text('Descrição Tabela Dicionário'),
                     ),
                   ),
+
+                  // Radio Subtítulo
+
                   Container(
                     decoration: boxSelecao3(widget.opcao),
                     child: RadioListTile(

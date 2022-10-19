@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:editorconfiguracao/projeto_completo/menuPrincipal/menu_program.dart';
+import 'package:editorconfiguracao/widgets/menu_principal_widget.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
@@ -12,7 +12,6 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:sidebarx/sidebarx.dart';
 
 class CompararArquivos extends StatelessWidget {

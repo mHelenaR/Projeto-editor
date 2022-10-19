@@ -1,17 +1,25 @@
 class FilterModel {
   final String? tabela;
-  final String? campo;
+  final String? coluna;
   final String? titulo;
   final String? mensagem;
+  final String? estacao;
 
-  FilterModel({this.tabela, this.campo, this.titulo, this.mensagem});
+  FilterModel({
+    this.tabela,
+    this.coluna,
+    this.titulo,
+    this.mensagem,
+    this.estacao,
+  });
 
   factory FilterModel.fromJson(Map<String, dynamic> json) {
     return FilterModel(
       tabela: json["tabela"],
-      campo: json["campo"],
+      coluna: json["coluna"],
       titulo: json["titulo"],
       mensagem: json["mensagem"],
+      estacao: json["estacao"],
     );
   }
 
@@ -23,6 +31,9 @@ class FilterModel {
 class OpcaoFiltroModel {
   dynamic _escolha;
   dynamic _tipoFiltro;
+  dynamic _estacaoOpcao;
+  dynamic _mapaEstacao;
+  dynamic _estacaoNumero;
 
   get escolha => _escolha;
   set setEscolha(var escolha) {
@@ -32,6 +43,21 @@ class OpcaoFiltroModel {
   get tipoFiltro => _tipoFiltro;
   set settipoFiltro(var tipoFiltro) {
     _tipoFiltro = tipoFiltro;
+  }
+
+  get estacaoOpcao => _estacaoOpcao;
+  set setEstacaoOpcao(var estacaoOpcao) {
+    _estacaoOpcao = estacaoOpcao;
+  }
+
+  get mapaEstacao => _mapaEstacao;
+  set setMapaEstacao(var mapaEstacao) {
+    _mapaEstacao = mapaEstacao;
+  }
+
+  get estacaoNumero => _estacaoNumero;
+  set setEstacaoNumero(var estacaoNumero) {
+    _estacaoNumero = estacaoNumero;
   }
 }
 

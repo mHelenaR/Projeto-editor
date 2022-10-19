@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/controllers/edicao_controller.dart';
 import 'package:editorconfiguracao/models/filtro_model.dart';
@@ -16,7 +17,6 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_tabBar.d
 import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:editorconfiguracao/widgets/radio_widget.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 
 class TelaEdicao extends StatefulWidget {
   const TelaEdicao({super.key});
@@ -202,29 +202,32 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                 child: const Text("Filtrar"),
                               ),
                               ElevatedButton(
-                                  onPressed: () {
-                                    final filter = stateManager!.configuration
-                                        .columnFilter.filters.first;
+                                onPressed: () {
+                                  final filter = stateManager!
+                                      .configuration.columnFilter.filters.first;
 
-                                    final rows = <PlutoRow>[
-                                      PlutoRow(
-                                        cells: {
-                                          FilterHelper.filterFieldColumn:
-                                              PlutoCell(value: '0'),
-                                          FilterHelper.filterFieldType:
-                                              PlutoCell(value: filter),
-                                          FilterHelper.filterFieldValue:
-                                              PlutoCell(value: '039'),
-                                        },
-                                      ),
-                                    ];
+                                  final rows = <PlutoRow>[
+                                    PlutoRow(
+                                      cells: {
+                                        FilterHelper.filterFieldColumn:
+                                            PlutoCell(value: '1'),
+                                        FilterHelper.filterFieldType:
+                                            PlutoCell(value: filter),
+                                        FilterHelper.filterFieldValue:
+                                            PlutoCell(
+                                                value: objFiltroModel
+                                                    .estacaoNumero),
+                                      },
+                                    ),
+                                  ];
 
-                                    stateManager!.setFilterWithFilterRows(rows);
-                                    // stateManager!.filterRowsByField('0');
-                                    // print(stateManager!.filterRowsByField('0'));
-                                    //stateManager!.removeRows(stateManager!.refRows.originalList);
-                                  },
-                                  child: const Text('data'))
+                                  stateManager!.setFilterWithFilterRows(rows);
+                                  // stateManager!.filterRowsByField('0');
+                                  // print(stateManager!.filterRowsByField('0'));
+                                  //stateManager!.removeRows(stateManager!.refRows.originalList);
+                                },
+                                child: const Text('data'),
+                              )
                             ],
                           ),
                         ),
@@ -236,7 +239,9 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
             ],
           ),
         ),
-        RadioWidget(opcao: opcaoEscolhida ?? ""),
+        RadioWidget(
+          opcao: opcaoEscolhida ?? "",
+        ),
         SizedBox(
           height: 50,
           child: Row(

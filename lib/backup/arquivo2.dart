@@ -270,8 +270,6 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
     rows.clear();
     columns.clear();
     listaTIT.clear();
-    teste4.clear();
-    teste5.clear();
 
     separarArquivo = "";
     try {
@@ -319,27 +317,27 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
         }
       ];
 
-      for (int i = 1; i < linhasTIT.length; i++) {
-        if (linhasTIT[i] != "") {
-          String testeP = linhasTIT[i];
-          teste4 = [testeP.split('CPO ').toString()];
+      // for (int i = 1; i < linhasTIT.length; i++) {
+      //   if (linhasTIT[i] != "") {
+      //     String testeP = linhasTIT[i];
+      //     teste4 = [testeP.split('CPO ').toString()];
 
-          for (int p = 0; p < teste4.length; p++) {
-            teste5 = teste4[p].split('^');
+      //     for (int p = 0; p < teste4.length; p++) {
+      //       teste5 = teste4[p].split('^');
 
-            rows.addAll([
-              PlutoRow(
-                cells: {
-                  for (int contRow = 0; contRow < teste5.length; contRow++) ...{
-                    contRow.toString(): PlutoCell(value: teste5[contRow]),
-                  },
-                },
-              ),
-            ]);
-          }
-          testeP = "";
-        }
-      }
+      //       rows.addAll([
+      //         PlutoRow(
+      //           cells: {
+      //             for (int contRow = 0; contRow < teste5.length; contRow++) ...{
+      //               contRow.toString(): PlutoCell(value: teste5[contRow]),
+      //             },
+      //           },
+      //         ),
+      //       ]);
+      //     }
+      //     testeP = "";
+      //   }
+      // }
 
       linhasTIT.clear();
     } catch (e) {

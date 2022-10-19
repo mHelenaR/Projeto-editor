@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
+import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 
@@ -33,8 +34,8 @@ List<String> nomeTabelas = [];
 List<String> nomeColunas = [];
 List<String> nomeColunasDicionario = [];
 List<String> nomeSubtituloDicionario = [];
-List<String> teste4 = [];
-List<String> teste5 = [];
+List<String> recebeCPO = [];
+List<String> celulaCPO = [];
 List<PlutoRow> rows = [];
 List<PlutoColumn> columns = [];
 List<Tab> tabs = [];
@@ -45,6 +46,7 @@ List<String> menuSubtitulo = [];
 //banco
 
 //controle
+final OpcaoFiltroModel objFiltroModel = OpcaoFiltroModel();
 final TextEditingController controleArquivo = TextEditingController();
 final TextEditingController controlePesquisa = TextEditingController();
 PlutoGridStateManager? stateManager;
