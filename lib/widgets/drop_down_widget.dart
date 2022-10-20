@@ -21,6 +21,7 @@ class DropDownWidget extends StatefulWidget {
 }
 
 class _DropDownWidgetState extends State<DropDownWidget> {
+  List<String> tabelasDicionario = objSqlite.nomeColunasDcn;
   final FiltroController _controllerFiltro = FiltroController();
 
   opcaoDropDown() {
@@ -34,9 +35,33 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   }
 
   dropEstacao() {
-    return DropdownSearch<dynamic>(
-      onChanged: (value) => objFiltroModel.setEstacaoNumero = value,
-      items: objFiltroModel.estacaoOpcao ?? [],
+    return DropdownSearch<FilterEstacModel>(
+      enabled: true,
+      onChanged: (value) {
+        objEstacaoModel.setEstacaoNumero = value;
+        FilterModel recebe = objFiltro.tabelasConfig;
+        for (var i = 0; i < tabelasDicionario.length; i++) {
+          if (recebe.tabela == tabelasDicionario[i]) {
+            tabController.index = i;
+            _controllerFiltro.handleFocusToIndex(recebe.coluna);
+          }
+        }
+      },
+      asyncItems: (String? filter) =>
+          _controllerFiltro.mapaEstacao(widget.escolha),
+      itemAsString: (item) => item.estacao ?? "",
+      popupProps: PopupPropsMultiSelection.menu(
+        emptyBuilder: dropDownEmpty,
+        showSelectedItems: true,
+        itemBuilder: (context, item, isSelected) {
+          return ListTile(
+            title: Text(item.estacao ?? ''),
+            subtitle: Text('Unidade: ${item.unidade}'),
+          );
+        },
+        showSearchBox: true,
+      ),
+      compareFn: (item, selectedItem) => item.estacao == selectedItem.estacao,
       dropdownDecoratorProps: DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
           border: const OutlineInputBorder(),
@@ -50,25 +75,18 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   dropDicionario() {
     return DropdownSearch<FilterModel>(
-      onChanged: (value) => objFiltro.setTabelasConfig = value,
+      enabled: true,
+      onChanged: (value) {
+        objFiltro.setTabelasConfig = value;
+        print(value);
+      },
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaDicionario1(widget.escolha),
+          _controllerFiltro.mapaDicionarioModel(widget.escolha),
       itemAsString: (item) => widget.tipoEscolha == 'mensagem'
           ? item.mensagem ?? ''
           : item.titulo ?? '',
       popupProps: PopupPropsMultiSelection.menu(
-        emptyBuilder: (context, searchEntry) {
-          return Column(
-            children: const [
-              SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: Text("Nenhum dado encontrado!"),
-              ),
-            ],
-          );
-        },
+        emptyBuilder: dropDownEmpty,
         showSelectedItems: true,
         itemBuilder: (context, item, isSelected) {
           return ListTile(
@@ -91,6 +109,19 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           labelText: widget.escolha,
         ),
       ),
+    );
+  }
+
+  Widget dropDownEmpty(context, searchEntry) {
+    return Column(
+      children: const [
+        SizedBox(
+          height: 10,
+        ),
+        Center(
+          child: Text("Nenhum dado encontrado!"),
+        ),
+      ],
     );
   }
 

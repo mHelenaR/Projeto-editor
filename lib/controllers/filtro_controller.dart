@@ -7,7 +7,7 @@ import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_
 class FiltroController {
   // Busca o indice da celula na tabela
   void handleFocusToIndex(var position) {
-    int rowIdx = 0;
+    int rowIdx = 10;
 
     int cellIdx = 0;
     for (int i = 0; i < nomeColunasDicionario.length; i++) {
@@ -21,6 +21,37 @@ class FiltroController {
     stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
     stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
     stateManager!.notifyListeners();
+  }
+
+  Future<List<FilterEstacModel>> mapaEstacao(var escolha) async {
+    List<Map<String, dynamic>> listaMapaFiltro = [];
+
+    Map mapasFiltro = {};
+
+    List<Map<String, dynamic>> recebeListaMapa =
+        await objEstacaoModel.mapaEstacao;
+
+    if (escolha != null) {
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
+
+        for (var element in mapasFiltro.entries) {
+          listaMapaFiltro.addAll(
+            [
+              {
+                "unidade": element.value["unidade"],
+                "estacao": element.value['estacao'],
+                "config": element.value['config'],
+              }
+            ],
+          );
+        }
+      }
+
+      return FilterEstacModel.fromJsonList(listaMapaFiltro);
+    } else {
+      return [];
+    }
   }
 
   // Mapa do dicionario para o dropDown
@@ -52,10 +83,12 @@ class FiltroController {
     }
   }
 
-  Future<List<FilterModel>> mapaDicionario1(var escolha) async {
+  Future<List<FilterModel>> mapaDicionarioModel(var escolha) async {
     List<Map<String, dynamic>> listaMapaFiltro = [];
     Map mapasFiltro = {};
-    List<Map<dynamic, dynamic>> recebeListaMapa = objSqlite.tabelasCompletas;
+    List<Map<dynamic, dynamic>> recebeListaMapa =
+        await objSqlite.tabelasCompletas;
+
     if (escolha != null) {
       for (var i = 0; i < recebeListaMapa.length; i++) {
         mapasFiltro = recebeListaMapa[i];

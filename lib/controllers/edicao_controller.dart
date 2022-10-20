@@ -9,7 +9,7 @@ class EdicaoController {
   List<String> numerosEstacao = [];
   Map testem = {};
   List<dynamic> listaTeste = [];
-  List<dynamic> lista1 = [];
+  List<Map<String, dynamic>> lista1 = [];
   List<dynamic> lista2 = [];
   String estacCodigo = '';
   String estacConfig = '';
@@ -114,24 +114,23 @@ class EdicaoController {
             ]);
 
             for (int k = 0; k < celulaCPO.length; k++) {
-              if (nomeColunas[k] == 'est_codigo01') {
-                estacCodigo = celulaCPO[k];
+              if (nomeColunas[k] == 'est_unidade01') {
+                estacUnidade = celulaCPO[k];
 
                 numerosEstacao.addAll([celulaCPO[k]]);
-              } else if (nomeColunas[k] == 'est_config37') {
-                estacConfig = celulaCPO[k];
-              } else if (nomeColunas[k] == 'est_unidade01') {
+              } else if (nomeColunas[k] == 'est_codigo01') {
+                estacCodigo = celulaCPO[k];
+
                 lista1.addAll([
                   {
-                    'estacao': estacCodigo,
-                    'config': estacConfig,
-                    'unidade': celulaCPO[k],
+                    "$estacUnidade/$estacCodigo": {
+                      'unidade': estacUnidade,
+                      'estacao': estacCodigo,
+                      'posicao': i.toString(),
+                    }
                   }
                 ]);
               }
-              // else if (nomeColunas[k] == 'est_cod_evento37') {
-              // } else if (nomeColunas[k] == 'est_teclado37') {
-              // } else if (nomeColunas[k] == 'est_trib37') {}
             }
           }
           recebeLinhas = "";
@@ -140,11 +139,11 @@ class EdicaoController {
     } catch (e) {
       debugPrint("$e");
     }
-
-    objFiltroModel.setMapaEstacao = lista1;
+    print(lista1);
+    objEstacaoModel.setMapaEstacao = lista1;
 
     lista1 = [];
-    objFiltroModel.setEstacaoOpcao = numerosEstacao;
+    objEstacaoModel.setEstacaoOpcao = numerosEstacao;
 
     var mapa = {};
     return PlutoGrid(

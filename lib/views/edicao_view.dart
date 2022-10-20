@@ -203,6 +203,9 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                               ),
                               ElevatedButton(
                                 onPressed: () {
+                                  FilterEstacModel recebe =
+                                      objEstacaoModel.estacaoNumero;
+                                  print(recebe.estacao);
                                   final filter = stateManager!
                                       .configuration.columnFilter.filters.first;
 
@@ -214,9 +217,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                         FilterHelper.filterFieldType:
                                             PlutoCell(value: filter),
                                         FilterHelper.filterFieldValue:
-                                            PlutoCell(
-                                                value: objFiltroModel
-                                                    .estacaoNumero),
+                                            PlutoCell(value: recebe.estacao),
                                       },
                                     ),
                                   ];

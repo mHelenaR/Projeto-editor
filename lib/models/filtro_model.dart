@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class FilterModel {
   final String? tabela;
   final String? coluna;
@@ -28,12 +29,33 @@ class FilterModel {
   }
 }
 
+class FilterEstacModel {
+  final String? unidade;
+  final String? estacao;
+  final String? posicao;
+
+  FilterEstacModel({
+    this.unidade,
+    this.estacao,
+    this.posicao,
+  });
+
+  factory FilterEstacModel.fromJson(Map<String, dynamic> json) {
+    return FilterEstacModel(
+      unidade: json['unidade'],
+      estacao: json['estacao'],
+      posicao: json['posicao'],
+    );
+  }
+
+  static List<FilterEstacModel> fromJsonList(List list) {
+    return list.map((item) => FilterEstacModel.fromJson(item)).toList();
+  }
+}
+
 class OpcaoFiltroModel {
   dynamic _escolha;
   dynamic _tipoFiltro;
-  dynamic _estacaoOpcao;
-  dynamic _mapaEstacao;
-  dynamic _estacaoNumero;
 
   get escolha => _escolha;
   set setEscolha(var escolha) {
@@ -44,6 +66,13 @@ class OpcaoFiltroModel {
   set settipoFiltro(var tipoFiltro) {
     _tipoFiltro = tipoFiltro;
   }
+}
+
+class EstacaoFiltroModel {
+  dynamic _estacaoOpcao;
+  dynamic _mapaEstacao;
+  dynamic _estacaoNumero;
+  dynamic _colunasFiltro;
 
   get estacaoOpcao => _estacaoOpcao;
   set setEstacaoOpcao(var estacaoOpcao) {
@@ -58,6 +87,11 @@ class OpcaoFiltroModel {
   get estacaoNumero => _estacaoNumero;
   set setEstacaoNumero(var estacaoNumero) {
     _estacaoNumero = estacaoNumero;
+  }
+
+  get colunasFiltro => _colunasFiltro;
+  set setColunasFiltro(var colunasFiltro) {
+    _colunasFiltro = colunasFiltro;
   }
 }
 
