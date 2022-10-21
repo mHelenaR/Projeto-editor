@@ -1,4 +1,7 @@
+import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/widgets/drop_down_widget.dart';
+import 'package:editorconfiguracao/widgets/sized_box_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -231,56 +234,61 @@ class _RadioWidgetState extends State<RadioWidget>
       child: SizedBox(
         child: Row(
           children: [
-            const SizedBox(
-              width: 10,
+            boxWidth10(),
+            sizedDopDown('Estação', 'estacao'),
+            boxWidth10(),
+            sizedDopDown('Coluna', 'Coluna'),
+            boxWidth10(),
+            sizedDopDown('Descrição', 'mensagem'),
+            boxWidth10(),
+            sizedDopDown('Subtítulo', 'titulo'),
+            boxWidth10(),
+            buttonsFilter(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  sizedDopDown(String titleDopDown, String tipoFiltro) {
+    return Flexible(
+      child: SizedBox(
+        height: 60,
+        width: 500,
+        child: ListView(
+          children: [
+            DropDownWidget(
+              escolha: titleDopDown,
+              tipoEscolha: tipoFiltro,
             ),
-            Flexible(
-              child: SizedBox(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListView(
-                      children: [
-                        SizedBox(
-                          width: 300,
-                          height: 30,
-                          child: TabBar(
-                            controller: tacont,
-                            tabs: const [
-                              Text(
-                                'wwwww',
-                                style: fontePreta,
-                              ),
-                              Text(
-                                'data',
-                                style: fontePreta,
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: (TabBarView(
-                            controller: tacont,
-                            children: [
-                              Container(
-                                color: Colors.amber,
-                              ),
-                              const Text('data 2')
-                            ],
-                          )),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  buttonsFilter() {
+    return Flexible(
+      child: Container(
+        width: 100,
+        alignment: Alignment.centerLeft,
+        child: ListView(
+          children: [
+            boxHeight10(),
+            Center(
+              child: ElevatedButton(
+                style: estiloBotao,
+                onPressed: () {},
+                child: const Text('Voltar'),
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Pesquisar'),
+            boxHeight10(),
+            Center(
+              child: ElevatedButton(
+                style: estiloBotao,
+                onPressed: () {},
+                child: const Text('Pesquisar'),
+              ),
             ),
           ],
         ),
@@ -288,86 +296,3 @@ class _RadioWidgetState extends State<RadioWidget>
     );
   }
 }
-
- //     Expanded(
-            //       child: Row(
-            //         children: [
-            //           const SizedBox(
-            //             width: 10,
-            //           ),
-            //           Flexible(
-            //             child: Container(
-            //               alignment: Alignment.centerLeft,
-            //               child: const SizedBox(
-            //                 height: 60,
-            //                 width: 300,
-            //                 child: DropDownWidget(
-            //                   escolha: 'Estação',
-            //                   tipoEscolha: 'Estação',
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           const SizedBox(
-            //             width: 10,
-            //           ),
-            //           Flexible(
-            //             child: Container(
-            //               alignment: Alignment.centerLeft,
-            //               child: const SizedBox(
-            //                 height: 60,
-            //                 width: 300,
-            //                 child: DropDownWidget(
-            //                   escolha: 'Coluna',
-            //                   tipoEscolha: 'titulo',
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           const SizedBox(
-            //             width: 10,
-            //           ),
-            //           Flexible(
-            //             child: Container(
-            //               alignment: Alignment.centerLeft,
-            //               child: const SizedBox(
-            //                 height: 60,
-            //                 width: 300,
-            //                 child: DropDownWidget(
-            //                   escolha: 'Descrição',
-            //                   tipoEscolha: 'mensagem',
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           const SizedBox(
-            //             width: 10,
-            //           ),
-            //           Flexible(
-            //             child: Container(
-            //               alignment: Alignment.centerLeft,
-            //               child: const SizedBox(
-            //                 height: 60,
-            //                 width: 300,
-            //                 child: DropDownWidget(
-            //                   escolha: 'Subtitulo',
-            //                   tipoEscolha: 'titulo',
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //           const SizedBox(
-            //             width: 10,
-            //           ),
-            //           Flexible(
-            //             child: ElevatedButton(
-            //               onPressed: () {},
-            //               style: estiloBotao,
-            //               child: const Text('Pesquisar'),
-            //             ),
-            //           ),
-            //           Spacer()
-            //         ],
-            //       ),
-            //     ),
-        
