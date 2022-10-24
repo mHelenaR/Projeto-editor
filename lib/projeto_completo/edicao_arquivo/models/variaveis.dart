@@ -50,6 +50,7 @@ final OpcaoFiltroModel objFiltroModel = OpcaoFiltroModel();
 final EstacaoFiltroModel objEstacaoModel = EstacaoFiltroModel();
 final TextEditingController controleArquivo = TextEditingController();
 final TextEditingController controlePesquisa = TextEditingController();
+
 PlutoGridStateManager? stateManager;
 late TabController tabController;
 

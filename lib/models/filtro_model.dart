@@ -32,11 +32,13 @@ class FilterEstacModel {
   final String? unidade;
   final String? estacao;
   final String? posicao;
+  final String? coluna;
 
   FilterEstacModel({
     this.unidade,
     this.estacao,
     this.posicao,
+    this.coluna,
   });
 
   factory FilterEstacModel.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,7 @@ class FilterEstacModel {
       unidade: json['unidade'],
       estacao: json['estacao'],
       posicao: json['posicao'],
+      coluna: json['coluna'],
     );
   }
 
@@ -72,6 +75,9 @@ class EstacaoFiltroModel {
   dynamic _mapaEstacao;
   dynamic _estacaoNumero;
   dynamic _colunasFiltro;
+  dynamic _colunasMapa;
+  dynamic _colunaNome;
+  bool _teste = true;
 
   get estacaoOpcao => _estacaoOpcao;
   set setEstacaoOpcao(var estacaoOpcao) {
@@ -91,6 +97,21 @@ class EstacaoFiltroModel {
   get colunasFiltro => _colunasFiltro;
   set setColunasFiltro(var colunasFiltro) {
     _colunasFiltro = colunasFiltro;
+  }
+
+  get colunasMapa => _colunasMapa;
+  set setColunasMapa(var colunasMapa) {
+    _colunasMapa = colunasMapa;
+  }
+
+  get colunaNome => _colunaNome;
+  set setColunaNome(var colunaNome) {
+    _colunaNome = colunaNome;
+  }
+
+  get teste => _teste;
+  set setTeste(var colunaNome) {
+    _teste = colunaNome;
   }
 }
 

@@ -7,7 +7,7 @@ import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_
 class FiltroController {
   // Busca o indice da celula na tabela
   void handleFocusToIndex(var position) {
-    int rowIdx = 10;
+    int rowIdx = 0;
 
     int cellIdx = 0;
     for (int i = 0; i < nomeColunasDicionario.length; i++) {
@@ -23,6 +23,46 @@ class FiltroController {
     stateManager!.notifyListeners();
   }
 
+// teste
+  void handleFocusTESTE(var position, var row) {
+    int rowIdx = 0;
+
+    int cellIdx = 0;
+    for (int i = 0; i < nomeColunasDicionario.length; i++) {
+      if (position == nomeColunasDicionario[i]) {
+        cellIdx = i;
+      }
+    }
+    rowIdx = row;
+    PlutoCell cell =
+        stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
+    stateManager!.setCurrentCell(cell, rowIdx);
+    stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
+    stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
+    stateManager!.notifyListeners();
+  }
+
+  void handleFocusTESTE1(var position, var row) {
+    int rowIdx = 0;
+
+    int cellIdx = 0;
+    var colunasEstac = objEstacaoModel.colunasFiltro;
+
+    for (int i = 0; i < colunasEstac.length; i++) {
+      if (position == colunasEstac[i]) {
+        cellIdx = i;
+      }
+    }
+    rowIdx = row;
+    PlutoCell cell =
+        stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
+    stateManager!.setCurrentCell(cell, rowIdx);
+    stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
+    stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
+    stateManager!.notifyListeners();
+  }
+
+  // Mapa das estações para do dropdown
   Future<List<FilterEstacModel>> mapaEstacao(var escolha) async {
     List<Map<String, dynamic>> listaMapaFiltro = [];
 
@@ -41,7 +81,7 @@ class FiltroController {
               {
                 "unidade": element.value["unidade"],
                 "estacao": element.value['estacao'],
-                "config": element.value['config'],
+                "posicao": element.value["posicao"],
               }
             ],
           );
@@ -49,35 +89,6 @@ class FiltroController {
       }
 
       return FilterEstacModel.fromJsonList(listaMapaFiltro);
-    } else {
-      return [];
-    }
-  }
-
-  // Mapa do dicionario para o dropDown
-  Future<List<Map<String, dynamic>>> mapaDicionario(var escolha) async {
-    List<Map<String, dynamic>> listaMapaFiltro = [];
-    Map mapasFiltro = {};
-    List<Map<dynamic, dynamic>> recebeListaMapa = objSqlite.tabelasCompletas;
-    if (escolha != null) {
-      for (var i = 0; i < recebeListaMapa.length; i++) {
-        mapasFiltro = recebeListaMapa[i];
-
-        for (var element in mapasFiltro.entries) {
-          listaMapaFiltro.addAll(
-            [
-              {
-                "tabela": element.key,
-                "coluna": element.value["campo"],
-                "titulo": element.value['titulo'],
-                "mensagem": element.value['mensagem'],
-              },
-            ],
-          );
-        }
-      }
-
-      return listaMapaFiltro;
     } else {
       return [];
     }
@@ -108,6 +119,33 @@ class FiltroController {
       }
 
       return FilterModel.fromJsonList(listaMapaFiltro);
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<FilterEstacModel>> mapaColunasModel(var escolha) async {
+    List<Map<String, dynamic>> listaMapaFiltro = [];
+    Map mapasFiltro = {};
+    List<Map<dynamic, dynamic>> recebeListaMapa =
+        await objEstacaoModel.colunasMapa;
+
+    if (escolha != null) {
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
+
+        for (var element in mapasFiltro.entries) {
+          listaMapaFiltro.addAll(
+            [
+              {
+                "posicao": element.value["posicao"],
+                "coluna": element.value['nomeColuna'],
+              },
+            ],
+          );
+        }
+      }
+      return FilterEstacModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
     }

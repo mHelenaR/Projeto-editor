@@ -1,4 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:editorconfiguracao/models/keys_model.dart';
+import 'package:editorconfiguracao/widgets/radio_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/controllers/filtro_controller.dart';
@@ -7,13 +9,13 @@ import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variav
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class DropDownWidget extends StatefulWidget {
-  final dynamic escolha;
-  final dynamic tipoEscolha;
+  final dynamic tituloFiltro;
+  final dynamic tipoFiltro;
 
   const DropDownWidget({
     Key? key,
-    required this.escolha,
-    required this.tipoEscolha,
+    required this.tituloFiltro,
+    required this.tipoFiltro,
   }) : super(key: key);
 
   @override
@@ -24,31 +26,15 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   List<String> tabelasDicionario = objSqlite.nomeColunasDcn;
   final FiltroController _controllerFiltro = FiltroController();
 
-  opcaoDropDown() {
-    if (widget.escolha == 'Estação') {
-      return dropEstacao();
-    } else if (widget.escolha == 'Conteúdo') {
-      return dropEstacao();
-    } else {
-      return dropDicionario();
-    }
-  }
-
   dropEstacao() {
     return DropdownSearch<FilterEstacModel>(
       enabled: true,
+      key: DropKey.estacKeyCodigo,
       onChanged: (value) {
         objEstacaoModel.setEstacaoNumero = value;
-        FilterModel recebe = objFiltro.tabelasConfig;
-        for (var i = 0; i < tabelasDicionario.length; i++) {
-          if (recebe.tabela == tabelasDicionario[i]) {
-            tabController.index = i;
-            _controllerFiltro.handleFocusToIndex(recebe.coluna);
-          }
-        }
       },
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaEstacao(widget.escolha),
+          _controllerFiltro.mapaEstacao(widget.tituloFiltro),
       itemAsString: (item) => item.estacao ?? "",
       popupProps: PopupPropsMultiSelection.menu(
         emptyBuilder: dropDownEmpty,
@@ -67,22 +53,62 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           border: const OutlineInputBorder(),
           hintText: "Escolha um filtro",
           suffixIcon: const Icon(Icons.arrow_drop_down),
-          labelText: widget.escolha,
+          labelText: widget.tituloFiltro,
+        ),
+      ),
+    );
+  }
+
+  dropConteudo() {
+    return DropdownSearch<FilterEstacModel>(
+      enabled: isSelected,
+      onChanged: (value) {
+        objEstacaoModel.setColunaNome = value;
+      },
+      key: DropKey.estacKeyColuna,
+      asyncItems: (String? filter) =>
+          _controllerFiltro.mapaColunasModel(widget.tituloFiltro),
+      itemAsString: (item) => item.coluna ?? "",
+      popupProps: PopupPropsMultiSelection.menu(
+        emptyBuilder: dropDownEmpty,
+        showSelectedItems: true,
+        itemBuilder: (context, item, isSelected) {
+          return ListTile(
+            title: Text(item.coluna ?? ''),
+            // subtitle: Text('Unidade: ${'item.unidade'}'),
+          );
+        },
+        showSearchBox: true,
+      ),
+      compareFn: (item, selectedItem) => item.coluna == selectedItem.coluna,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          hintText: "Escolha um filtro",
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+          labelText: widget.tituloFiltro,
         ),
       ),
     );
   }
 
   dropDicionario() {
+    GlobalKey<DropdownSearchState> key = GlobalKey<DropdownSearchState>();
+
+    if (widget.tipoFiltro == 'mensagem') {
+      key = DropKey.estacKeyDescricao;
+    } else if (widget.tipoFiltro == 'titulo') {
+      key = DropKey.estacKeySubtitulo;
+    }
     return DropdownSearch<FilterModel>(
       enabled: true,
+      key: key,
       onChanged: (value) {
         objFiltro.setTabelasConfig = value;
-        print(value);
       },
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaDicionarioModel(widget.escolha),
-      itemAsString: (item) => widget.tipoEscolha == 'mensagem'
+          _controllerFiltro.mapaDicionarioModel(widget.tituloFiltro),
+      itemAsString: (item) => widget.tipoFiltro == 'mensagem'
           ? item.mensagem ?? ''
           : item.titulo ?? '',
       popupProps: PopupPropsMultiSelection.menu(
@@ -91,7 +117,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         itemBuilder: (context, item, isSelected) {
           return ListTile(
             title: Text(
-              widget.tipoEscolha == 'mensagem'
+              widget.tipoFiltro == 'mensagem'
                   ? item.mensagem ?? ''
                   : item.titulo ?? '',
             ),
@@ -106,7 +132,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           border: const OutlineInputBorder(),
           hintText: "Escolha um filtro",
           suffixIcon: const Icon(Icons.arrow_drop_down),
-          labelText: widget.escolha,
+          labelText: widget.tituloFiltro,
         ),
       ),
     );
@@ -127,6 +153,12 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return opcaoDropDown();
+    if (widget.tituloFiltro == 'Estação') {
+      return dropEstacao();
+    } else if (widget.tituloFiltro == 'Coluna') {
+      return dropConteudo();
+    } else {
+      return dropDicionario();
+    }
   }
 }

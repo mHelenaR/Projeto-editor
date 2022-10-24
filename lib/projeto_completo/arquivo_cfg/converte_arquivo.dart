@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 Future<String> converteArquivo(String arquivo) async {
-  final dadosArquivo =
-      File(arquivo).readAsStringSync(encoding: const Latin1Codec());
+  // Esta sem o encoding pois codificando, o flutter não lê os acentos corretamente
+  final dadosArquivo = File(arquivo).readAsStringSync();
 
   return dadosArquivo;
 }

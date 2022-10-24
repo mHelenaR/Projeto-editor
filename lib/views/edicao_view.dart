@@ -205,7 +205,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                 onPressed: () {
                                   FilterEstacModel recebe =
                                       objEstacaoModel.estacaoNumero;
-                                  print(recebe.estacao);
+
                                   final filter = stateManager!
                                       .configuration.columnFilter.filters.first;
 
@@ -213,7 +213,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                     PlutoRow(
                                       cells: {
                                         FilterHelper.filterFieldColumn:
-                                            PlutoCell(value: '1'),
+                                            PlutoCell(value: "1"),
                                         FilterHelper.filterFieldType:
                                             PlutoCell(value: filter),
                                         FilterHelper.filterFieldValue:
@@ -223,9 +223,6 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                   ];
 
                                   stateManager!.setFilterWithFilterRows(rows);
-                                  // stateManager!.filterRowsByField('0');
-                                  // print(stateManager!.filterRowsByField('0'));
-                                  //stateManager!.removeRows(stateManager!.refRows.originalList);
                                 },
                                 child: const Text('data'),
                               )

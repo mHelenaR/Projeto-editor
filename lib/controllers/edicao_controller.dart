@@ -6,6 +6,7 @@ import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_gr
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class EdicaoController {
+  List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
   List<String> numerosEstacao = [];
   Map testem = {};
   List<dynamic> listaTeste = [];
@@ -17,6 +18,9 @@ class EdicaoController {
   String estacEvento = '';
   String estacTeclado = '';
   String estacUnidade = '';
+  List<Map<String, dynamic>> mapaColEstacao = [];
+  List<String> listaColunasEstac = [];
+  var mapa = {};
   // final FiltroController _filtroController = FiltroController();
 
   // Método que monta o grid
@@ -63,9 +67,17 @@ class EdicaoController {
       List<String> linhasTIT = recebeTabela!.split("\r\n");
 
       nomeColunas = linhasTIT[0].split('|');
+
+      //================== MAPA ESTACAO NOME COLUNAS/POSIÇÃO ======================= //
+
+      mapaEstacColuna(nomeTabelas, nomeColunas);
+
+      //============================================================================ //
+
+      //=============================================== MAPA completo DICIONARIO
       nomeColunasDicionario = transformaString(linhasTIT);
       nomeSubtituloDicionario = transformaString(linhasTIT);
-      List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
+
       for (var i = 0; i < map.length; i++) {
         Map mapas = map[i];
         for (var element in mapas.entries) {
@@ -77,6 +89,8 @@ class EdicaoController {
           }
         }
       }
+
+      //===============================================
 
       columns = <PlutoColumn>[
         for (int contCol = 0; contCol < nomeColunas.length; contCol++) ...{
@@ -113,25 +127,12 @@ class EdicaoController {
               }),
             ]);
 
-            for (int k = 0; k < celulaCPO.length; k++) {
-              if (nomeColunas[k] == 'est_unidade01') {
-                estacUnidade = celulaCPO[k];
+            //================== MAPA ESTACAO NUMERO/POSICAO DA LINHA ======================= //
 
-                numerosEstacao.addAll([celulaCPO[k]]);
-              } else if (nomeColunas[k] == 'est_codigo01') {
-                estacCodigo = celulaCPO[k];
+            mapaEstacRowPosicao(i);
 
-                lista1.addAll([
-                  {
-                    "$estacUnidade/$estacCodigo": {
-                      'unidade': estacUnidade,
-                      'estacao': estacCodigo,
-                      'posicao': i.toString(),
-                    }
-                  }
-                ]);
-              }
-            }
+            //============================================================================== //
+
           }
           recebeLinhas = "";
         }
@@ -139,13 +140,13 @@ class EdicaoController {
     } catch (e) {
       debugPrint("$e");
     }
-    print(lista1);
+    //=============================================== ojetos teste
     objEstacaoModel.setMapaEstacao = lista1;
 
     lista1 = [];
     objEstacaoModel.setEstacaoOpcao = numerosEstacao;
+    //===============================================
 
-    var mapa = {};
     return PlutoGrid(
       mode: PlutoGridMode.normal,
       configuration: configuracaoPlutoGrid,
@@ -276,5 +277,58 @@ class EdicaoController {
       }
     }
     return retorno;
+  }
+
+// passa para o objeto um mapa com o número das estações, sua posição e unidade
+  void mapaEstacRowPosicao(int i) {
+    //Ex:
+    /** 001/009:
+         *      unidade : 001
+         *      estacao : 009
+         *      posicao : 8
+        */
+
+    for (int k = 0; k < celulaCPO.length; k++) {
+      if (nomeColunas[k] == 'est_unidade01') {
+        estacUnidade = celulaCPO[k];
+
+        numerosEstacao.addAll([celulaCPO[k]]);
+      } else if (nomeColunas[k] == 'est_codigo01') {
+        estacCodigo = celulaCPO[k];
+
+        lista1.addAll([
+          {
+            "$estacUnidade/$estacCodigo": {
+              'unidade': estacUnidade,
+              'estacao': estacCodigo,
+              'posicao': i.toString(),
+            }
+          }
+        ]);
+      }
+    }
+  }
+
+// passa para o objeto  um mapa com a posicao e o nome da coluna da tabela estac
+  void mapaEstacColuna(var nomeTabelas, var nomeColunas) {
+    for (var i = 0; i < nomeTabelas.length; i++) {
+      if (nomeTabelas[i] == 'estac') {
+        for (var j = 0; j < nomeColunas.length; j++) {
+          mapaColEstacao.addAll([
+            {
+              'estac/${nomeColunas[j]}': {
+                'posicao': j.toString(),
+                'nomeColuna': nomeColunas[j],
+              }
+            }
+          ]);
+
+          listaColunasEstac.addAll([nomeColunas[j]]);
+        }
+      }
+    }
+
+    objEstacaoModel.setColunasMapa = mapaColEstacao;
+    objEstacaoModel.setColunasFiltro = listaColunasEstac;
   }
 }
