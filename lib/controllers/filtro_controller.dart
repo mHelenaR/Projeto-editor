@@ -1,8 +1,9 @@
-import 'package:editorconfiguracao/models/filtro_model.dart';
-import 'package:editorconfiguracao/models/keys_model.dart';
-import 'package:editorconfiguracao/widgets/radio_widget.dart';
+// ignore_for_file: avoid_print
+
 import 'package:pluto_grid/pluto_grid.dart';
 
+import 'package:editorconfiguracao/models/filtro_model.dart';
+import 'package:editorconfiguracao/models/keys_model.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
@@ -64,6 +65,50 @@ class FiltroController {
     stateManager!.notifyListeners();
   }
 
+  Future<List<FilterModel>> mapaDicionarioModel(var escolha) async {
+    if (escolha == 'Descrição') {
+      DropKey.estacKeyColuna.currentState!.clear();
+      DropKey.estacKeySubtitulo.currentState!.clear();
+    } else if (escolha == 'Subtítulo') {
+      DropKey.estacKeyColuna.currentState!.clear();
+      DropKey.estacKeyDescricao.currentState!.clear();
+    }
+
+    List<Map<String, dynamic>> listaMapaFiltro = [];
+    Map mapasFiltro = {};
+    List<Map<dynamic, dynamic>> recebeListaMapa =
+        await objSqlite.tabelasCompletas;
+    var listaColuna = objEstacaoModel.colunasFiltro;
+    List<String> recebe = transformaString(listaColuna);
+
+    if (escolha != null) {
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
+
+        for (var element in mapasFiltro.entries) {
+          if (element.key == 'estac') {
+            listaMapaFiltro.addAll(
+              [
+                {
+                  "tabela": element.key,
+                  "coluna": element.value["campo"],
+                  "titulo": element.value['titulo'],
+                  "mensagem": element.value['mensagem'],
+                },
+              ],
+            );
+          }
+        }
+      }
+      print(listaMapaFiltro);
+      return FilterModel.fromJsonList(listaMapaFiltro);
+    } else {
+      return [];
+    }
+  }
+
+  //// originais
+
   // Mapa das estações para do dropdown
   Future<List<FilterEstacModel>> mapaEstacao(var escolha) async {
     List<Map<String, dynamic>> listaMapaFiltro = [];
@@ -91,44 +136,6 @@ class FiltroController {
       }
 
       return FilterEstacModel.fromJsonList(listaMapaFiltro);
-    } else {
-      return [];
-    }
-  }
-
-  Future<List<FilterModel>> mapaDicionarioModel(var escolha) async {
-    if (escolha == 'Descrição') {
-      DropKey.estacKeyColuna.currentState!.clear();
-      DropKey.estacKeySubtitulo.currentState!.clear();
-    } else if (escolha == 'Subtítulo') {
-      DropKey.estacKeyColuna.currentState!.clear();
-      DropKey.estacKeyDescricao.currentState!.clear();
-    }
-
-    List<Map<String, dynamic>> listaMapaFiltro = [];
-    Map mapasFiltro = {};
-    List<Map<dynamic, dynamic>> recebeListaMapa =
-        await objSqlite.tabelasCompletas;
-
-    if (escolha != null) {
-      for (var i = 0; i < recebeListaMapa.length; i++) {
-        mapasFiltro = recebeListaMapa[i];
-
-        for (var element in mapasFiltro.entries) {
-          listaMapaFiltro.addAll(
-            [
-              {
-                "tabela": element.key,
-                "coluna": element.value["campo"],
-                "titulo": element.value['titulo'],
-                "mensagem": element.value['mensagem'],
-              },
-            ],
-          );
-        }
-      }
-
-      return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
     }
@@ -166,4 +173,63 @@ class FiltroController {
       return [];
     }
   }
+
+  Future<List<FilterModel>> mapaDicionarioModel1(var escolha) async {
+    if (escolha == 'Descrição') {
+      DropKey.estacKeyColuna.currentState!.clear();
+      DropKey.estacKeySubtitulo.currentState!.clear();
+    } else if (escolha == 'Subtítulo') {
+      DropKey.estacKeyColuna.currentState!.clear();
+      DropKey.estacKeyDescricao.currentState!.clear();
+    }
+
+    List<Map<String, dynamic>> listaMapaFiltro = [];
+    Map mapasFiltro = {};
+    List<Map<dynamic, dynamic>> recebeListaMapa =
+        await objSqlite.tabelasCompletas;
+
+    if (escolha != null) {
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
+
+        for (var element in mapasFiltro.entries) {
+          listaMapaFiltro.addAll(
+            [
+              {
+                "tabela": element.key,
+                "coluna": element.value["campo"],
+                "titulo": element.value['titulo'],
+                "mensagem": element.value['mensagem'],
+              },
+            ],
+          );
+        }
+      }
+
+      return FilterModel.fromJsonList(listaMapaFiltro);
+    } else {
+      return [];
+    }
+  }
+}
+
+//************ Transforma a String para comparar com o dicionario ************
+
+List<String> transformaString(List<String> listaColunasARQ) {
+  List<String> lista = [];
+
+  //retira o espaço em branco no final da linha
+  int cont = listaColunasARQ.length - 2;
+
+  for (var i = 0; i < listaColunasARQ.length; i++) {
+    if (i <= cont) {
+      String celula = listaColunasARQ[i];
+      String valor = celula.substring(0, celula.length - 2);
+
+      String upper = valor.toUpperCase();
+      lista = lista + [upper];
+    }
+  }
+
+  return lista;
 }

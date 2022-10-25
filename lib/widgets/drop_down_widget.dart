@@ -61,7 +61,6 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   dropConteudo() {
     return DropdownSearch<FilterEstacModel>(
-      enabled: objEstacaoModel.teste,
       onChanged: (value) {
         objEstacaoModel.setColunaNome = value;
       },
@@ -101,7 +100,6 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       key = DropKey.estacKeySubtitulo;
     }
     return DropdownSearch<FilterModel>(
-      enabled: true,
       key: key,
       onChanged: (value) {
         objFiltro.setTabelasConfig = value;

@@ -77,7 +77,6 @@ class EstacaoFiltroModel {
   dynamic _colunasFiltro;
   dynamic _colunasMapa;
   dynamic _colunaNome;
-  bool _teste = true;
 
   get estacaoOpcao => _estacaoOpcao;
   set setEstacaoOpcao(var estacaoOpcao) {
@@ -94,11 +93,13 @@ class EstacaoFiltroModel {
     _estacaoNumero = estacaoNumero;
   }
 
+  // Lista com o nome de todas as colunas da tabela Estac
   get colunasFiltro => _colunasFiltro;
   set setColunasFiltro(var colunasFiltro) {
     _colunasFiltro = colunasFiltro;
   }
 
+  // == Recebe o nome de todas as colunas e suas posições na tabela Estac direto do config ==
   get colunasMapa => _colunasMapa;
   set setColunasMapa(var colunasMapa) {
     _colunasMapa = colunasMapa;
@@ -107,11 +108,6 @@ class EstacaoFiltroModel {
   get colunaNome => _colunaNome;
   set setColunaNome(var colunaNome) {
     _colunaNome = colunaNome;
-  }
-
-  get teste => _teste;
-  set setTeste(var colunaNome) {
-    _teste = colunaNome;
   }
 }
 

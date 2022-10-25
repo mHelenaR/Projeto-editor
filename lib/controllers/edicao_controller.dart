@@ -68,7 +68,7 @@ class EdicaoController {
 
       nomeColunas = linhasTIT[0].split('|');
 
-      //================== MAPA ESTACAO NOME COLUNAS/POSIÇÃO ======================= //
+      //================== MAPA ESTACAO NOME-COLUNAS/POSIÇÃO ======================= //
 
       mapaEstacColuna(nomeTabelas, nomeColunas);
 
@@ -328,7 +328,10 @@ class EdicaoController {
       }
     }
 
+    // mapa com o nome e a posição das colunas do config
     objEstacaoModel.setColunasMapa = mapaColEstacao;
+
+    // lista com o nome das colunas do config
     objEstacaoModel.setColunasFiltro = listaColunasEstac;
   }
 }

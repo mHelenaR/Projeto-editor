@@ -277,7 +277,6 @@ class _RadioWidgetState extends State<RadioWidget> {
                   DropKey.estacKeyColuna.currentState!.clear();
                   DropKey.estacKeyDescricao.currentState!.clear();
                   DropKey.estacKeySubtitulo.currentState!.clear();
-                  objEstacaoModel.setTeste = false;
 
                   setState(() {
                     if (isSelected == true) {

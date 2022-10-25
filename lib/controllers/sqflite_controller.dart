@@ -44,6 +44,9 @@ connectSqlite() async {
     }
   }
 
+  // nome das tabelas presentes do dicionario
   objSqlite.setnomeColunasDcn = tabelasDcn;
+
+  // mapa do dicionario completo
   objSqlite.setTabelasCompletas = tabelasCompletas;
 }
