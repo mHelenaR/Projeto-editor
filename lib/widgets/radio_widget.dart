@@ -295,7 +295,8 @@ class _RadioWidgetState extends State<RadioWidget> {
               child: ElevatedButton(
                 style: estiloBotao,
                 onPressed: () {
-                  if (objEstacaoModel.estacaoNumero != null) {
+                  if (objEstacaoModel.estacaoNumero != null &&
+                      objEstacaoModel.colunaNome != null) {
                     FilterEstacModel recebe = objEstacaoModel.estacaoNumero;
                     FilterEstacModel coluna = objEstacaoModel.colunaNome;
 

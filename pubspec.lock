@@ -160,13 +160,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
-  flutter_slider_drawer:
-    dependency: "direct main"
-    description:
-      name: flutter_slider_drawer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -378,13 +371,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0+3"
-  tab_container:
-    dependency: "direct main"
-    description:
-      name: tab_container
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   term_glyph:
     dependency: transitive
     description:

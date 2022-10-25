@@ -28,7 +28,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   dropEstacao() {
     return DropdownSearch<FilterEstacModel>(
-      enabled: true,
+      enabled: isSelected,
       key: DropKey.estacKeyCodigo,
       onChanged: (value) {
         objEstacaoModel.setEstacaoNumero = value;
@@ -61,7 +61,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   dropConteudo() {
     return DropdownSearch<FilterEstacModel>(
-      enabled: isSelected,
+      enabled: objEstacaoModel.teste,
       onChanged: (value) {
         objEstacaoModel.setColunaNome = value;
       },
@@ -72,7 +72,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       popupProps: PopupPropsMultiSelection.menu(
         emptyBuilder: dropDownEmpty,
         showSelectedItems: true,
-        itemBuilder: (context, item, isSelected) {
+        itemBuilder: (context, item, isSelecte) {
           return ListTile(
             title: Text(item.coluna ?? ''),
             // subtitle: Text('Unidade: ${'item.unidade'}'),

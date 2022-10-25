@@ -1,4 +1,6 @@
 import 'package:editorconfiguracao/models/filtro_model.dart';
+import 'package:editorconfiguracao/models/keys_model.dart';
+import 'package:editorconfiguracao/widgets/radio_widget.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
@@ -95,6 +97,14 @@ class FiltroController {
   }
 
   Future<List<FilterModel>> mapaDicionarioModel(var escolha) async {
+    if (escolha == 'Descrição') {
+      DropKey.estacKeyColuna.currentState!.clear();
+      DropKey.estacKeySubtitulo.currentState!.clear();
+    } else if (escolha == 'Subtítulo') {
+      DropKey.estacKeyColuna.currentState!.clear();
+      DropKey.estacKeyDescricao.currentState!.clear();
+    }
+
     List<Map<String, dynamic>> listaMapaFiltro = [];
     Map mapasFiltro = {};
     List<Map<dynamic, dynamic>> recebeListaMapa =
@@ -125,6 +135,12 @@ class FiltroController {
   }
 
   Future<List<FilterEstacModel>> mapaColunasModel(var escolha) async {
+    if (DropKey.estacKeyDescricao.currentState != null ||
+        DropKey.estacKeySubtitulo.currentState != null) {
+      DropKey.estacKeyDescricao.currentState!.clear();
+      DropKey.estacKeySubtitulo.currentState!.clear();
+    }
+
     List<Map<String, dynamic>> listaMapaFiltro = [];
     Map mapasFiltro = {};
     List<Map<dynamic, dynamic>> recebeListaMapa =
