@@ -51,6 +51,7 @@ final EstacaoFiltroModel objEstacaoModel = EstacaoFiltroModel();
 final TextEditingController controleArquivo = TextEditingController();
 final TextEditingController controlePesquisa = TextEditingController();
 
+// Gerencia o estado da tabela
 PlutoGridStateManager? stateManager;
 late TabController tabController;
 

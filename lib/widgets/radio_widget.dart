@@ -301,7 +301,7 @@ class _RadioWidgetState extends State<RadioWidget> {
                     FilterModel recebe = objEstacaoModel.estacaoNumero;
                     FilterModel coluna = objEstacaoModel.colunaNome;
 
-                    _controllerFiltro.focarCelulaFiltroEstacao(
+                    _controllerFiltro.focarCelulaFiltro(
                       coluna.coluna,
                       int.parse(recebe.posicao!) - 1,
                       coluna.dicionario,

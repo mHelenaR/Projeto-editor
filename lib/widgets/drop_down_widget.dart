@@ -35,7 +35,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         objEstacaoModel.setEstacaoNumero = value;
       },
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaEstacao(widget.tituloFiltro),
+          _controllerFiltro.mapaFiltro(widget.tituloFiltro),
       itemAsString: (item) => item.estacao ?? "",
       popupProps: PopupPropsMultiSelection.menu(
         emptyBuilder: dropDownEmpty,
@@ -67,7 +67,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       },
       key: DropKey.estacKeyColuna,
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaColunasModel(widget.tituloFiltro),
+          _controllerFiltro.mapaFiltro(widget.tituloFiltro),
       itemAsString: (item) => item.coluna ?? "",
       popupProps: PopupPropsMultiSelection.menu(
         emptyBuilder: dropDownEmpty,
@@ -105,7 +105,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         objFiltro.setTabelasConfig = value;
       },
       asyncItems: (String? filter) =>
-          _controllerFiltro.mapaDicionarioModel(widget.tituloFiltro),
+          _controllerFiltro.mapaFiltro(widget.tituloFiltro),
       itemAsString: (item) => widget.tipoFiltro == 'mensagem'
           ? item.mensagem ?? ''
           : item.titulo ?? '',
