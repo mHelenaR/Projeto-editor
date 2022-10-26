@@ -26,37 +26,53 @@ class FiltroController {
     stateManager!.notifyListeners();
   }
 
-// teste
-  void handleFocusTESTE(var position, var row) {
+  //Filtro de pesquisa por estacao / foco na célula
+  void focarCelulaFiltroEstacao(
+    var position,
+    var indexRow,
+    bool? isDictionary,
+  ) {
     int rowIdx = 0;
-
     int cellIdx = 0;
-    for (int i = 0; i < nomeColunasDicionario.length; i++) {
-      if (position == nomeColunasDicionario[i]) {
-        cellIdx = i;
+
+    List<String> colunasEstac = [];
+
+    /* Mapa com o nome de todas as colunas da tabela estação */
+    List<String> colunasArquivoEstac = objEstacaoModel.colunasFiltro;
+
+    /* Mapa com o dicionário completo */
+    List<Map<dynamic, dynamic>> recebeListaMapa = objSqlite.tabelasCompletas;
+
+    Map mapasFiltro = {};
+
+    //Verifica se o dropdown selecionado é da tabela dicionário ou do arquivo
+    if (isDictionary == true) {
+      /**
+       * Percorre a lista de mapas da tabela dicionário
+       * passando o indice da coluna escolhida
+       */
+      for (var i = 0; i < recebeListaMapa.length; i++) {
+        mapasFiltro = recebeListaMapa[i];
+
+        for (var element in mapasFiltro.entries) {
+          if (element.key == 'estac') {
+            colunasEstac.addAll([element.value['campo']]);
+          }
+        }
       }
+    } else if (isDictionary == false) {
+      colunasEstac = colunasArquivoEstac;
     }
-    rowIdx = row;
-    PlutoCell cell =
-        stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
-    stateManager!.setCurrentCell(cell, rowIdx);
-    stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
-    stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
-    stateManager!.notifyListeners();
-  }
 
-  void handleFocusTESTE1(var position, var row) {
-    int rowIdx = 0;
-
-    int cellIdx = 0;
-    var colunasEstac = objEstacaoModel.colunasFiltro;
-
+    // Pega a posição da célula com o nome da coluna
     for (int i = 0; i < colunasEstac.length; i++) {
       if (position == colunasEstac[i]) {
         cellIdx = i;
       }
     }
-    rowIdx = row;
+
+    rowIdx = indexRow;
+
     PlutoCell cell =
         stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
     stateManager!.setCurrentCell(cell, rowIdx);
@@ -75,11 +91,11 @@ class FiltroController {
     }
 
     List<Map<String, dynamic>> listaMapaFiltro = [];
+
     Map mapasFiltro = {};
+
     List<Map<dynamic, dynamic>> recebeListaMapa =
         await objSqlite.tabelasCompletas;
-    var listaColuna = objEstacaoModel.colunasFiltro;
-    List<String> recebe = transformaString(listaColuna);
 
     if (escolha != null) {
       for (var i = 0; i < recebeListaMapa.length; i++) {
@@ -94,13 +110,15 @@ class FiltroController {
                   "coluna": element.value["campo"],
                   "titulo": element.value['titulo'],
                   "mensagem": element.value['mensagem'],
+                  "posicao": i.toString(),
+                  "dicionario": true,
                 },
               ],
             );
           }
         }
       }
-      print(listaMapaFiltro);
+
       return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
@@ -110,7 +128,7 @@ class FiltroController {
   //// originais
 
   // Mapa das estações para do dropdown
-  Future<List<FilterEstacModel>> mapaEstacao(var escolha) async {
+  Future<List<FilterModel>> mapaEstacao(var escolha) async {
     List<Map<String, dynamic>> listaMapaFiltro = [];
 
     Map mapasFiltro = {};
@@ -129,19 +147,20 @@ class FiltroController {
                 "unidade": element.value["unidade"],
                 "estacao": element.value['estacao'],
                 "posicao": element.value["posicao"],
+                "dicionario": false,
               }
             ],
           );
         }
       }
 
-      return FilterEstacModel.fromJsonList(listaMapaFiltro);
+      return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
     }
   }
 
-  Future<List<FilterEstacModel>> mapaColunasModel(var escolha) async {
+  Future<List<FilterModel>> mapaColunasModel(var escolha) async {
     if (DropKey.estacKeyDescricao.currentState != null ||
         DropKey.estacKeySubtitulo.currentState != null) {
       DropKey.estacKeyDescricao.currentState!.clear();
@@ -163,12 +182,13 @@ class FiltroController {
               {
                 "posicao": element.value["posicao"],
                 "coluna": element.value['nomeColuna'],
+                "dicionario": false,
               },
             ],
           );
         }
       }
-      return FilterEstacModel.fromJsonList(listaMapaFiltro);
+      return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
     }
@@ -211,25 +231,4 @@ class FiltroController {
       return [];
     }
   }
-}
-
-//************ Transforma a String para comparar com o dicionario ************
-
-List<String> transformaString(List<String> listaColunasARQ) {
-  List<String> lista = [];
-
-  //retira o espaço em branco no final da linha
-  int cont = listaColunasARQ.length - 2;
-
-  for (var i = 0; i < listaColunasARQ.length; i++) {
-    if (i <= cont) {
-      String celula = listaColunasARQ[i];
-      String valor = celula.substring(0, celula.length - 2);
-
-      String upper = valor.toUpperCase();
-      lista = lista + [upper];
-    }
-  }
-
-  return lista;
 }

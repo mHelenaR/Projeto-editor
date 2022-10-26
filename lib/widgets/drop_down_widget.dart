@@ -23,11 +23,12 @@ class DropDownWidget extends StatefulWidget {
 }
 
 class _DropDownWidgetState extends State<DropDownWidget> {
+  GlobalKey<DropdownSearchState> _key = GlobalKey<DropdownSearchState>();
   List<String> tabelasDicionario = objSqlite.nomeColunasDcn;
   final FiltroController _controllerFiltro = FiltroController();
 
   dropEstacao() {
-    return DropdownSearch<FilterEstacModel>(
+    return DropdownSearch<FilterModel>(
       enabled: isSelected,
       key: DropKey.estacKeyCodigo,
       onChanged: (value) {
@@ -60,7 +61,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   }
 
   dropConteudo() {
-    return DropdownSearch<FilterEstacModel>(
+    return DropdownSearch<FilterModel>(
       onChanged: (value) {
         objEstacaoModel.setColunaNome = value;
       },
@@ -92,16 +93,15 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   }
 
   dropDicionario() {
-    GlobalKey<DropdownSearchState> key = GlobalKey<DropdownSearchState>();
-
     if (widget.tipoFiltro == 'mensagem') {
-      key = DropKey.estacKeyDescricao;
+      _key = DropKey.estacKeyDescricao;
     } else if (widget.tipoFiltro == 'titulo') {
-      key = DropKey.estacKeySubtitulo;
+      _key = DropKey.estacKeySubtitulo;
     }
     return DropdownSearch<FilterModel>(
-      key: key,
+      key: _key,
       onChanged: (value) {
+        objEstacaoModel.setColunaNome = value;
         objFiltro.setTabelasConfig = value;
       },
       asyncItems: (String? filter) =>

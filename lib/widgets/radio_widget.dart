@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:editorconfiguracao/models/keys_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -296,12 +298,13 @@ class _RadioWidgetState extends State<RadioWidget> {
                 onPressed: () {
                   if (objEstacaoModel.estacaoNumero != null &&
                       objEstacaoModel.colunaNome != null) {
-                    FilterEstacModel recebe = objEstacaoModel.estacaoNumero;
-                    FilterEstacModel coluna = objEstacaoModel.colunaNome;
+                    FilterModel recebe = objEstacaoModel.estacaoNumero;
+                    FilterModel coluna = objEstacaoModel.colunaNome;
 
-                    _controllerFiltro.handleFocusTESTE1(
+                    _controllerFiltro.focarCelulaFiltroEstacao(
                       coluna.coluna,
                       int.parse(recebe.posicao!) - 1,
+                      coluna.dicionario,
                     );
                   }
                 },

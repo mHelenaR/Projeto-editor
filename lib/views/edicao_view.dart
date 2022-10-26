@@ -203,7 +203,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  FilterEstacModel recebe =
+                                  FilterModel recebe =
                                       objEstacaoModel.estacaoNumero;
 
                                   final filter = stateManager!

@@ -1,57 +1,38 @@
 class FilterModel {
-  final String? tabela;
   final String? coluna;
-  final String? titulo;
-  final String? mensagem;
   final String? estacao;
+  final String? mensagem;
+  final String? posicao;
+  final String? tabela;
+  final String? titulo;
+  final String? unidade;
+  final bool? dicionario;
 
   FilterModel({
-    this.tabela,
     this.coluna,
-    this.titulo,
-    this.mensagem,
     this.estacao,
+    this.mensagem,
+    this.posicao,
+    this.tabela,
+    this.titulo,
+    this.unidade,
+    this.dicionario,
   });
 
   factory FilterModel.fromJson(Map<String, dynamic> json) {
     return FilterModel(
-      tabela: json["tabela"],
-      coluna: json["coluna"],
-      titulo: json["titulo"],
-      mensagem: json["mensagem"],
-      estacao: json["estacao"],
-    );
+        coluna: json["coluna"],
+        estacao: json["estacao"],
+        mensagem: json["mensagem"],
+        posicao: json["posicao"],
+        tabela: json["tabela"],
+        titulo: json["titulo"],
+        unidade: json["unidade"],
+        dicionario: json["dicionario"]);
   }
 
   static List<FilterModel> fromJsonList(List list) {
     return list.map((item) => FilterModel.fromJson(item)).toList();
-  }
-}
-
-class FilterEstacModel {
-  final String? unidade;
-  final String? estacao;
-  final String? posicao;
-  final String? coluna;
-
-  FilterEstacModel({
-    this.unidade,
-    this.estacao,
-    this.posicao,
-    this.coluna,
-  });
-
-  factory FilterEstacModel.fromJson(Map<String, dynamic> json) {
-    return FilterEstacModel(
-      unidade: json['unidade'],
-      estacao: json['estacao'],
-      posicao: json['posicao'],
-      coluna: json['coluna'],
-    );
-  }
-
-  static List<FilterEstacModel> fromJsonList(List list) {
-    return list.map((item) => FilterEstacModel.fromJson(item)).toList();
   }
 }
 
