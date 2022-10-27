@@ -197,7 +197,12 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                 width: 10,
                               ),
                               ElevatedButton(
-                                onPressed: () => expandeContainer(),
+                                onPressed: () {
+                                  expandeContainer();
+                                  setState(() {
+                                    filtro = 'principal';
+                                  });
+                                },
                                 style: estiloBotao,
                                 child: const Text("Filtrar"),
                               ),

@@ -109,6 +109,27 @@ class FiltroController {
             );
           }
         }
+      } else if (escolha == "Dicionario") {
+        recebeListaMapa = await objSqlite.tabelasCompletas;
+
+        for (var i = 0; i < recebeListaMapa.length; i++) {
+          mapasFiltro = recebeListaMapa[i];
+
+          for (var element in mapasFiltro.entries) {
+            listaMapaFiltro.addAll(
+              [
+                {
+                  "tabela": element.key,
+                  "coluna": element.value["campo"],
+                  "titulo": element.value['titulo'],
+                  "mensagem": element.value['mensagem'],
+                  "posicao": i.toString(),
+                  "dicionario": true,
+                },
+              ],
+            );
+          }
+        }
       }
       return FilterModel.fromJsonList(listaMapaFiltro);
     } else {

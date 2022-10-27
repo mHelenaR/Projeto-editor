@@ -14,6 +14,7 @@ String recebeCaminhoArquivo = '';
 String conteudoArquivo = '';
 String separarArquivo = '';
 String? caminhoArq;
+String filtro = 'principal';
 
 //mapas
 List<dynamic> recebeMapa = [];

@@ -155,6 +155,8 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       return dropEstacao();
     } else if (widget.tituloFiltro == 'Coluna') {
       return dropConteudo();
+    } else if (widget.tituloFiltro == 'Descrição') {
+      return dropDicionario();
     } else {
       return dropDicionario();
     }
