@@ -134,7 +134,7 @@ class FiltroController {
             );
           }
         }
-      } else if (escolha == "tabelaPrincipal") {
+      } else if (escolha == "Focar Tabelas") {
         tabelaNome = await objEstacaoModel.tabelasNome;
 
         for (var i = 0; i < tabelaNome.length; i++) {

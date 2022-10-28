@@ -229,7 +229,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
 
                                   stateManager!.setFilterWithFilterRows(rows);
                                 },
-                                child: const Text('data'),
+                                child: const Text('Teste'),
                               )
                             ],
                           ),

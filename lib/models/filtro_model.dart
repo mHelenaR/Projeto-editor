@@ -60,6 +60,9 @@ class EstacaoFiltroModel {
   dynamic _colunaNome;
   dynamic _tabelasNome;
 
+  //Filtro principal
+  dynamic _colunasPrincipal;
+
   get estacaoOpcao => _estacaoOpcao;
   set setEstacaoOpcao(var estacaoOpcao) {
     _estacaoOpcao = estacaoOpcao;
@@ -95,6 +98,11 @@ class EstacaoFiltroModel {
   get tabelasNome => _tabelasNome;
   set setTabelasNome(var tabelasNome) {
     _tabelasNome = tabelasNome;
+  }
+
+  get colunasPrincipal => _colunasPrincipal;
+  set setColunasPrincipal(var colunasPrincipal) {
+    _colunasPrincipal = colunasPrincipal;
   }
 }
 
