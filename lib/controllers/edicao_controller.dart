@@ -32,6 +32,9 @@ class EdicaoController {
     listaTIT.clear();
     recebeCPO.clear();
     celulaCPO.clear();
+
+    //Limpa o nome das tabelas que sera passado para o objeto
+    tabelasArquivo.clear();
     separarArquivo = "";
 
     try {
@@ -151,6 +154,7 @@ class EdicaoController {
     objEstacaoModel.setEstacaoOpcao = numerosEstacao;
 
     objEstacaoModel.setTabelasNome = tabelasArquivo;
+
     //===============================================
 
     return PlutoGrid(

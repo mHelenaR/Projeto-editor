@@ -92,7 +92,7 @@ class FiltroController {
             );
           }
         }
-        print(listaMapaFiltro);
+
         return FilterModel.fromJsonList(listaMapaFiltro);
       } else if (escolha == 'Estação') {
         recebeListaMapa = await objEstacaoModel.mapaEstacao;
@@ -148,6 +148,7 @@ class FiltroController {
           );
         }
       }
+
       return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];
@@ -200,7 +201,7 @@ class FiltroController {
 
       //Verifica se o dropdown selecionado é da tabela dicionário ou do arquivo
       if (isDictionary == true) {
-        /* Percorre a lista de mapas da tabela dicionário
+        /** Percorre a lista de mapas da tabela dicionário
           * passando o indice da coluna escolhida
           */
         for (int i = 0; i < recebeListaMapa.length; i++) {

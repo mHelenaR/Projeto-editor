@@ -137,7 +137,12 @@ class _DropDownWidgetState extends State<DropDownWidget> {
 
   dropTabela() {
     return DropdownSearch<FilterModel>(
-      onChanged: (value) {},
+      onChanged: (value) {
+        FilterModel coluna = value!;
+        setState(() {
+          tabController.index = int.parse(coluna.posicao!);
+        });
+      },
       asyncItems: (String? filter) =>
           _controllerFiltro.mapaFiltro(widget.tituloFiltro),
       itemAsString: (item) => item.tabela ?? "",
