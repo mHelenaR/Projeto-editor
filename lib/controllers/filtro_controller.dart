@@ -33,9 +33,11 @@ class FiltroController {
 
     List<Map<dynamic, dynamic>> recebeListaMapa = [];
 
+    List<String> tabelaNome = [];
+
     if (escolha != null) {
       if (escolha == "Descrição" || escolha == 'Subtítulo') {
-        //Limpa as chaves do dropDown não selecionado
+        // Limpa as chaves do dropDown não selecionado
         if (escolha == 'Descrição') {
           DropKey.estacKeyColuna.currentState!.clear();
           DropKey.estacKeySubtitulo.currentState!.clear();
@@ -90,6 +92,8 @@ class FiltroController {
             );
           }
         }
+        print(listaMapaFiltro);
+        return FilterModel.fromJsonList(listaMapaFiltro);
       } else if (escolha == 'Estação') {
         recebeListaMapa = await objEstacaoModel.mapaEstacao;
 
@@ -129,6 +133,19 @@ class FiltroController {
               ],
             );
           }
+        }
+      } else if (escolha == "tabelaPrincipal") {
+        tabelaNome = await objEstacaoModel.tabelasNome;
+
+        for (var i = 0; i < tabelaNome.length; i++) {
+          listaMapaFiltro.addAll(
+            [
+              {
+                'tabela': tabelaNome[i],
+                'posicao': i.toString(),
+              },
+            ],
+          );
         }
       }
       return FilterModel.fromJsonList(listaMapaFiltro);

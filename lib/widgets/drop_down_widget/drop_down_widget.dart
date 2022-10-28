@@ -102,7 +102,6 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       key: _key,
       onChanged: (value) {
         objEstacaoModel.setColunaNome = value;
-        objFiltro.setTabelasConfig = value;
       },
       asyncItems: (String? filter) =>
           _controllerFiltro.mapaFiltro(widget.tituloFiltro),
@@ -136,6 +135,35 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     );
   }
 
+  dropTabela() {
+    return DropdownSearch<FilterModel>(
+      onChanged: (value) {},
+      asyncItems: (String? filter) =>
+          _controllerFiltro.mapaFiltro(widget.tituloFiltro),
+      itemAsString: (item) => item.tabela ?? "",
+      popupProps: PopupPropsMultiSelection.menu(
+        emptyBuilder: dropDownEmpty,
+        showSelectedItems: true,
+        itemBuilder: (context, item, isSelecte) {
+          return ListTile(
+            title: Text(item.tabela ?? ''),
+            // subtitle: Text('Unidade: ${'item.unidade'}'),
+          );
+        },
+        showSearchBox: true,
+      ),
+      compareFn: (item, selectedItem) => item.tabela == selectedItem.tabela,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          hintText: "Escolha um filtro",
+          suffixIcon: const Icon(Icons.arrow_drop_down),
+          labelText: widget.tituloFiltro,
+        ),
+      ),
+    );
+  }
+
   Widget dropDownEmpty(context, searchEntry) {
     return Column(
       children: const [
@@ -155,10 +183,11 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       return dropEstacao();
     } else if (widget.tituloFiltro == 'Coluna') {
       return dropConteudo();
-    } else if (widget.tituloFiltro == 'Descrição') {
+    } else if (widget.tituloFiltro == 'Descrição' ||
+        widget.tituloFiltro == 'Subtítulo') {
       return dropDicionario();
     } else {
-      return dropDicionario();
+      return dropTabela();
     }
   }
 }

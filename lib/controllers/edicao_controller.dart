@@ -20,6 +20,7 @@ class EdicaoController {
   String estacUnidade = '';
   List<Map<String, dynamic>> mapaColEstacao = [];
   List<String> listaColunasEstac = [];
+  List<String> tabelasArquivo = [];
   var mapa = {};
   // final FiltroController _filtroController = FiltroController();
 
@@ -42,7 +43,10 @@ class EdicaoController {
 
       for (int i = 0; i < nomeTabelas.length; i++) {
         int contador = widgetNumber + 1;
+
         String start = 'TIT ${nomeTabelas[widgetNumber]}#';
+
+        tabelasArquivo.addAll([nomeTabelas[i]]);
 
         if (contador == nomeTabelas.length) {
           contador = contador - 1;
@@ -145,6 +149,8 @@ class EdicaoController {
 
     lista1 = [];
     objEstacaoModel.setEstacaoOpcao = numerosEstacao;
+
+    objEstacaoModel.setTabelasNome = tabelasArquivo;
     //===============================================
 
     return PlutoGrid(
