@@ -8,7 +8,7 @@ import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_
 
 class FiltroController {
   // Busca o indice da celula na tabela
-  void handleFocusToIndex(var position) {
+  void focarColuna(var position) {
     int rowIdx = 0;
 
     int cellIdx = 0;
@@ -147,8 +147,35 @@ class FiltroController {
             ],
           );
         }
-      }
+      } else if (escolha == "Dicio. Descrição" ||
+          escolha == "Dicio. Subtítulo") {
+        if (escolha == 'Dicio. Descrição') {
+          DropKey.dicioSubtitulo.currentState!.clear();
+        } else if (escolha == 'Dicio. Subtítulo') {
+          DropKey.dicioDescricao.currentState!.clear();
+        }
 
+        recebeListaMapa = await objSqlite.tabelasCompletas;
+
+        for (var i = 0; i < recebeListaMapa.length; i++) {
+          mapasFiltro = recebeListaMapa[i];
+
+          for (var element in mapasFiltro.entries) {
+            listaMapaFiltro.addAll(
+              [
+                {
+                  "tabela": element.key,
+                  "coluna": element.value["campo"],
+                  "titulo": element.value['titulo'],
+                  "mensagem": element.value['mensagem'],
+                  "posicao": i.toString(),
+                  "dicionario": true,
+                },
+              ],
+            );
+          }
+        }
+      }
       return FilterModel.fromJsonList(listaMapaFiltro);
     } else {
       return [];

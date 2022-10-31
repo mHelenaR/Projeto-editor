@@ -10,4 +10,8 @@ class DropKey {
       GlobalKey<DropdownSearchState>();
   static GlobalKey<DropdownSearchState> estacKeySubtitulo =
       GlobalKey<DropdownSearchState>();
+  static GlobalKey<DropdownSearchState> dicioDescricao =
+      GlobalKey<DropdownSearchState>();
+  static GlobalKey<DropdownSearchState> dicioSubtitulo =
+      GlobalKey<DropdownSearchState>();
 }

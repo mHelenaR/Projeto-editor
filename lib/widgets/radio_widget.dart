@@ -208,12 +208,22 @@ class _RadioWidgetState extends State<RadioWidget> {
             ),
             sizedDopDown('Focar Tabelas', 'tabelaPrincipal'),
             boxWidth10(),
-            sizedDopDown('Colunas Arquivo', 'tabelaPrincipal'),
+            sizedDopDown('Dicio. Descrição', 'mensagemDicio'),
             boxWidth10(),
-            sizedDopDown('Dicio. Descrição', 'tabelaPrincipal'),
+            sizedDopDown('Dicio. Subtítulo', 'tituloDicio'),
             boxWidth10(),
-            sizedDopDown('Dicio. Subtítulo', 'tabelaPrincipal'),
             boxWidth10(),
+            ElevatedButton(
+              onPressed: () {
+                try {
+                  FilterModel coluna = objEstacaoModel.colunaNome;
+                  _controllerFiltro.focarColuna(coluna.coluna);
+                } catch (e) {
+                  print(e);
+                }
+              },
+              child: const Text('Pesquisar'),
+            ),
           ],
         ),
       ),

@@ -97,24 +97,34 @@ class _DropDownWidgetState extends State<DropDownWidget> {
       _key = DropKey.estacKeyDescricao;
     } else if (widget.tipoFiltro == 'titulo') {
       _key = DropKey.estacKeySubtitulo;
+    } else if (widget.tipoFiltro == 'mensagemDicio') {
+      _key = DropKey.dicioDescricao;
+    } else if (widget.tipoFiltro == 'tituloDicio') {
+      _key = DropKey.dicioSubtitulo;
     }
+
+    String tipoFiltro = widget.tipoFiltro;
     return DropdownSearch<FilterModel>(
       key: _key,
       onChanged: (value) {
-        objEstacaoModel.setColunaNome = value;
+        if (value != null) {
+          focarTabela(value);
+          objEstacaoModel.setColunaNome = value;
+        }
       },
       asyncItems: (String? filter) =>
           _controllerFiltro.mapaFiltro(widget.tituloFiltro),
-      itemAsString: (item) => widget.tipoFiltro == 'mensagem'
-          ? item.mensagem ?? ''
-          : item.titulo ?? '',
+      itemAsString: (item) =>
+          tipoFiltro == 'mensagem' || tipoFiltro == 'mensagemDicio'
+              ? item.mensagem ?? ''
+              : item.titulo ?? '',
       popupProps: PopupPropsMultiSelection.menu(
         emptyBuilder: dropDownEmpty,
         showSelectedItems: true,
         itemBuilder: (context, item, isSelected) {
           return ListTile(
             title: Text(
-              widget.tipoFiltro == 'mensagem'
+              tipoFiltro == 'mensagem' || tipoFiltro == 'mensagemDicio'
                   ? item.mensagem ?? ''
                   : item.titulo ?? '',
             ),
@@ -152,7 +162,6 @@ class _DropDownWidgetState extends State<DropDownWidget> {
         itemBuilder: (context, item, isSelecte) {
           return ListTile(
             title: Text(item.tabela ?? ''),
-            // subtitle: Text('Unidade: ${'item.unidade'}'),
           );
         },
         showSearchBox: true,
@@ -182,6 +191,21 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     );
   }
 
+  focarTabela(var value) {
+    List<String> teste = objEstacaoModel.tabelasNome;
+
+    int recebe = 0;
+
+    for (var i = 0; i < teste.length; i++) {
+      if (teste[i] == value.tabela) {
+        recebe = i;
+      }
+    }
+    setState(() {
+      tabController.index = recebe;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.tituloFiltro == 'Estação') {
@@ -189,7 +213,9 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     } else if (widget.tituloFiltro == 'Coluna') {
       return dropConteudo();
     } else if (widget.tituloFiltro == 'Descrição' ||
-        widget.tituloFiltro == 'Subtítulo') {
+        widget.tituloFiltro == 'Subtítulo' ||
+        widget.tituloFiltro == 'Dicio. Subtítulo' ||
+        widget.tituloFiltro == 'Dicio. Descrição') {
       return dropDicionario();
     } else {
       return dropTabela();
