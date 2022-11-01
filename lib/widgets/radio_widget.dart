@@ -1,18 +1,16 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:editorconfiguracao/controllers/filtro_controller.dart';
-import 'package:editorconfiguracao/models/keys_model.dart';
-import 'package:editorconfiguracao/widgets/drop_down_widget/drop_down_widget.dart';
-import 'package:editorconfiguracao/widgets/sized_box_widget.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:editorconfiguracao/controllers/filtro_controller.dart';
 import 'package:editorconfiguracao/models/filtro_model.dart';
+import 'package:editorconfiguracao/models/keys_model.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
+import 'package:editorconfiguracao/widgets/drop_down_widget/drop_down_widget.dart';
+import 'package:editorconfiguracao/widgets/sized_box_widget.dart';
 
 bool isSelected = true;
 
@@ -215,11 +213,10 @@ class _RadioWidgetState extends State<RadioWidget> {
             boxWidth10(),
             ElevatedButton(
               onPressed: () {
-                try {
+                if (objEstacaoModel.verificaRow != []) {
                   FilterModel coluna = objEstacaoModel.colunaNome;
+
                   _controllerFiltro.focarColuna(coluna.coluna);
-                } catch (e) {
-                  print(e);
                 }
               },
               child: const Text('Pesquisar'),

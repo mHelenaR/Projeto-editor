@@ -59,6 +59,7 @@ class EstacaoFiltroModel {
   dynamic _colunasMapa;
   dynamic _colunaNome;
   dynamic _tabelasNome;
+  dynamic _verificaRow;
 
   //Filtro principal
   dynamic _colunasPrincipal;
@@ -103,6 +104,11 @@ class EstacaoFiltroModel {
   get colunasPrincipal => _colunasPrincipal;
   set setColunasPrincipal(var colunasPrincipal) {
     _colunasPrincipal = colunasPrincipal;
+  }
+
+  get verificaRow => _verificaRow;
+  set setVerificaRow(var verificaRow) {
+    _verificaRow = verificaRow;
   }
 }
 

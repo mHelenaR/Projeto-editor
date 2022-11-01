@@ -7,6 +7,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
 
+import '../test/separa_arq.dart';
+
 class TelaInicial extends StatelessWidget {
   const TelaInicial({Key? key}) : super(key: key);
 
@@ -34,6 +36,33 @@ class TelaInicial extends StatelessWidget {
             ],
           ),
         ),
+        ElevatedButton(
+          onPressed: () {
+            // FilterModel recebe =
+            //     objEstacaoModel.estacaoNumero;
+
+            // final filter = stateManager!
+            //     .configuration.columnFilter.filters.first;
+
+            // final rows = <PlutoRow>[
+            //   PlutoRow(
+            //     cells: {
+            //       FilterHelper.filterFieldColumn:
+            //           PlutoCell(value: "1"),
+            //       FilterHelper.filterFieldType:
+            //           PlutoCell(value: filter),
+            //       FilterHelper.filterFieldValue:
+            //           PlutoCell(value: recebe.estacao),
+            //     },
+            //   ),
+            // ];
+
+            // stateManager!.setFilterWithFilterRows(rows);
+            SeparaTest v = SeparaTest();
+            v.ler();
+          },
+          child: const Text('Teste'),
+        )
       ],
     );
   }

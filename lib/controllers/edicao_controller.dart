@@ -22,7 +22,6 @@ class EdicaoController {
   List<String> listaColunasEstac = [];
   List<String> tabelasArquivo = [];
   var mapa = {};
-  // final FiltroController _filtroController = FiltroController();
 
   // Método que monta o grid
 
@@ -106,6 +105,7 @@ class EdicaoController {
             //   text: nomeColunas[contCol],
             //   recognizer: TapGestureRecognizer()..onTap = () => print(contCol),
             // ),
+            enableContextMenu: false,
             titleTextAlign: PlutoColumnTextAlign.center,
             readOnly: leitura(nomeColunas, contCol),
             textAlign: PlutoColumnTextAlign.center,
@@ -123,6 +123,8 @@ class EdicaoController {
 
           for (int p = 1; p < recebeCPO.length; p++) {
             celulaCPO = recebeCPO[p].split('^');
+
+            objEstacaoModel.setVerificaRow = celulaCPO;
 
             rows.addAll([
               PlutoRow(cells: {
@@ -190,7 +192,7 @@ class EdicaoController {
         //   print(event.stateManager.currentCellPosition);
 
         // });
-
+        stateManager!.clearCurrentCell();
         stateManager!.notifyListeners();
         // stateManager!.keyManager!.subject.listen((PlutoKeyManagerEvent value) {
         //   // if (value.isKeyDownEvent && value.isEnter) {

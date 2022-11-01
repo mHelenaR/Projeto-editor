@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
@@ -17,12 +19,15 @@ class FiltroController {
         cellIdx = i;
       }
     }
-    PlutoCell cell =
-        stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
-    stateManager!.setCurrentCell(cell, rowIdx);
-    stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
-    stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
-    stateManager!.notifyListeners();
+    if (stateManager!.rows.isNotEmpty) {
+      stateManager!.clearCurrentCell();
+      PlutoCell cell =
+          stateManager!.rows[rowIdx].cells.entries.elementAt(cellIdx).value;
+      stateManager!.setCurrentCell(cell, rowIdx);
+      stateManager!.moveScrollByRow(PlutoMoveDirection.up, rowIdx + 1);
+      stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
+      stateManager!.notifyListeners();
+    }
   }
 
   //Método criador dos mapas para o DropDown da estação

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/controllers/edicao_controller.dart';
 import 'package:editorconfiguracao/models/filtro_model.dart';
@@ -208,26 +207,26 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  FilterModel recebe =
-                                      objEstacaoModel.estacaoNumero;
+                                  // FilterModel recebe =
+                                  //     objEstacaoModel.estacaoNumero;
 
-                                  final filter = stateManager!
-                                      .configuration.columnFilter.filters.first;
+                                  // final filter = stateManager!
+                                  //     .configuration.columnFilter.filters.first;
 
-                                  final rows = <PlutoRow>[
-                                    PlutoRow(
-                                      cells: {
-                                        FilterHelper.filterFieldColumn:
-                                            PlutoCell(value: "1"),
-                                        FilterHelper.filterFieldType:
-                                            PlutoCell(value: filter),
-                                        FilterHelper.filterFieldValue:
-                                            PlutoCell(value: recebe.estacao),
-                                      },
-                                    ),
-                                  ];
+                                  // final rows = <PlutoRow>[
+                                  //   PlutoRow(
+                                  //     cells: {
+                                  //       FilterHelper.filterFieldColumn:
+                                  //           PlutoCell(value: "1"),
+                                  //       FilterHelper.filterFieldType:
+                                  //           PlutoCell(value: filter),
+                                  //       FilterHelper.filterFieldValue:
+                                  //           PlutoCell(value: recebe.estacao),
+                                  //     },
+                                  //   ),
+                                  // ];
 
-                                  stateManager!.setFilterWithFilterRows(rows);
+                                  // stateManager!.setFilterWithFilterRows(rows);
                                 },
                                 child: const Text('Teste'),
                               )
