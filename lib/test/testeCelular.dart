@@ -9,7 +9,7 @@ testeClass objeto = testeClass();
 
 class SeparaTest {
   ler() async {
-    String conteudoArquivo = await converteArquivo('C:\\frente\\config1.cfg');
+    String conteudoArquivo = await converteArquivo('C:\\frente\\config.cfg');
 
     List<String> chavePrincipal = await nomeTabelasArquivo(conteudoArquivo);
 
@@ -148,19 +148,15 @@ class SeparaTest {
   criaTabelas() {
     Map<dynamic, dynamic> recebe = objeto.separadasEnter;
     List<String> columns = [];
-    List<dynamic> test = [];
     Map mapa = {};
     List<dynamic> rows = [];
-    Map ma = {};
-    Map ma1 = {};
-    int cont = 0;
     // List<Map<dynamic, dynamic>> rows = [];
     List<Map<dynamic, dynamic>> lista = [];
     for (var element in recebe.entries) {
       String teste = element.value;
 
       var n = teste.split('\r\n');
-      //test.clear();
+
       for (var i = 0; i < n.length; i++) {
         if (i == 0) {
           var m = n[i].split('|');
@@ -172,66 +168,38 @@ class SeparaTest {
         } else {
           var re = n[i].split('CPO ');
 
-          for (var p = 0; p < re.length; p++) {
-            if (re[p] != '') {
-              var celula = re[p].split('^');
+          for (var elew in re) {
+            if (elew != '') {
+              var r = elew.split('^');
 
               //  for (var j = 0; j < r.length; j++) {
               // rows.addAll(r);
               // rows.addAll([
               //   {columns[j]: r[j]}
               // ]);
-
-              for (var j = 0; j < celula.length; j++) {
-                // var rew = {columns[j]: r[j]};
-                // rows = [rew];
-                //rows.addAll(['${celula[j]}/wndkanwd']);
-                // print(rows);
-                // rows.addAll([r]);
-                //rows.addAll([r]);
-                // String teste = 'a / $celula';
-                rows = celula;
-                print(rows);
-                ma1.addAll({'$j/${element.key}': rows});
-              }
-
-              // test.add([
-              //   {'linhas': rows}
-              // ]);
-              //test.addAll([rows]);
+              rows.addAll([
+                for (var j = 0; j < r.length; j++)
+                  {
+                    {columns[j]: r[j]}
+                  }
+              ]);
 
               //  }
             }
           }
         }
-        //ma = {'colunas': columns};
 
-        // mapa.addAll({
-        //   element.key: {
-        //     ma,
-        //     test,
-        //   }
-        // });
-        // mapa.addAll({
-        //   element.key: {
-        //     'linhas': rows,
-        //   }
-        // });
+        mapa.addAll({
+          element.key: {
+            'colunas': columns,
+            'linhas': rows,
+          }
+        });
       }
-      // mapa.addAll({
-      //   element.key: {
-      //     ma,
-      //     test,
-      //   }
-      // });
 
       //lista.addAll([mapa]);
     }
-    //print(test);
-    //print(rows);
-    // print(mapa);
+    print(mapa);
     // print(lista);
-
-    print(ma1);
   }
 }

@@ -37,7 +37,7 @@ class TelaInicial extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             // FilterModel recebe =
             //     objEstacaoModel.estacaoNumero;
 
@@ -59,7 +59,8 @@ class TelaInicial extends StatelessWidget {
 
             // stateManager!.setFilterWithFilterRows(rows);
             SeparaTest v = SeparaTest();
-            v.ler();
+            await v.ler();
+            v.separa();
           },
           child: const Text('Teste'),
         )

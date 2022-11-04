@@ -352,7 +352,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
         if (kDebugMode) {
           print("Valor célula editada: ${event.value}");
           print("Valor célula anterior: ${event.oldValue}");
-          print("Nome Coluna: ${event.column!.title}");
+          print("Nome Coluna: ${event.column.title}");
           print("Posição célula editada: ${event.rowIdx}");
           print("\n=======================================\n");
         }

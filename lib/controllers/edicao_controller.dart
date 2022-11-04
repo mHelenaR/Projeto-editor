@@ -75,8 +75,9 @@ class EdicaoController {
       nomeColunas = linhasTIT[0].split('|');
 
       //================== MAPA ESTACAO NOME-COLUNAS/POSIÇÃO ======================= //
-
-      mapaEstacColuna(nomeTabelas, nomeColunas);
+      if (nomeTabelas[widgetNumber] == 'estac') {
+        mapaEstacColuna(nomeTabelas, nomeColunas);
+      }
 
       //============================================================================ //
 
@@ -105,7 +106,7 @@ class EdicaoController {
             //   text: nomeColunas[contCol],
             //   recognizer: TapGestureRecognizer()..onTap = () => print(contCol),
             // ),
-            enableContextMenu: false,
+            //enableContextMenu: false,
             titleTextAlign: PlutoColumnTextAlign.center,
             readOnly: leitura(nomeColunas, contCol),
             textAlign: PlutoColumnTextAlign.center,
@@ -165,14 +166,14 @@ class EdicaoController {
       columns: columns,
       rows: rows,
       onChanged: (PlutoGridOnChangedEvent event) {
-        int rowIndex = event.rowIdx! + 1;
+        int rowIndex = event.rowIdx + 1;
         mapa = {
           'tabelaInicial': nomeTabelas[tabController.index],
           'tabelaFinal': nomeTabelas[metodoContador(
             tabController.index,
             nomeTabelas,
           )],
-          'coluna': nomeColunas[event.columnIdx!],
+          'coluna': nomeColunas[event.columnIdx],
           'colunaIndex': event.columnIdx,
           'linhaIndex': rowIndex,
           'novoValor': event.value,
