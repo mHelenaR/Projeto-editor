@@ -1,4 +1,5 @@
 import 'package:editorconfiguracao/views/edicao_view.dart';
+import 'package:editorconfiguracao/views/teste_tabela_view.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -97,6 +98,8 @@ class MenuPrincipalState extends State<MenuPrincipal> {
 
                     case 1:
                       return const TelaEdicao();
+                    case 2:
+                      return const TesteTabela();
 
                     case 3:
                       return const TelaConexao();

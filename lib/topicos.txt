@@ -3,6 +3,7 @@
  ok - Arrumar a conexao com postgres;
     - Avisos de conexao;
     - Avisos de arquivo;
+    - Criar .db padrão;
     - Verificação de arquivo .bd existe ao iniciar o projeto;
     - Criar fundo tela inicial
     - Criar fundo configurações

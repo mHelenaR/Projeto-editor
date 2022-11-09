@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print, unused_local_variable
 
+import 'dart:collection';
+
 import 'package:editorconfiguracao/models/edicao_model.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/nome_tabelas.dart';
@@ -9,7 +11,8 @@ testeClass objeto = testeClass();
 
 class SeparaTest {
   ler() async {
-    String conteudoArquivo = await converteArquivo('C:\\frente\\config1.cfg');
+    String conteudoArquivo =
+        await converteArquivo('C:\\frente\\config (11).cfg');
 
     List<String> chavePrincipal = await nomeTabelasArquivo(conteudoArquivo);
 
@@ -46,67 +49,9 @@ class SeparaTest {
       linhasTIT.addAll([
         {chavePrincipal[i]: recebeTabela}
       ]);
-
-      // linhasTIT = recebeTabela!.split("\r\n");
-      // var nomeColunas = linhasTIT[0].split('|');
-
-      //print(nomeColunas);
-      // for (var l = 0; l < linhasTIT.length; l++) {
-      //   int contador = l + 1;
-
-      //   if (contador == linhasTIT.length) {
-      //     contador = contador - 1;
-      //   }
-      //   //if (l == 0) {
-      //   //tit
-      //   var nomeColunas = linhasTIT[0].split('|');
-
-      //   //cpo
-      //   if (linhasTIT[l] != "") {
-      //     String recebeLinhas = linhasTIT[contador];
-      //     var recebeCPO = recebeLinhas.split('CPO ');
-      //     recebeCPO.removeAt(0);
-      //     for (var m = 0; m < recebeCPO.length; m++) {
-      //       var celulaCPO = recebeCPO[m].split('^');
-      //       for (var element in celulaCPO) {
-      //         print(element);
-      //       }
-      //       //print(recebeCPO[m]);
-      //       for (var j = 0; j < nomeColunas.length; j++) {
-
-      //         // print('CPO : ${celulaCPO.length}');
-      //         // print(celulaCPO[j]);
-      //         // mapaConfig.addAll(
-      //         //   [
-      //         //     {
-      //         //       chavePrincipal[i]: {
-      //         //         'tabelaPosicao': i.toString(),
-      //         //         'colunaArq': nomeColunas[j],
-      //         //         'posicaoArq': j.toString(),
-      //         //         'celulaArq': celulaCPO[j],
-      //         //       }
-      //         //     },
-      //         //   ],
-      //         // );
-      //         // print('TIT : ${nomeColunas.length}');
-      //       }
-      //     }
-      //   }
-      // }
     }
 
-    // for (var i = 0; i < linhasTIT.length; i++) {
-    //   var teste = linhasTIT[i];
-    //   for (var element in teste.entries) {
-    //     String tes = element.value;
-    //     print(tes.split('|'));
-    //   }
-    // }
-
     objeto.setTabelas = linhasTIT;
-
-    //print(linhasTIT);
-    //print('\n\n\n');
   }
 
   separa() {
@@ -116,122 +61,125 @@ class SeparaTest {
     Map<dynamic, dynamic> teste1 = {};
     for (var i = 0; i < tabelas.length; i++) {
       teste1.addAll(tabelas[i]);
-
-      // for (var element in teste1.entries) {
-      //   String teste2 = element.value;
-      //   // List<String> n = teste2;
-      //   novo.addAll([teste2]);
-      //   //List<String> novo2 = novo[0].split('|');
-
-      //   // colunas para a tabela
-      //   // columns = [
-      //   //   for (int k = 0; k < novo2.length; k++) ...{
-      //   //     novo2[k],
-      //   //   }
-      //   // ];
-
-      //   // for (var l = 1; l < novo.length; l++) {
-      //   //   String teste3 = novo[l];
-      //   //   List<String> cpo = teste3.split('CPO ');
-      //   //   print(teste3);
-      //   // }
-
-      //   // print(novo[0].split('|'));
-      //   //print(columns);
-      // }
     }
     objeto.setSeparadasEnter = teste1;
-    // print(novo);
+
     criaTabelas();
   }
 
   criaTabelas() {
     Map<dynamic, dynamic> recebe = objeto.separadasEnter;
-    List<String> columns = [];
+    List<dynamic> columns = [];
     List<dynamic> test = [];
+    List<dynamic> testeMapa = [];
     Map mapa = {};
     List<dynamic> rows = [];
     Map ma = {};
     Map ma1 = {};
     int cont = 0;
-    // List<Map<dynamic, dynamic>> rows = [];
+    String nome = '';
+    List<dynamic> tester = [];
+    var receves = [];
+
     List<Map<dynamic, dynamic>> lista = [];
     for (var element in recebe.entries) {
       String teste = element.value;
-
+      cont = cont + 1;
       var n = teste.split('\r\n');
-      //test.clear();
+
       for (var i = 0; i < n.length; i++) {
+        int valor = n.length - 1;
+
         if (i == 0) {
           var m = n[i].split('|');
+
           columns = [
             for (int k = 0; k < m.length; k++) ...{
-              m[k],
+              {
+                'nomeColuna': m[k],
+                'posicaoColuna': k.toString(),
+              },
             }
           ];
         } else {
-          var re = n[i].split('CPO ');
+          if (n[i] != "") {
+            List<String> re = n[i].split('CPO ');
 
-          for (var p = 0; p < re.length; p++) {
-            if (re[p] != '') {
-              var celula = re[p].split('^');
+            for (var p = 0; p < re.length; p++) {
+              if (re[p] != '') {
+                List<String> celula = re[p].split('^');
 
-              //  for (var j = 0; j < r.length; j++) {
-              // rows.addAll(r);
-              // rows.addAll([
-              //   {columns[j]: r[j]}
-              // ]);
+                //rows.addAll([celula]);
 
-              for (var j = 0; j < celula.length; j++) {
-                // var rew = {columns[j]: r[j]};
-                // rows = [rew];
-                //rows.addAll(['${celula[j]}/wndkanwd']);
-                // print(rows);
-                // rows.addAll([r]);
-                //rows.addAll([r]);
-                // String teste = 'a / $celula';
-                rows = celula;
-                print(rows);
-                ma1.addAll({'$j/${element.key}': rows});
+                rows.addAll([
+                  for (var l = 0; l < celula.length; l++)
+                    {
+                      'celula': celula[l],
+                      'posicaoCelula': l.toString(),
+                    }
+                ]);
+                tester.addAll([rows]);
+
+                // esvazia a linha antes de adicionar a proxima na lista
+                rows = [];
               }
-
-              // test.add([
-              //   {'linhas': rows}
-              // ]);
-              //test.addAll([rows]);
-
-              //  }
             }
           }
         }
-        //ma = {'colunas': columns};
 
-        // mapa.addAll({
-        //   element.key: {
-        //     ma,
-        //     test,
-        //   }
-        // });
-        // mapa.addAll({
-        //   element.key: {
-        //     'linhas': rows,
-        //   }
-        // });
+        receves = rows;
       }
-      // mapa.addAll({
-      //   element.key: {
-      //     ma,
-      //     test,
-      //   }
-      // });
+      mapa.addAll({
+        element.key: {
+          'colunas': columns,
+          'linhas': tester,
+        }
+      });
+      // esvazia a linha antes de trocar a tabela
 
-      //lista.addAll([mapa]);
+      tester = [];
+      int contador;
+
+      nome = element.key;
     }
-    //print(test);
-    //print(rows);
-    // print(mapa);
-    // print(lista);
+    List<dynamic> testw = [];
+    List<dynamic> colTeste = [];
 
-    print(ma1);
+    for (var element in mapa.entries) {
+      // if (element.key == 'estac') {
+      Map recebe = element.value;
+      for (var recElement in recebe.entries) {
+        //print(recElement.key); // colunas / linhas
+
+        if (recElement.key == 'linhas') {
+          testw = recElement.value;
+        } else if (recElement.key == 'colunas') {
+          colTeste = recElement.value;
+        }
+        testew(colTeste, testw);
+        // }
+      }
+    }
+  }
+
+  testew(var coluna, var linha) {
+    for (var i = 0; i < coluna.length; i++) {
+      print(coluna[i]);
+    }
+
+    // linhas
+    for (var i = 0; i < linha.length; i++) {
+      List<dynamic> novo = linha[i];
+
+      for (var l = 0; l < novo.length; l++) {
+        // Map novomapa = novo[0];
+        print(novo[l]);
+        // for (var element in novomapa.entries) {
+
+        //     print(element.value);
+
+      }
+      //}
+    }
   }
 }
