@@ -11,8 +11,7 @@ testeClass objeto = testeClass();
 
 class SeparaTest {
   ler() async {
-    String conteudoArquivo =
-        await converteArquivo('C:\\frente\\config (11).cfg');
+    String conteudoArquivo = await converteArquivo('C:\\frente\\config1.cfg');
 
     List<String> chavePrincipal = await nomeTabelasArquivo(conteudoArquivo);
 
