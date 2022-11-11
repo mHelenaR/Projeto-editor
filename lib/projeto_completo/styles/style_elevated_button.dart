@@ -1,4 +1,4 @@
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
 import 'package:flutter/material.dart';
 
 final estiloBotao = ElevatedButton.styleFrom(

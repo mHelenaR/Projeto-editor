@@ -1,4 +1,4 @@
-import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_container.dart';
 import 'package:flutter/material.dart';
 
 BoxDecoration? boxSelecao1(var opcao) {
