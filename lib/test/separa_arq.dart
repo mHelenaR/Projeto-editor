@@ -87,8 +87,6 @@ class SeparaTest {
       var n = teste.split('\r\n');
 
       for (var i = 0; i < n.length; i++) {
-        int valor = n.length - 1;
-
         if (i == 0) {
           var m = n[i].split('|');
 

@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/box_container.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/box_container.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 bool isSelected = true;

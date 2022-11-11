@@ -6,7 +6,7 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
 
 //String
 String? opcaoEscolhida;

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_fontes.dart';
 
 import '../test/separa_arq.dart';
 

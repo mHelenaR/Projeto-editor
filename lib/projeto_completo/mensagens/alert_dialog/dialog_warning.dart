@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:editorconfiguracao/projeto_completo/dataBase/base_messages/title_dialogs.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_elevated_button.dart';
 
 class CaixaAviso {
   BuildContext contexto;

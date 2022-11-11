@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_pluto_grid.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_pluto_grid.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class EdicaoController {

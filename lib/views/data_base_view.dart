@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/controllers/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/models/classe_banco_sqlite.dart';
 import 'package:editorconfiguracao/projeto_completo/dataBase/models/classe_postgresql.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_container.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_elevated_button.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_fontes.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_textField.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_container.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_elevated_button.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_fontes.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_textField.dart';
 
 class TelaConexao extends StatefulWidget {
   const TelaConexao({Key? key}) : super(key: key);

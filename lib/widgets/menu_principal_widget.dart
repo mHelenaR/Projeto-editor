@@ -5,8 +5,8 @@ import 'package:sidebarx/sidebarx.dart';
 
 import 'package:editorconfiguracao/views/pagina_inicial_view.dart';
 import 'package:editorconfiguracao/views/data_base_view.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_colors_project.dart';
-import 'package:editorconfiguracao/projeto_completo/style_project/style_sidebar_menu.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
+import 'package:editorconfiguracao/projeto_completo/styles/style_sidebar_menu.dart';
 
 class MenuPrincipal extends StatefulWidget {
   const MenuPrincipal({Key? key}) : super(key: key);
