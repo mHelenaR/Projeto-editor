@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:editorconfiguracao/controllers/filtro_controller.dart';
 import 'package:editorconfiguracao/models/filtro_model.dart';
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class DropDownWidget extends StatefulWidget {
@@ -86,7 +86,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
           border: const OutlineInputBorder(),
           hintText: "Escolha um filtro",
           suffixIcon: const Icon(Icons.arrow_drop_down),
-          labelText: widget.tituloFiltro,
+          labelText: 'Subtítulo',
         ),
       ),
     );

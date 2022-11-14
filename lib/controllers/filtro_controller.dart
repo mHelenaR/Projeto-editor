@@ -5,18 +5,21 @@ import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/models/keys_model.dart';
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 
 class FiltroController {
   // Busca o indice da celula na tabela
   void focarColuna(var position) {
     int rowIdx = 0;
-
+    //  print(nomeColunasDicionario);
     int cellIdx = 0;
     for (int i = 0; i < nomeColunasDicionario.length; i++) {
-      if (position == nomeColunasDicionario[i]) {
-        cellIdx = i;
+      var recebeLista = nomeColunasDicionario[i];
+      for (var j = 0; j < recebeLista.length; j++) {
+        if (position == recebeLista[j]) {
+          cellIdx = j;
+        }
       }
     }
     if (stateManager!.rows.isNotEmpty) {

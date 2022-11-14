@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/box_container.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_borderRadius.dart';

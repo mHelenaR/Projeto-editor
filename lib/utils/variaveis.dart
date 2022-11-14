@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -23,9 +21,6 @@ List<dynamic> recebeMapa = [];
 double height = 0.0;
 double width = 0.0;
 
-//int
-late StreamSubscription removeKeyboardListener;
-
 //booleana
 bool clicked = false;
 
@@ -33,7 +28,7 @@ bool clicked = false;
 List<String> listaTIT = [];
 List<String> nomeTabelas = [];
 List<String> nomeColunas = [];
-List<String> nomeColunasDicionario = [];
+List<List<String>> nomeColunasDicionario = [];
 List<String> nomeSubtituloDicionario = [];
 List<String> recebeCPO = [];
 List<String> celulaCPO = [];
@@ -43,6 +38,8 @@ List<Tab> tabs = [];
 List<Widget> criarWidgets = [];
 List<dynamic> recebeMpa = [];
 List<String> menuSubtitulo = [];
+
+List<Map<String, dynamic>> listaMapaEstac = [];
 
 //banco
 

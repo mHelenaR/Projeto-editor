@@ -1,4 +1,4 @@
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 
 Future<List<String>> nomeTabelasArquivo(String caminho) async {
   List<String> nomeTabelas = [];

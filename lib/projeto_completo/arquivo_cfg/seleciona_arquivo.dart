@@ -1,4 +1,4 @@
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 import 'package:file_picker/file_picker.dart';
 
 Future<String> arquivoGeraBanco() async {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:editorconfiguracao/controllers/filtro_controller.dart';
 import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/models/keys_model.dart';
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
@@ -38,7 +38,7 @@ class _RadioWidgetState extends State<RadioWidget> {
     return AnimatedContainer(
       alignment: Alignment.centerLeft,
       height: height,
-      duration: const Duration(milliseconds: 550),
+      duration: const Duration(milliseconds: 500),
       color: white,
       child: Row(
         children: [
@@ -213,7 +213,8 @@ class _RadioWidgetState extends State<RadioWidget> {
             boxWidth10(),
             ElevatedButton(
               onPressed: () {
-                if (objEstacaoModel.verificaRow != []) {
+                if (objEstacaoModel.verificaRow != [] &&
+                    objEstacaoModel.verificaRow != null) {
                   FilterModel coluna = objEstacaoModel.colunaNome;
 
                   _controllerFiltro.focarColuna(coluna.coluna);

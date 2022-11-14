@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:editorconfiguracao/projeto_completo/edicao_arquivo/models/variaveis.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 
 gravarArquivo() {
   String arquivo = objArquivoGravacao.arquivoGR;
