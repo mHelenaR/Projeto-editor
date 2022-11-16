@@ -1,3 +1,4 @@
+import 'package:editorconfiguracao/models/edicao_model.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -13,9 +14,6 @@ String conteudoArquivo = '';
 String separarArquivo = '';
 String? caminhoArq;
 String filtro = 'principal';
-
-//mapas
-List<dynamic> recebeMapa = [];
 
 //double
 double height = 0.0;
@@ -35,7 +33,7 @@ List<String> celulaCPO = [];
 List<PlutoRow> rows = [];
 List<PlutoColumn> columns = [];
 List<Tab> tabs = [];
-List<Widget> criarWidgets = [];
+
 List<dynamic> recebeMpa = [];
 List<String> menuSubtitulo = [];
 
@@ -45,8 +43,9 @@ List<Map<String, dynamic>> listaMapaEstac = [];
 
 //controle
 final OpcaoFiltroModel objFiltroModel = OpcaoFiltroModel();
+final EdicaoModel objEdicaoModel = EdicaoModel();
 final EstacaoFiltroModel objEstacaoModel = EstacaoFiltroModel();
-final TextEditingController controleArquivo = TextEditingController();
+//final TextEditingController controleArquivo = TextEditingController();
 final TextEditingController controlePesquisa = TextEditingController();
 
 // Gerencia o estado da tabela

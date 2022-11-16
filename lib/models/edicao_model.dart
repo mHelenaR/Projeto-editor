@@ -26,3 +26,24 @@ class testeClass {
     _testeTab = testeTab;
   }
 }
+
+class EdicaoModel {
+  dynamic _ativaTabelas;
+  List<Map<dynamic, dynamic>> _mapaNomeColunas = [];
+  List<dynamic> _listaMapasAlteracao = [];
+
+  get ativaTabelas => _ativaTabelas;
+  set setAtivaTabelas(var ativaTabelas) {
+    _ativaTabelas = ativaTabelas;
+  }
+
+  get mapaNomeColunas => _mapaNomeColunas;
+  set setMapaNomeColunas(var mapaNomeColunas) {
+    _mapaNomeColunas = mapaNomeColunas;
+  }
+
+  get getListaMapasAlteracao => _listaMapasAlteracao;
+  set setListaMapasAlteracao(var listaMapasAlteracao) {
+    _listaMapasAlteracao = listaMapasAlteracao;
+  }
+}

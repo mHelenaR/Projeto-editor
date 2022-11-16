@@ -15,6 +15,7 @@ gravarArquivo() {
   String montaTabela = '';
   String finalArquivo = '';
   String inicioArquivo = '';
+  List<dynamic> recebeMapa = objEdicaoModel.getListaMapasAlteracao;
 
   for (int i = 0; i < recebeMapa.length; i++) {
     map = recebeMapa[i];

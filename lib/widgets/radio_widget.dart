@@ -15,11 +15,8 @@ import 'package:editorconfiguracao/widgets/sized_box_widget.dart';
 bool isSelected = true;
 
 class RadioWidget extends StatefulWidget {
-  late String opcao;
-
   RadioWidget({
     Key? key,
-    required this.opcao,
   }) : super(key: key);
 
   @override
@@ -137,6 +134,8 @@ class _RadioWidgetState extends State<RadioWidget> {
               child: ElevatedButton(
                 style: estiloBotao,
                 onPressed: () {
+                  stateManager!.clearCurrentCell();
+
                   if (objEstacaoModel.estacaoNumero != null &&
                       objEstacaoModel.colunaNome != null) {
                     FilterModel recebe = objEstacaoModel.estacaoNumero;

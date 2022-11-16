@@ -179,7 +179,7 @@ class EdicaoController {
           'novoValor': event.value,
         };
 
-        recebeMapa.addAll([mapa]);
+        // recebeMapa.addAll([mapa]);
       },
       onLoaded: (PlutoGridOnLoadedEvent event) {
         stateManager = event.stateManager;

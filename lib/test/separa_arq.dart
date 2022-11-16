@@ -141,7 +141,7 @@ class SeparaTest {
     }
     List<dynamic> testw = [];
     List<dynamic> colTeste = [];
-
+    print(mapa);
     for (var element in mapa.entries) {
       // if (element.key == 'estac') {
       Map recebe = element.value;
@@ -161,7 +161,7 @@ class SeparaTest {
 
   testew(var coluna, var linha) {
     for (var i = 0; i < coluna.length; i++) {
-      print(coluna[i]);
+      // print(coluna[i]);
     }
 
     // linhas
@@ -170,7 +170,7 @@ class SeparaTest {
 
       for (var l = 0; l < novo.length; l++) {
         // Map novomapa = novo[0];
-        print(novo[l]);
+        //print(novo[l]);
         // for (var element in novomapa.entries) {
 
         //     print(element.value);

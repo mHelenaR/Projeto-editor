@@ -1,18 +1,20 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:editorconfiguracao/controllers/edicao_controller1.dart';
+import 'package:editorconfiguracao/controllers/edicao_controller.dart';
+import 'package:editorconfiguracao/models/filtro_model.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/converte_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/nome_tabelas.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/salvar_arquivo.dart';
 import 'package:editorconfiguracao/projeto_completo/arquivo_cfg/seleciona_arquivo.dart';
+import 'package:editorconfiguracao/utils/variaveis.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_borderRadius.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_elevated_button.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_fontes.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_tabBar.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_textField.dart';
-import 'package:editorconfiguracao/utils/variaveis.dart';
+import 'package:editorconfiguracao/projeto_completo/variaveis_globais/variaveis_program.dart';
 import 'package:editorconfiguracao/widgets/radio_widget.dart';
 
 class TelaEdicao extends StatefulWidget {
@@ -23,27 +25,24 @@ class TelaEdicao extends StatefulWidget {
 }
 
 class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
-  //Listas
-  List<Widget> listaTabs = [];
-
-  //Objetos
-  EdicaoController objEdicaoController = EdicaoController();
-
-  //Controllers
-  TabController getTabController() =>
-      TabController(length: listaTabs.length, vsync: this);
+  final EdicaoController _edicaoController = EdicaoController();
   final TextEditingController controleArquivo = TextEditingController();
+  OpcaoFiltroModel escolha = OpcaoFiltroModel();
+
+  List<String> tabelasDicionario = objSqlite.nomeColunasDcn;
+
+  TabController getTabController() {
+    return TabController(length: tabs.length, vsync: this);
+  }
 
   @override
   void initState() {
-    objEdicaoModel.setAtivaTabelas = false;
     tabController = getTabController();
     super.initState();
   }
 
   @override
   void dispose() {
-    controleArquivo.dispose();
     super.dispose();
   }
 
@@ -80,20 +79,13 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
 
         nomeTabelas = await nomeTabelasArquivo(conteudoArquivo);
 
-        listaTabs.clear();
+        nomeTab(nomeTabelas.length);
 
-        for (var i = 0; i < nomeTabelas.length; i++) {
-          listaTabs.add(
-            Tab(
-              text: nomeTabelas[i],
-            ),
-          );
-        }
+        tabs = criaTab(nomeTabelas.length);
 
         setState(() {
-          objEdicaoController.carregarTela();
-
-          tabController = TabController(length: listaTabs.length, vsync: this);
+          tabelasConfig();
+          tabController = TabController(length: tabs.length, vsync: this);
         });
       }
     } catch (e) {
@@ -101,6 +93,39 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
         print(e);
       }
     }
+  }
+
+  Tab nomeTab(int widgetNumber) {
+    setState(() {
+      widgetNumber;
+    });
+
+    if (widgetNumber == nomeTabelas.length) {
+      widgetNumber = widgetNumber - 1;
+    }
+
+    return Tab(text: nomeTabelas[widgetNumber]);
+  }
+
+  List<Tab> criaTab(int count) {
+    tabs.clear();
+
+    for (int i = 0; i < count; i++) {
+      tabs.add(nomeTab(i));
+    }
+
+    return tabs;
+  }
+
+  List<Widget> tabelasConfig() {
+    List<Widget> criarWidgets = [];
+    criarWidgets.clear();
+
+    for (int i = 0; i < tabs.length; i++) {
+      criarWidgets.add(_edicaoController.carregarTela(i));
+    }
+
+    return criarWidgets;
   }
 
   @override
@@ -127,7 +152,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           child: const Text(
-                            "Editar Configurações",
+                            "Edição de Tabelas",
                             style: fontePreta,
                           ),
                         ),
@@ -156,9 +181,6 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                               ElevatedButton(
                                 onPressed: () {
                                   arquivoAbrirSeparar();
-                                  setState(() {
-                                    objEdicaoModel.setAtivaTabelas = false;
-                                  });
                                 },
                                 style: estiloBotao,
                                 child: const Text("Abrir"),
@@ -167,9 +189,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                                 width: 10,
                               ),
                               ElevatedButton(
-                                onPressed: () {
-                                  gravarArquivo();
-                                },
+                                onPressed: () => gravarArquivo(),
                                 style: estiloBotao,
                                 child: const Text("Salvar"),
                               ),
@@ -211,7 +231,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
                     labelColor: white,
                     splashBorderRadius: border40,
                     isScrollable: true,
-                    tabs: listaTabs,
+                    tabs: tabs,
                     controller: tabController,
                   ),
                 ),
@@ -219,20 +239,26 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
             ],
           ),
         ),
-        if (objEdicaoModel.ativaTabelas == true) ...{
-          Expanded(
-            child: TabBarView(
-              controller: tabController,
-              children: objEdicaoController.tabelasConfig(listaTabs),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: FutureBuilder(
+              future: _edicaoController.delay2(),
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.hasData) {
+                  return TabBarView(
+                    controller: tabController,
+                    children: tabelasConfig(),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
-        } else if (objEdicaoModel.ativaTabelas == false) ...{
-          const Expanded(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        }
+        )
       ],
     );
   }

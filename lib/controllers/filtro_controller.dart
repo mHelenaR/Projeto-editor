@@ -12,7 +12,7 @@ class FiltroController {
   // Busca o indice da celula na tabela
   void focarColuna(var position) {
     int rowIdx = 0;
-    //  print(nomeColunasDicionario);
+
     int cellIdx = 0;
     for (int i = 0; i < nomeColunasDicionario.length; i++) {
       var recebeLista = nomeColunasDicionario[i];
@@ -31,6 +31,50 @@ class FiltroController {
       stateManager!.moveScrollByColumn(PlutoMoveDirection.left, cellIdx + 1);
       stateManager!.notifyListeners();
     }
+  }
+
+  //Cria uma lista com o nome dos campos do dicionário baseado no arquivo
+  void mapaCompletoDicionario(List<String> linhasTabela) {
+    List<Map<dynamic, dynamic>> map = objSqlite.tabelasCompletas;
+    nomeSubtituloDicionario = toUpperRow(linhasTabela);
+
+    List<String> nomeColDicio = toUpperRow(linhasTabela);
+
+    for (var i = 0; i < map.length; i++) {
+      Map mapas = map[i];
+
+      for (var element in mapas.entries) {
+        for (var j = 0; j < nomeColDicio.length; j++) {
+          if (element.value['campo'] == nomeColDicio[j]) {
+            nomeColDicio[j] = element.value['campo'];
+            nomeSubtituloDicionario[j] = element.value['titulo'];
+          }
+        }
+      }
+    }
+
+    nomeColunasDicionario.addAll([nomeColDicio]);
+  }
+
+  //Retorna uma lista no padrão dos campos da tabela dicionario
+  List<String> toUpperRow(List<String> listaColunasARQ) {
+    List<String> lista = [];
+    List<String> cols = listaColunasARQ[0].split('|');
+
+    //retira o espaço em branco no final da lista
+    int cont = cols.length - 2;
+
+    for (var i = 0; i < cols.length; i++) {
+      if (i <= cont) {
+        String neww = cols[i];
+        String valor = neww.substring(0, neww.length - 2);
+
+        String upper = valor.toUpperCase();
+        lista = lista + [upper];
+      }
+    }
+
+    return lista;
   }
 
   //Método criador dos mapas para o DropDown da estação

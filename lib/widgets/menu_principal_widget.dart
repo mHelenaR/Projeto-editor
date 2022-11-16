@@ -1,12 +1,11 @@
-import 'package:editorconfiguracao/views/edicao_view.dart';
-import 'package:editorconfiguracao/views/teste_tabela_view.dart';
 import 'package:flutter/material.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-import 'package:editorconfiguracao/views/pagina_inicial_view.dart';
-import 'package:editorconfiguracao/views/data_base_view.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_colors_project.dart';
 import 'package:editorconfiguracao/projeto_completo/styles/style_sidebar_menu.dart';
+import 'package:editorconfiguracao/views/data_base_view.dart';
+import 'package:editorconfiguracao/views/edicao_view.dart';
+import 'package:editorconfiguracao/views/pagina_inicial_view.dart';
 
 class MenuPrincipal extends StatefulWidget {
   const MenuPrincipal({Key? key}) : super(key: key);
@@ -99,7 +98,7 @@ class MenuPrincipalState extends State<MenuPrincipal> {
                     case 1:
                       return const TelaEdicao();
                     case 2:
-                      return const TesteTabela();
+                      return const Text('Fazer a tela de comparação');
 
                     case 3:
                       return const TelaConexao();

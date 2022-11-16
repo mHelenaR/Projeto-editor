@@ -29,6 +29,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
     return TabController(length: tabs.length, vsync: this);
   }
 
+  final TextEditingController controleArquivo = TextEditingController();
   @override
   void initState() {
     tabController = getTabController();
@@ -102,6 +103,7 @@ class _TelaEdicaoState extends State<TelaEdicao> with TickerProviderStateMixin {
   }
 
   List<Widget> getWidgets() {
+    var criarWidgets;
     criarWidgets.clear();
 
     for (int i = 0; i < tabs.length; i++) {
